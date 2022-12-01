@@ -9,7 +9,7 @@
 #include <debug.h>
 #include <cpu.h>
 
-int main()
+int cpu()
 {   
     open_cpu_logs();
 

@@ -30,6 +30,7 @@ struct pair
 {
     int type; 
     int value;
+    int delta_value;
 };
 
 typedef int var_ass;

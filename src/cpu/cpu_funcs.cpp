@@ -34,6 +34,7 @@ int check_executable_file(FILE *exec_file_ptr, Cpu_struct *cpu)
     return 0;
 }
 
+#if 0
 size_t know_size_for_buff(FILE* text, const char * name_of_file)
 {
     CHECK_CONDITION(text != 0);
@@ -50,6 +51,7 @@ size_t know_size_for_buff(FILE* text, const char * name_of_file)
 
     return data.st_size;
 }
+#endif
 
 int fill_cpu_struct(FILE *codes_file_ptr, Cpu_struct *cpu, const char *path_to_file)
 {
@@ -131,7 +133,8 @@ void execute_commands(Cpu_struct *cpu, Stack *stack, FILE* file_result)
             break;                                                                 \
 
     while (ip < cpu->num_of_commands) // ToDo: use file size
-    {   elem num1 = 0, num2 = 0, num = 0;
+    {   
+        elem num1 = 0, num2 = 0, num = 0;
         cmd = cpu->num_buffer[ip++];
         full_cmd = cmd;
         (cmd != DUMP_CMD) && (cmd = cmd & MASK_CMD);

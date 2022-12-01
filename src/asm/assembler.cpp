@@ -13,11 +13,11 @@
 // ./asm -o file.bin filename
 // After releasing that you can learn getopt
 
-int main(int argc, char* argv[])
+int asm_func(int n_cmds, char *cmds[])
 {   
     open_ass_logs();
     
-    const char* path_to_codes = name_of_input_file(argc, argv[1]); // ToDo: parse flags
+    const char* path_to_codes = name_of_input_file(n_cmds, cmds[1]); // ToDo: parse flags
     const char* path_to_executable_file_bin = "executable_file.bin"; // ToDo: argv
 
     FILE* file_text = fopen(path_to_codes, "r");

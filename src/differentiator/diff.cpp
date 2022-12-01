@@ -5,7 +5,7 @@
 #include <calcul_funcs.h>
 
 
-int main()
+int diff()
 {
     open_tree_logs();
 

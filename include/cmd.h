@@ -26,13 +26,22 @@ DEF_CMD(HLT, 0, 0, '\n',
 DEF_CMD (PUSH, 1, 1, ' ',
 {
     arr_of_commands[*ip-1] |= args.type;
-            fseek(executable_file, -2, SEEK_CUR);
-            fprintf(executable_file, "%d%c", arr_of_commands[*ip-1],' ');
-                        
-            arr_of_commands[*ip] = args.value;
-            fprintf(executable_file, "%d %c", arr_of_commands[(*ip)++],'\n');
-            
-            break;
+    fseek(executable_file, -2, SEEK_CUR);
+    fprintf(executable_file, "%d%c", arr_of_commands[*ip-1],' ');
+                
+    arr_of_commands[*ip] = args.value;
+    fprintf(executable_file, "%d %c", arr_of_commands[(*ip)++],'\n');
+
+    if (args.delta_value)
+    {
+        arr_of_commands[*ip] = args.delta_value;
+        printf("args delta = %d\n", args.delta_value);
+        arr_of_commands[*ip-2] |= ARG_IMMED;
+    
+        (*ip)++;
+    }
+
+    break;
 },
 {
     if(full_cmd & ARG_IMMED) 
@@ -51,20 +60,36 @@ DEF_CMD (PUSH, 1, 1, ' ',
         num += cpu->RAM[cpu->registers[cell_value]];
     }
 
+    if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG) && (full_cmd & ARG_IMMED))
+    {
+        num += cpu->RAM[cpu->registers[cell_value + 1]];
+        ip++;
+    }
+
     ip++;
     push(num * ACCURACY);
 }
 )
 
 DEF_CMD(POP, 2, 1, ' ',
-{arr_of_commands[*ip-1] |= args.type;
-            fseek(executable_file, -2, SEEK_CUR);
-            fprintf(executable_file, "%d%c", arr_of_commands[*ip-1],' ');
-                        
-            arr_of_commands[*ip] = args.value;
-            fprintf(executable_file, "%d %c", arr_of_commands[(*ip)++],'\n');
+{   arr_of_commands[*ip-1] |= args.type;
+    fseek(executable_file, -2, SEEK_CUR);
+    fprintf(executable_file, "%d%c", arr_of_commands[*ip-1],' ');
             
-            break;
+    arr_of_commands[*ip] = args.value;
+    fprintf(executable_file, "%d %c", arr_of_commands[(*ip)++],'\n');
+
+
+    if (args.delta_value)
+    {
+        arr_of_commands[*ip] = args.delta_value;
+        printf("args delta = %d\n", args.delta_value);
+        arr_of_commands[*ip-2] |= ARG_IMMED;
+    
+        (*ip)++;
+    }
+
+    break;
 },
 {
     pop(num);
@@ -77,8 +102,16 @@ DEF_CMD(POP, 2, 1, ' ',
             
     if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
     {
+
         cpu->RAM[cpu->registers[cell_value]] = (int)num;
     }
+    if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG) && (full_cmd & ARG_IMMED))
+    {
+        num += cpu->RAM[cpu->registers[cell_value + 1]];
+        ip++;
+    }
+
+    ip++;
 
     ip++;
 }

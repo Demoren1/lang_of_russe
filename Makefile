@@ -1,7 +1,12 @@
-all : mkdir asm cpu 
-CPU_DIR = ./src/cpu/
-ASM_DIR = ./src/asm/
+all : mkdir lang
+SRC_CPU_DIR = ./src/cpu/
+SRC_ASM_DIR = ./src/asm/
+SRC_LANG_DIR = ./src/lang/
+SRC_DIFF_DIR = ./src/differentiator/
+SRC_TREE_DIR = ./src/tree/
+SRC_DESCENT_DIR = ./src/recursive_descent/
 DEBUG_DIR = ./src/debug_and_constants/
+DUMP_DIR = ./graph_dumps/
 OBJ_DIR = ./obj/
 CC = g++
 
@@ -23,38 +28,56 @@ CFLAGS= #-save-temps -Wall -Wextra -fsanitize=address -g #-D _DEBUG -ggdb3 -std=
 INCLUDE_PATH = -I./include/
 
 #sources
-ASM_SRC 	:= $(wildcard $(ASM_DIR)*.cpp) 
-CPU_SRC 	:= $(wildcard $(CPU_DIR)*.cpp) 
-DEBUG_SRC 	:= $(wildcard $(DEBUG_DIR)*.cpp) 
+DIFF_SRC  	:= $(wildcard $(SRC_DIFF_DIR)*.cpp)
+TREE_SRC  	:= $(wildcard $(SRC_TREE_DIR)*.cpp)
+DESCENT_SRC := $(wildcard $(SRC_DESCENT_DIR)*.cpp)
+ASM_SRC   	:= $(wildcard $(SRC_ASM_DIR)*.cpp) 
+CPU_SRC   	:= $(wildcard $(SRC_CPU_DIR)*.cpp) 
+DEBUG_SRC 	:= $(wildcard $(DEBUG_DIR)*.cpp)
+LANG_SRC  	:= $(wildcard $(SRC_LANG_DIR)*.cpp)
+
 
 #obj
-ASM_OBJ 	:= $(patsubst $(ASM_DIR)%.cpp, $(OBJ_DIR)%.o, $(ASM_SRC)) 
-CPU_OBJ 	:= $(patsubst $(CPU_DIR)%.cpp, $(OBJ_DIR)%.o, $(CPU_SRC))
+DIFF_OBJ  	:= $(patsubst $(SRC_DIFF_DIR)%.cpp, $(OBJ_DIR)%.o, $(DIFF_SRC)) 
+TREE_OBJ  	:= $(patsubst $(SRC_TREE_DIR)%.cpp, $(OBJ_DIR)%.o, $(TREE_SRC)) 
+DESCENT_OBJ := $(patsubst $(SRC_DESCENT_DIR)%.cpp, $(OBJ_DIR)%.o, $(DESCENT_SRC)) 
+ASM_OBJ   	:= $(patsubst $(SRC_ASM_DIR)%.cpp, $(OBJ_DIR)%.o, $(ASM_SRC)) 
+CPU_OBJ   	:= $(patsubst $(SRC_CPU_DIR)%.cpp, $(OBJ_DIR)%.o, $(CPU_SRC))
 DEBUG_OBJ 	:= $(patsubst $(DEBUG_DIR)%.cpp, $(OBJ_DIR)%.o, $(DEBUG_SRC))
+LANG_OBJ  	:= $(patsubst $(SRC_LANG_DIR)%.cpp, $(OBJ_DIR)%.o, $(LANG_SRC))
+
 
 #exe
-ASM_EXE := asm
-CPU_EXE := cpu
+LANG_EXE := lang
 
+$(LANG_EXE) : $(DIFF_OBJ) $(TREE_OBJ) $(DESCENT_OBJ) $(CPU_OBJ) $(DEBUG_OBJ) $(ASM_OBJ) $(LANG_OBJ)
+	@$(CC) $(CFLAGS) $(INCLUDE_PATH) $(DIFF_OBJ) $(TREE_OBJ) $(DESCENT_OBJ) $(CPU_OBJ) $(DEBUG_OBJ) $(ASM_OBJ) $(LANG_OBJ) -o $(LANG_EXE)
 
-$(CPU_EXE) : $(CPU_OBJ) $(DEBUG_OBJ)
-	@$(CC) $(CFLAGS) $(INCLUDE_PATH) $(CPU_OBJ) $(DEBUG_OBJ) -o $(CPU_EXE)	
-
-$(ASM_EXE) : $(ASM_OBJ) $(DEBUG_OBJ)
-	@$(CC)  $(INCLUDE_PATH) $(ASM_OBJ) $(DEBUG_OBJ) -o $(ASM_EXE)
-
-$(OBJ_DIR)%.o : $(CPU_DIR)%.cpp
+$(OBJ_DIR)%.o : $(SRC_CPU_DIR)%.cpp
 	@$(CC)  $(INCLUDE_PATH) -c $< -o $@
 
-$(OBJ_DIR)%.o : $(ASM_DIR)%.cpp
+$(OBJ_DIR)%.o : $(SRC_ASM_DIR)%.cpp
 	@$(CC)  $(INCLUDE_PATH) -c $< -o $@
 
 $(OBJ_DIR)%.o : $(DEBUG_DIR)%.cpp
 	@$(CC) $(INCLUDE_PATH) -c $< -o $@
 
+$(OBJ_DIR)%.o : $(SRC_DIFF_DIR)%.cpp 
+	@$(CC) $(INCLUDE_PATH) -c $< -o $@
+
+$(OBJ_DIR)%.o : $(SRC_TREE_DIR)%.cpp 
+	@$(CC) $(INCLUDE_PATH) -c $< -o $@
+
+$(OBJ_DIR)%.o : $(SRC_DESCENT_DIR)%.cpp 
+	@$(CC) $(INCLUDE_PATH) -c $< -o $@
+
+$(OBJ_DIR)%.o : $(SRC_LANG_DIR)%.cpp 
+	@$(CC) $(INCLUDE_PATH) -c $< -o $@
+
 
 mkdir :
 	@mkdir $(OBJ_DIR) -p
+	@mkdir $(DUMP_DIR) -p
 
 clean:
-	rm $(OBJ_DIR)*.o $(OBJ_DIR)*.ii $(OBJ_DIR)*.s *.save asm cpu
+	rm $(OBJ_DIR)*.o $(OBJ_DIR)*.ii $(OBJ_DIR)*.s $(DUMP_DIR)*.jpeg *.save lang

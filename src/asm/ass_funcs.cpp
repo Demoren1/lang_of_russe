@@ -259,7 +259,6 @@ pair get_arg(char *str)
     
     if (isalpha(str[0]))
     {   
-        
         WRITE_REG();
     }
 
@@ -281,6 +280,15 @@ pair get_arg(char *str)
             tmp_str[3] = '\0';
 
             WRITE_REG();   
+
+            #if 1
+            int tmp_num = 0;
+            if (strchr(str, '+'))
+            {
+                sscanf(strchr(str, '+') + 1, "%d", &tmp_num);
+                tmp_pair.delta_value= tmp_num;
+            }
+            #endif
         }
     }
 
