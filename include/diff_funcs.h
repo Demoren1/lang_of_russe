@@ -21,7 +21,7 @@ int diff_buff_dtor(Buffer *buffer);
 
 int diff_do_tree(Node *node, Buffer *buff);
 
-Node *_diff_node_ctor(Type_of_expression type, double dbl_value, Operation op_value, char var_value);
+Node *_diff_node_ctor(Type_of_expression type, double dbl_value, Arith_Operation op_value, char var_value);
 
 Node *diff_connect_node(Node *parent, Node *new_node);
 
@@ -29,9 +29,9 @@ Node *diff_diff(Node *node, char var_for_diff);
 
 int diff_simplify(Node *node);
 
-Operation diff_get_operation(const char *buffer);
+Arith_Operation diff_get_operation(const char *buffer);
 
-Priorities find_op_priority(Operation operation);
+Priorities find_op_priority(Arith_Operation operation);
 
 int diff_ctor_var_arr(Node *node, Var *var_arr, int cur_index);
 

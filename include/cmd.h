@@ -35,7 +35,6 @@ DEF_CMD (PUSH, 1, 1, ' ',
     if (args.delta_value)
     {
         arr_of_commands[*ip] = args.delta_value;
-        printf("args delta = %d\n", args.delta_value);
         arr_of_commands[*ip-2] |= ARG_IMMED;
     
         (*ip)++;
@@ -45,8 +44,8 @@ DEF_CMD (PUSH, 1, 1, ' ',
 },
 {
     if(full_cmd & ARG_IMMED) 
-        num += cell_value;            
-
+        num += cell_value;
+    
     if(full_cmd & ARG_REG)
         num += cpu->registers[cell_value] / (var)ACCURACY;
 
@@ -57,13 +56,22 @@ DEF_CMD (PUSH, 1, 1, ' ',
 
     if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
     {
-        num += cpu->RAM[cpu->registers[cell_value]];
+        num += cpu->RAM[cpu->registers[cell_value]/ACCURACY];
     }
-
+    
     if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG) && (full_cmd & ARG_IMMED))
     {
-        num += cpu->RAM[cpu->registers[cell_value + 1]];
+        num = cpu->RAM[cpu->registers[cell_value]/ACCURACY + (ssize_t)cpu->num_buffer[ip + 1]];
+        #if 0
+        printf("6num is %g\n", num);
+
+        printf("cell value = %ld\n", cell_value);
+        printf("register = %d\n", cpu->registers[cell_value]);
+        printf("to stack %d \n", cpu->RAM[cpu->registers[cell_value]/ACCURACY + (ssize_t)cpu->num_buffer[ip + 1]]);
+        printf("ram[6] = %d\n", cpu->RAM[6]);
+        #endif
         ip++;
+        num /= ACCURACY;
     }
 
     ip++;
@@ -83,7 +91,6 @@ DEF_CMD(POP, 2, 1, ' ',
     if (args.delta_value)
     {
         arr_of_commands[*ip] = args.delta_value;
-        printf("args delta = %d\n", args.delta_value);
         arr_of_commands[*ip-2] |= ARG_IMMED;
     
         (*ip)++;
@@ -94,24 +101,23 @@ DEF_CMD(POP, 2, 1, ' ',
 {
     pop(num);
 
-    if(full_cmd & ARG_REG)   
-        cpu->registers[cell_value] = (int) num;
-
-    if(full_cmd & ARG_RAM)   
-        cpu->RAM[cell_value] = (int) num;
-            
-    if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
-    {
-
-        cpu->RAM[cpu->registers[cell_value]] = (int)num;
-    }
     if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG) && (full_cmd & ARG_IMMED))
     {
-        num += cpu->RAM[cpu->registers[cell_value + 1]];
+        cpu->RAM[cpu->registers[cell_value]/ACCURACY + (ssize_t)cpu->num_buffer[ip + 1]] = num;
         ip++;
     }
-
-    ip++;
+    else if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
+    {
+        cpu->RAM[cpu->registers[cell_value]/ACCURACY] = (int)num;
+    }
+    else if(full_cmd & ARG_RAM)   
+    {
+        cpu->RAM[cell_value] = (int) num;
+    }       
+    else if(full_cmd & ARG_REG)   
+    {
+        cpu->registers[cell_value] = (int) num;
+    }
 
     ip++;
 }

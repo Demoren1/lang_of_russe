@@ -24,6 +24,13 @@ typedef enum
     NUM = 3
 } Type_of_expression;
 
+typedef enum
+{
+    NOT_LOG_OP  = -1,
+    ASG         =  1,
+    IF          = 2
+} LOG_OP;
+
 typedef enum 
 {   
     NOT_OP  = -1,
@@ -36,12 +43,12 @@ typedef enum
     SIN     = 7,
     COS     = 8,
     TG      = 9
-} Operation;
+} Arith_Operation;
 
 union Value
 {
     double dbl_value;
-    Operation op_value;
+    Arith_Operation op_value;
     char var_value;
 };
 

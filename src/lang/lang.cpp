@@ -17,8 +17,7 @@
 int main(int argc, char *argv[])
 {
     #if 1
-    asm_func(argc, argv);
-    cpu();
+    
 
     Buffer buff = {};
 
@@ -29,6 +28,9 @@ int main(int argc, char *argv[])
     printf("%s\n", buff.buffer);
 
 
+    asm_func(argc, argv);
+    cpu();
+    
     #endif 
 
     return 0;

@@ -13,7 +13,7 @@ static FILE *TREE_LOGS = 0;
 static FILE *HTM_LOGS  = 0;
 static FILE *TREE_GRAPH_LOGS = 0;
 
-static int get_op(Operation operation, char res[]);
+static int get_op(Arith_Operation operation, char res[]);
 
 int open_tree_logs()
 {
@@ -93,7 +93,7 @@ int tree_print(const Node *node, const Mode_of_print mode)
     {
         return 0;
     }
-    Operation op = node->value.op_value;
+    Arith_Operation op = node->value.op_value;
     if (op == DIV)
         fprintf(TREE_LOGS, "\\frac{");
 
@@ -291,7 +291,7 @@ int print_in_logs(const char *str,...)
     return 0;
 }
 
-static int get_op(Operation operation, char res[])
+static int get_op(Arith_Operation operation, char res[])
 {
     switch(operation)
     {   

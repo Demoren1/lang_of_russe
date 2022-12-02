@@ -198,7 +198,7 @@ static int kill_one_side(Pos_of_node one_side, Node *node)
     if (conjugate_node == NULL)
         return changes;
 
-    Operation oper = node->value.op_value;    
+    Arith_Operation oper = node->value.op_value;    
     
     if (!node->parent)
         fake_parent_flag = 1;
@@ -286,7 +286,7 @@ static int kill_zero_side(Pos_of_node zero_side, Node *node)
     if (conjugate_node == NULL)
         return 0;
     
-    Operation oper = node->value.op_value;    
+    Arith_Operation oper = node->value.op_value;    
     
     if (!node->parent)
         fake_parent_flag = 1;
@@ -659,7 +659,7 @@ Node *diff_diff(Node *node, char var_for_diff)
     return 0;
 }
 
-Priorities find_op_priority(Operation operation)
+Priorities find_op_priority(Arith_Operation operation)
 {   
     switch(operation)
     {
@@ -688,7 +688,7 @@ Priorities find_op_priority(Operation operation)
     return ERROR_PRIOR;
 }
 
-Operation diff_get_operation(const char *buff)
+Arith_Operation diff_get_operation(const char *buff)
 {
     char op_sym = buff[0];
 

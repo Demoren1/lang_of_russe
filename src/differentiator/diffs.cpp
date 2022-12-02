@@ -5,7 +5,7 @@
 #include <dsl.h>
 
 
-Node *Create_OP_node(Operation oper_value)
+Node *Create_OP_node(Arith_Operation oper_value)
 {                
     Node *new_node = node_ctor();                             
     new_node->value.op_value = oper_value;              
@@ -63,17 +63,17 @@ Node *SIN_OP(Node *l_node, Node *r_node)
 Node *TG_OP(Node *l_node, Node *r_node)
 {LINK_WITH_OP(TG);}
 
-Node *Diff_ADD(Node *node, Operation oper_value, char var_for_diff)
+Node *Diff_ADD(Node *node, Arith_Operation oper_value, char var_for_diff)
 {
     return ADD_OP(DL, DR);
 }
 
-Node *Diff_MUL(Node *node, Operation oper_value, char var_for_diff)
+Node *Diff_MUL(Node *node, Arith_Operation oper_value, char var_for_diff)
 {
     return ADD_OP(MUL_OP(DL, CR), MUL_OP(CL, DR));
 }
 
-Node *Diff_DIV(Node *node, Operation oper_value, char var_for_diff)
+Node *Diff_DIV(Node *node, Arith_Operation oper_value, char var_for_diff)
 {   
     
     return DIV_OP(SUB_OP(MUL_OP(DL, CR), MUL_OP(DR, CL)), MUL_OP(CR, CR));
