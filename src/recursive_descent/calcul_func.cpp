@@ -18,7 +18,7 @@ const char* STR = NULL;
 Node* get_General(const char *str)
 {
     STR = str;
-
+    
     Node* node = get_Expression();
 
     assert(*STR == '\0');
@@ -29,12 +29,18 @@ Node* get_General(const char *str)
 Node *get_VAR()
 {
     Node *node = 0;
-
-    node = Create_VAR_node(*STR);
-
+    char var_str[MAX_LEN_VALUE] = {};
+    int index = 0;
     while(*STR != '\0' && isalpha(*STR))
+    {
+        var_str[index] = *STR;
+        index++;
         STR++;
+    }
     
+    node = Create_VAR_node(var_str);
+    // printf("var is %s\n", node->value.var_value);  
+    SOFT_ASS_NO_RET(node == NULL);
     return node;
 }
 
@@ -67,6 +73,7 @@ Node* get_P()
     
     if (diff_get_operation(STR) != NOT_OP)
     {
+        
         Node *op_node = get_UNAR_OP();
         node = op_node;
     }
@@ -92,6 +99,7 @@ Node* get_P()
     else 
         node = value_node;
 
+    SOFT_ASS_NO_RET(node == NULL);
     return node;
 }
 
@@ -112,7 +120,8 @@ Node* get_T()
 {
     Node *node = 0;
     node = get_Degree();
-
+    SOFT_ASS_NO_RET(node == NULL);
+    
     while(*STR == '*' || *STR == '/')
     {
         int op = *STR;
@@ -142,8 +151,10 @@ Node* get_T()
 Node* get_Expression()
 {
     Node* node = 0;
+    
     node = get_T();
-
+    SOFT_ASS_NO_RET(node == 0);
+    
     while(*STR == '+' || *STR == '-')
     {
         int op = *STR;
@@ -174,8 +185,8 @@ Node* get_Expression()
 Node* get_Degree()
 {
     Node *node = 0;
-
     node = get_P();
+    SOFT_ASS_NO_RET(node == NULL);
 
     while(*STR == '^')
     {
@@ -192,3 +203,9 @@ Node* get_Degree()
 
     return node;
 }
+
+
+// Node *get_LOG_OP()
+// {
+    
+// }

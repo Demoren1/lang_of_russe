@@ -4,6 +4,8 @@
 
 const int LEN_OF_DATA = 256;
 
+#define MAX_LEN_VALUE 64
+
 #define FUNC_GENERAL_INFO(object)  __FILE__, __FUNCTION__, #object, __LINE__
 
 #define TREE_CTOR(tree) tree_ctor(&list, FUNC_GENERAL_INFO(tree))
@@ -19,9 +21,10 @@ typedef enum
 
 typedef enum 
 {
-    OP  = 1,
-    VAR = 2,
-    NUM = 3
+    OP      = 1,
+    VAR     = 2,
+    NUM     = 3, 
+    LOG     = 4 
 } Type_of_expression;
 
 typedef enum
@@ -29,7 +32,7 @@ typedef enum
     NOT_LOG_OP  = -1,
     ASG         =  1,
     IF          = 2
-} LOG_OP;
+} Log_Oper;
 
 typedef enum 
 {   
@@ -49,12 +52,14 @@ union Value
 {
     double dbl_value;
     Arith_Operation op_value;
-    char var_value;
+    char var_value[MAX_LEN_VALUE] = {};
+    Log_Oper log_op;
 };
 
 typedef enum 
 {   
     ERROR_PRIOR     = -999,
+    LOG_PRIOR       = 999,
     NUM_PRIOR       = 1,
     VAR_PRIOR       = 1,
     ADD_PRIOR       = 1,
@@ -82,7 +87,7 @@ typedef struct Node_t
 
 typedef struct Var_t
 {
-    char var_name;
+    char var_name[MAX_LEN_VALUE];
     double var_value = NAN;
 } Var;
 

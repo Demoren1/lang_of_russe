@@ -8,7 +8,7 @@
 // #include <dsl.h>
 // #include <general_debug.h>
 // #include <stack_objects.h>
-// #include <tree_debug.h>
+#include <tree_debug.h>
 // #include <tree_funcs.h>
 #include <lang.h>
 #include <stdio.h>
@@ -16,23 +16,29 @@
 
 int main(int argc, char *argv[])
 {
-    #if 1
-    
+    open_tree_logs();
 
+    Node *root = diff();
+
+    #if 0 
     Buffer buff = {};
-
     const char *src = "program.txt";
 
     diff_handle_src(src, &buff);
 
     printf("%s\n", buff.buffer);
-
-
-    asm_func(argc, argv);
-    cpu();
+    char *str = buff.buffer;
+    Node *root = get_General(str);
+    TREE_DUMP(root, INORDER);
     
-    #endif 
+    // asm_func(argc, argv);
+    // cpu();
 
+    node_dtor(root);
+    #endif
+
+    node_dtor(root);
+    close_tree_logs();
     return 0;
 }
 

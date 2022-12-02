@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include <tree_funcs.h>
 #include <tree_debug.h>
 #include <general_debug.h>
@@ -21,7 +22,7 @@ Node* node_ctor()
 
     node->value.dbl_value = NAN;
     node->value.op_value = NOT_OP;
-    node->value.var_value = ' ';
+    strncpy(node->value.var_value, " ", MAX_LEN_VALUE);
 
     return node;
 }

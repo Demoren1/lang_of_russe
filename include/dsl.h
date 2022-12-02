@@ -25,27 +25,29 @@
                                     node_connect(new_node, r_node, RIGHT);                  \
                                 return new_node;
 
-Node *Diff_ADD(Node *node, Arith_Operation oper_value, char var_for_diff);
+Node *Diff_ADD(Node *node, Arith_Operation oper_value, char var_for_diff[]);
 
-Node *Diff_MUL(Node *node, Arith_Operation oper_value, char var_for_diff);
+Node *Diff_MUL(Node *node, Arith_Operation oper_value, char var_for_diff[]);
 
-Node *Diff_DIV(Node *node, Arith_Operation oper_value, char var_for_diff);
+Node *Diff_DIV(Node *node, Arith_Operation oper_value, char var_for_diff[]);
 
-Node *Diff_DEGREE(Node *node, char var_for_diff);
+Node *Diff_DEGREE(Node *node, char var_for_diff[]);
 
-Node *Diff_LN(Node *node, char var_for_diff);
+Node *Diff_LN(Node *node, char var_for_diff[]);
 
-Node *Diff_SIN(Node *node, char var_for_diff);
+Node *Diff_SIN(Node *node, char var_for_diff[]);
 
-Node *Diff_COS(Node *node, char var_for_diff);
+Node *Diff_COS(Node *node, char var_for_diff[]);
 
-Node *Diff_TG(Node *node, char var_for_diff);
+Node *Diff_TG(Node *node, char var_for_diff[]);
 
 Node *Create_OP_node(Arith_Operation oper_value);
 
 Node *Create_NUM_node(double dbl_value);
 
-Node *Create_VAR_node(const char var);
+Node *Create_VAR_node(char var[]);
+
+Node *Create_LOG_OP_node(Log_Oper log_op);
 
 Node *ADD_OP(Node *l_node, Node *r_node);
 

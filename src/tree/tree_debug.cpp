@@ -15,6 +15,8 @@ static FILE *TREE_GRAPH_LOGS = 0;
 
 static int get_op(Arith_Operation operation, char res[]);
 
+static int get_log_op(Log_Oper log_operation, char res[]);
+
 int open_tree_logs()
 {
     TREE_LOGS = fopen(TREE_LOGS_PATH, "w");
@@ -56,10 +58,10 @@ int close_tree_logs()
 
 int tree_dump(Node *node, Mode_of_print mode,  const char* name_function, const char* name_file, const char* name_variable, int num_line)
 {
-    TREE_LOGS = fopen(TREE_LOGS_PATH, "a+");
+    // TREE_LOGS = fopen(TREE_LOGS_PATH, "a+");
 
-    // fprintf(TREE_LOGS,  "Dump called from %s file, in %s func, in %d line, name of variable = %s\n\n",
-    //                     name_file, name_function, num_line, name_variable);    
+    fprintf(TREE_LOGS,  "Dump called from %s file, in %s func, in %d line, name of variable = %s\n\n",
+                        name_file, name_function, num_line, name_variable);    
     fprintf(HTM_LOGS,   "<h2> Dump called from %s file, in %s func, in %d line, name of variable = %s\n\n",
                         name_file, name_function, num_line, name_variable);
     fprintf(TREE_LOGS, "\n$$\n");
@@ -205,7 +207,7 @@ int tree_print_graph(const Node *node)
     {
         case VAR:
         {
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %c </font></td></tr>\n",
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n",
              node->value.var_value);
             break;
         }
@@ -217,8 +219,16 @@ int tree_print_graph(const Node *node)
         }
         case OP:
         {   
-            char res[MAX_LEN_OP] = {};
+            char res[MAX_LEN_VALUE] = {};
             get_op(node->value.op_value, res);
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n", 
+                                    res);
+            break;
+        }
+        case LOG:
+        {
+            char res[MAX_LEN_VALUE] = {};
+            get_log_op(node->value.log_op, res);
             fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n", 
                                     res);
             break;
@@ -291,63 +301,82 @@ int print_in_logs(const char *str,...)
     return 0;
 }
 
+static int get_log_op(Log_Oper log_operation, char res[])
+{
+    switch (log_operation)
+    {
+    case NOT_LOG_OP:
+        strncpy(res, "ERROR", MAX_LEN_VALUE);
+    case ASG:
+        strncpy(res, "=", MAX_LEN_VALUE);
+    case IF:
+        strncpy(res, "if", MAX_LEN_VALUE);
+    default:
+    {
+        SOFT_ASS(1);
+    }
+    }
+
+    return 0;
+}
+
 static int get_op(Arith_Operation operation, char res[])
 {
     switch(operation)
     {   
         case LN:
         {
-            strncpy(res, "ln", MAX_LEN_OP);
+            strncpy(res, "ln", MAX_LEN_VALUE);
             break;
         }
         case SIN:
         {
-            strncpy(res, "sin", MAX_LEN_OP);
+            strncpy(res, "sin", MAX_LEN_VALUE);
             break;
         }
         case COS:
         {
-            strncpy(res, "cos", MAX_LEN_OP);
+            strncpy(res, "cos", MAX_LEN_VALUE);
             break;
         }
         case TG:
         {
-            strncpy(res, "tg", MAX_LEN_OP);
+            strncpy(res, "tg", MAX_LEN_VALUE);
             break;
         }
         case NOT_OP:
         {   
-            strncpy(res, "V", MAX_LEN_OP);
+            strncpy(res, "V", MAX_LEN_VALUE);
             break;
         }
         case ADD:
         {
-            strncpy(res, "+", MAX_LEN_OP);
+            strncpy(res, "+", MAX_LEN_VALUE);
             break;
         }
         case SUB:
         {
-            strncpy(res, "-", MAX_LEN_OP);
+            strncpy(res, "-", MAX_LEN_VALUE);
             break;
         }
         case MUL:
         {
-            strncpy(res, "*", MAX_LEN_OP);
+            strncpy(res, "*", MAX_LEN_VALUE);
             break;
         }
         case DIV:
         {
-            strncpy(res, "", MAX_LEN_OP);
+            strncpy(res, "", MAX_LEN_VALUE);
             break;
         }
         case DEGREE:
         {
-            strncpy(res, "^", MAX_LEN_OP);
+            strncpy(res, "^", MAX_LEN_VALUE);
             break;
         }
         default:
         {
-            strncpy(res, "ERROR", MAX_LEN_OP);
+            strncpy(res, "ERROR", MAX_LEN_VALUE);
             break;
         }
     }

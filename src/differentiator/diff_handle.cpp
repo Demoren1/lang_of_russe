@@ -12,9 +12,9 @@
 #include <general_debug.h>
 #include <dsl.h>
 
-static int check_replay(Var var_arr[], int cur_index, char var_name);
+static int check_replay(Var var_arr[], int cur_index, char var_name[]);
 
-static int replace_var_on_num(Node *node, char var_name, double var_value);
+static int replace_var_on_num(Node *node, char var_name[], double var_value);
 
 static int wrap_equivalents(Node *node);
 
@@ -66,7 +66,7 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
 
     buff->buffer = del_new_line_and_spaces(buff);
 
-    buff->buffer[buff->size] = '\0';
+    // buff->buffer[buff->size] = '\0';
     buff->curr_index = 0;
 
     return 0;
@@ -417,7 +417,7 @@ static int compute_constants(Node *node)
     return changes;
 }
 
-int diff_ctor_var_arr(Node *node, Var *var_arr, int cur_index)
+int diff_ctor_var_arr(Node *node, Var var_arr[], int cur_index)
 {
     if (!node && cur_index > MAX_VARS)
     {
@@ -426,8 +426,8 @@ int diff_ctor_var_arr(Node *node, Var *var_arr, int cur_index)
     
     if (node->type == VAR && check_replay(var_arr, cur_index, node->value.var_value))
     {   
-        var_arr[cur_index].var_name = node->value.var_value;
-        printf("%c = ", node->value.var_value);
+        strncpy(var_arr[cur_index].var_name, node->value.var_value, MAX_LEN_VALUE);
+        printf("%s = ", node->value.var_value);
         scanf("%lf", &var_arr[cur_index].var_value);
         cur_index++;
     }
@@ -440,11 +440,11 @@ int diff_ctor_var_arr(Node *node, Var *var_arr, int cur_index)
     return cur_index;
 }
 
-static int check_replay(Var var_arr[], int cur_index, char var_name)
+static int check_replay(Var var_arr[], int cur_index, char var_name[])
 {   
     for (int index = 0; index < cur_index; index++)
     {
-        if (var_name == var_arr[index].var_name)
+        if (strcmp(var_name, (var_arr[index].var_name)) == 0)
             return 0;
     }
 
@@ -459,6 +459,8 @@ double diff_calc_tree(Node *node, Var var_arr[], int n_vars)
         replace_var_on_num(tmp_node, var_arr[index].var_name, var_arr[index].var_value);
     }
 
+    TREE_DUMP(tmp_node, INORDER);
+
     diff_simplify(tmp_node);
     // open_log_pdf();
     double result = (fabs(tmp_node->value.dbl_value) > __DBL_EPSILON__) ? tmp_node->value.dbl_value : 0;
@@ -468,16 +470,18 @@ double diff_calc_tree(Node *node, Var var_arr[], int n_vars)
     return result;
 }
 
-static int replace_var_on_num(Node *node, char var_name, double var_value)
+static int replace_var_on_num(Node *node, char var_name[], double var_value)
 {
     if (!node)
         return 0;
-    if (node->type == VAR && !isnan(var_value) && node->value.var_value == var_name)
+
+    if (node->type == VAR && !isnan(var_value) && strcmp(node->value.var_value, var_name) == 0)
     {
         node->value.dbl_value = var_value;
-        node->value.var_value = 'E';
+        strncpy(node->value.var_value, " ", MAX_LEN_VALUE);
         node->priority = NUM_PRIOR;
         node->type = NUM;
+        node->value.dbl_value = var_value;
     }
 
     if (node->l_son)
@@ -488,9 +492,10 @@ static int replace_var_on_num(Node *node, char var_name, double var_value)
     return 0;
 }
 
-double diff_tailor_one_var(Node *node, int depth, char var_name, double var_value, double x0)
-{
-    Var var = {.var_name = var_name, .var_value = x0};
+double diff_tailor_one_var(Node *node, int depth, char var_name[], double var_value, double x0)
+{   
+    Var var = {.var_value = x0};
+    strncpy(var.var_name, var_name, MAX_LEN_VALUE);
     Node *tmp_node1 = node_copy_node(node);
     Node *tmp_node2 = {};
     double delta_x0 = var_value - x0;
@@ -611,7 +616,7 @@ static int switch_sons_if_need(Node *node)
     return 0;
 }
 
-Node *diff_diff(Node *node, char var_for_diff)
+Node *diff_diff(Node *node, char var_for_diff[])
 {
     Type_of_expression type = node->type;
     Node *new_node = 0;
@@ -624,7 +629,7 @@ Node *diff_diff(Node *node, char var_for_diff)
         }
         case VAR:
         {   
-            if (node->value.var_value == var_for_diff)            
+            if (strcmp(node->value.var_value, var_for_diff) == 0)            
                 return Create_NUM_node(1);
             else
                 return Create_NUM_node(0);

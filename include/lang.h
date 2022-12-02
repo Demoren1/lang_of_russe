@@ -5,6 +5,6 @@ int cpu();
 
 int asm_func(int n_cmds, char *cmds[]);
 
-int diff();
+Node *diff();
 
 #endif
