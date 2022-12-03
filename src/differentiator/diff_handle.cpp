@@ -64,6 +64,7 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
     test_fread = fread(buff->buffer, sizeof(char), buff->size, SRC);      
     SOFT_ASS(test_fread == 0);  
 
+    buff->lines = 1;
     buff->buffer = del_new_line_and_spaces(buff);
 
     // buff->buffer[buff->size] = '\0';
@@ -96,13 +97,17 @@ static char* del_new_line_and_spaces(Buffer* buff)
     {
         if (buff->buffer[index_buff] == '\n')
         {
+            buff->lines++;
             buff->buffer[index_buff] = '\0';
         }
 
         if (buff->buffer[index_buff] != ' ')
         {   
-            new_buff[index_new_buff] = buff->buffer[index_buff];
-            index_new_buff++;
+            if (buff->buffer[index_buff] != '\0' || buff->buffer[index_buff+1] != '\0')
+            {
+                new_buff[index_new_buff] = buff->buffer[index_buff];
+                index_new_buff++;
+            }
         }
     }
 
@@ -131,14 +136,14 @@ int diff_simplify(Node *node)
 {
     int changes = 1;
 
-    TREE_DUMP(node, INORDER);
+    // TREE_DUMP(node, INORDER);
     while(changes > 0)
     {
         changes = 0;
         changes += compute_constants(node);
         changes += wrap_equivalents(node);
     }
-    TREE_DUMP(node, INORDER);
+    // TREE_DUMP(node, INORDER);
     return changes;
 }
 
@@ -691,6 +696,19 @@ Priorities find_op_priority(Arith_Operation operation)
     }
 
     return ERROR_PRIOR;
+}
+
+Log_Oper diff_get_log_operation(const char *buff)
+{
+    char op_sym = buff[0];
+
+    if (strstr(buff, "=") == buff)
+        return ASG;
+    else if (strstr(buff, "if") == buff)
+        return IF;
+
+
+    return NOT_LOG_OP;
 }
 
 Arith_Operation diff_get_operation(const char *buff)

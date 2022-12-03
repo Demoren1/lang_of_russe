@@ -18,7 +18,23 @@ int main(int argc, char *argv[])
 {
     open_tree_logs();
 
-    Node *root = diff();
+    Buffer buff = {};
+    
+    const char *src = "expression.txt";
+    diff_handle_src(src, &buff);
+    
+    Node **nodes = (Node **) calloc(buff.lines, sizeof(Node));
+
+    printf("lines = %ld\n", buff.lines);
+
+    for (int index = 0; index < buff.lines; index++)
+    {
+        printf("str: %s\n", buff.buffer);
+        nodes[index] = get_General(buff.buffer);
+        diff_simplify(nodes[index]);
+        TREE_DUMP(nodes[index], INORDER);
+        buff.buffer += lang_to_new_line(buff.buffer);
+    }
 
     #if 0 
     Buffer buff = {};
@@ -37,7 +53,8 @@ int main(int argc, char *argv[])
     node_dtor(root);
     #endif
 
-    node_dtor(root);
+    lang_dtor_nodes(nodes, buff.lines);
+    free(nodes);
     close_tree_logs();
     return 0;
 }

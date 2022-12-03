@@ -8,6 +8,7 @@ typedef struct Buffer_t
 {
     char *buffer;
     size_t size;
+    size_t lines;
     int curr_index;
 } Buffer;
 
@@ -28,6 +29,8 @@ Node *diff_diff(Node *node, char var_for_diff[]);
 int diff_simplify(Node *node);
 
 Arith_Operation diff_get_operation(const char *buffer);
+
+Log_Oper diff_get_log_operation(const char *buff);
 
 Priorities find_op_priority(Arith_Operation operation);
 

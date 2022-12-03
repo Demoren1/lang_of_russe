@@ -58,7 +58,7 @@ int close_tree_logs()
 
 int tree_dump(Node *node, Mode_of_print mode,  const char* name_function, const char* name_file, const char* name_variable, int num_line)
 {
-    // TREE_LOGS = fopen(TREE_LOGS_PATH, "a+");
+    // TREE_LOGS = fopen(TREE_LOGS_PATH, "a+")
 
     fprintf(TREE_LOGS,  "Dump called from %s file, in %s func, in %d line, name of variable = %s\n\n",
                         name_file, name_function, num_line, name_variable);    
@@ -306,11 +306,20 @@ static int get_log_op(Log_Oper log_operation, char res[])
     switch (log_operation)
     {
     case NOT_LOG_OP:
+    {
         strncpy(res, "ERROR", MAX_LEN_VALUE);
+        break;
+    }
     case ASG:
+    {
         strncpy(res, "=", MAX_LEN_VALUE);
+        break;
+    }
     case IF:
+    {
         strncpy(res, "if", MAX_LEN_VALUE);
+        break;
+    }
     default:
     {
         SOFT_ASS(1);

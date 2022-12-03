@@ -19,7 +19,7 @@ Node* get_General(const char *str)
 {
     STR = str;
     
-    Node* node = get_Expression();
+    Node* node = get_LOG_OP();
 
     assert(*STR == '\0');
 
@@ -31,6 +31,7 @@ Node *get_VAR()
     Node *node = 0;
     char var_str[MAX_LEN_VALUE] = {};
     int index = 0;
+    
     while(*STR != '\0' && isalpha(*STR))
     {
         var_str[index] = *STR;
@@ -73,11 +74,9 @@ Node* get_P()
     
     if (diff_get_operation(STR) != NOT_OP)
     {
-        
         Node *op_node = get_UNAR_OP();
         node = op_node;
     }
-
     if (*STR == '(')
     {
         STR++;
@@ -85,11 +84,11 @@ Node* get_P()
         assert (*STR == ')');
         STR++;
     }
-    else if (isalpha(*STR))
+    else if (isalpha(*STR) && diff_get_log_operation(STR) == NOT_LOG_OP)
     {
         value_node = get_VAR();
     }
-    else
+    else if (isdigit(*STR))
     {
         value_node = get_Num();
     }
@@ -98,8 +97,7 @@ Node* get_P()
         node_connect(node, value_node, RIGHT);
     else 
         node = value_node;
-
-    SOFT_ASS_NO_RET(node == NULL);
+    
     return node;
 }
 
@@ -112,7 +110,6 @@ Node *get_UNAR_OP()
         STR++;  
     }
 
-     
     return node;
 }
 
@@ -120,7 +117,6 @@ Node* get_T()
 {
     Node *node = 0;
     node = get_Degree();
-    SOFT_ASS_NO_RET(node == NULL);
     
     while(*STR == '*' || *STR == '/')
     {
@@ -153,7 +149,6 @@ Node* get_Expression()
     Node* node = 0;
     
     node = get_T();
-    SOFT_ASS_NO_RET(node == 0);
     
     while(*STR == '+' || *STR == '-')
     {
@@ -186,7 +181,6 @@ Node* get_Degree()
 {
     Node *node = 0;
     node = get_P();
-    SOFT_ASS_NO_RET(node == NULL);
 
     while(*STR == '^')
     {
@@ -205,7 +199,43 @@ Node* get_Degree()
 }
 
 
-// Node *get_LOG_OP()
-// {
+Node *get_LOG_OP()
+{
+    Node* node = 0;
     
-// }
+    node = get_Expression();
+    
+    while(diff_get_log_operation(STR) != NOT_LOG_OP || *STR == '(')
+    {
+        Log_Oper log_op = diff_get_log_operation(STR);
+
+        while(*STR != '\0' &&
+        (*STR == '=' || isalpha(*STR)))
+        {   
+            STR++;  
+        }
+
+        Node* r_node = get_Expression();
+        
+        switch(log_op)
+        {
+            case ASG:
+            {
+                Node *new_node = Create_LOG_OP_node(ASG);
+                node_connect(new_node, node, LEFT);
+                node_connect(new_node, r_node, RIGHT);
+                node = new_node;
+                break;
+            }
+            case IF:
+            {
+                Node *new_node = Create_LOG_OP_node(IF);
+                node_connect(new_node, r_node, RIGHT);
+                node = new_node;
+                break;
+            }
+        }
+    }
+    
+    return node;
+}

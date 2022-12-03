@@ -44,7 +44,7 @@ Node *diff()
 
     node_dtor(diff_cool_node);
     #endif
-    
+
     node_dtor_calloc_data(tree.root, buff.buffer, buff.size);
     node_dtor(tree.root);
     diff_buff_dtor(&buff);
