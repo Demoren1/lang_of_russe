@@ -12,6 +12,7 @@
 #include <general_debug.h>
 #include <dsl.h>
 #include <calcul_funcs.h>
+#include <lang.h>
 
 const char* STR = NULL;
 
@@ -208,12 +209,9 @@ Node *get_LOG_OP()
     while(diff_get_log_operation(STR) != NOT_LOG_OP || *STR == '(')
     {
         Log_Oper log_op = diff_get_log_operation(STR);
+        int shift = find_len_log_op(log_op);
 
-        while(*STR != '\0' &&
-        (*STR == '=' || isalpha(*STR)))
-        {   
-            STR++;  
-        }
+        STR += shift;
 
         Node* r_node = get_Expression();
         

@@ -111,7 +111,7 @@ static int _print_to_file_(Node *node, int cur_var_arr_index, FILE *ASM_file)
 {   
     int push_flag = 1;
     if (node->parent && node->parent->type == LOG
-        && node->parent->value.log_op == ASG)
+        && node->parent->value.log_op == ASG && node->pos == LEFT)
     {
         push_flag = 0;
     }
@@ -201,3 +201,17 @@ static int  Print_log_op(Log_Oper log_op, FILE *ASM_file)
     return 0;
 }
 
+int find_len_log_op(Log_Oper log_op)
+{
+    switch (log_op)
+    {
+    case ASG:
+        return 1;
+    case IF:
+        return 2;
+    case PRINT:
+        return 5;
+    }
+
+    return 0;
+}
