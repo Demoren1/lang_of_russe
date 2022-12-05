@@ -320,6 +320,11 @@ static int get_log_op(Log_Oper log_operation, char res[])
         strncpy(res, "if", MAX_LEN_VALUE);
         break;
     }
+    case PRINT:
+    {
+        strncpy(res, "print", MAX_LEN_VALUE);
+        break;
+    }
     default:
     {
         SOFT_ASS(1);

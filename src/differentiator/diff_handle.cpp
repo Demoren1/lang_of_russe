@@ -12,8 +12,6 @@
 #include <general_debug.h>
 #include <dsl.h>
 
-static int check_replay(Var var_arr[], int cur_index, char var_name[]);
-
 static int replace_var_on_num(Node *node, char var_name[], double var_value);
 
 static int wrap_equivalents(Node *node);
@@ -401,13 +399,15 @@ static int compute_constants(Node *node)
 
     double result = 0;
     
-    if (!node->l_son && node->r_son && node->r_son->type == NUM)
+    if (!node->l_son && node->r_son &&
+         node->r_son->type == NUM && node->type != LOG)
     {
         count_num(node, NULL, node->r_son);
         changes++;
     }
 
-    else if (node->l_son && node->r_son && node->l_son->type == NUM && node->r_son->type == NUM)
+    else if (node->l_son && node->r_son &&
+             node->l_son->type == NUM && node->r_son->type == NUM && node->type != LOG)
     {
         count_num(node, node->l_son, node->r_son);
         changes++;
@@ -424,7 +424,7 @@ static int compute_constants(Node *node)
 
 int diff_ctor_var_arr(Node *node, Var var_arr[], int cur_index)
 {
-    if (!node && cur_index > MAX_VARS)
+    if (!node || cur_index > MAX_VARS)
     {
         return cur_index;
     }
@@ -445,7 +445,7 @@ int diff_ctor_var_arr(Node *node, Var var_arr[], int cur_index)
     return cur_index;
 }
 
-static int check_replay(Var var_arr[], int cur_index, char var_name[])
+int check_replay(Var var_arr[], int cur_index, char var_name[])
 {   
     for (int index = 0; index < cur_index; index++)
     {
@@ -706,7 +706,8 @@ Log_Oper diff_get_log_operation(const char *buff)
         return ASG;
     else if (strstr(buff, "if") == buff)
         return IF;
-
+    else if (strstr(buff, "print") == buff)
+        return PRINT;
 
     return NOT_LOG_OP;
 }

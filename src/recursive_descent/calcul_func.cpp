@@ -234,6 +234,13 @@ Node *get_LOG_OP()
                 node = new_node;
                 break;
             }
+            case PRINT:
+            {
+                Node *new_node = Create_LOG_OP_node(PRINT);
+                node_connect(new_node, r_node, RIGHT);
+                node = new_node;
+                break;
+            }
         }
     }
     

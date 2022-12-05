@@ -40,4 +40,6 @@ double diff_calc_tree(Node *node, Var var_arr[], int n_vars);
 
 double diff_tailor_one_var(Node *node, int depth, char var_name[], double var_value, double x0);
 
+int check_replay(Var var_arr[], int cur_index, char var_name[]);
+
 #endif

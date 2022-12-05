@@ -1,4 +1,4 @@
-const int SIZE_OF_RAM    = 4096;
+const int SIZE_OF_RAM    = 16384;
 const int FIRST_LINE_LEN = 64;
 
 struct Cpu_struct
