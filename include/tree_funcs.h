@@ -23,10 +23,11 @@ typedef enum
 
 typedef enum 
 {
-    OP      = 1,
-    VAR     = 2,
-    NUM     = 3, 
-    LOG     = 4 
+    NOT_TYPE = -1,
+    ARITHM_OP= 1,
+    VAR      = 2,
+    NUM      = 3, 
+    LOG      = 4 
 } Type_of_expression;
 
 typedef enum
@@ -57,6 +58,7 @@ union Value
     Arith_Operation op_value;
     char var_value[MAX_LEN_VALUE] = {};
     Log_Oper log_op;
+    int staff_val;
 };
 
 typedef enum 

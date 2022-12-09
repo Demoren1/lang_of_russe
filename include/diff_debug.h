@@ -3,7 +3,7 @@
 
 #define PRINT_DIFF_IN_LOG_IF(condition, node)       if (condition)                                          \
                                                         {                                                       \
-                                                            if (node->type == OP)                               \
+                                                            if (node->type == ARITHM_OP)                               \
                                                             {                                                   \
                                                                 char res[MAX_LEN_VALUE];                        \
                                                                 get_op(node->value.op_value, res);              \

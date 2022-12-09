@@ -111,7 +111,8 @@ Node *node_disconnect(Node *parent, Pos_of_node pos, int dtor_flag)
 
 int node_dtor(Node *node)
 {
-    SOFT_ASS(node == NULL);
+    if (node == NULL)
+        return 0;
 
     if (node->l_son != NULL)
     {

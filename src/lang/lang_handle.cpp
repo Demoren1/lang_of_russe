@@ -128,7 +128,7 @@ static int _print_to_file_(Node *node, int cur_var_arr_index, FILE *ASM_file)
             Print_var(node->value.var_value, cur_var_arr_index, ASM_file, push_flag);
             break;
         }
-        case OP:
+        case ARITHM_OP:
         {
             Print_op(node->value.op_value, ASM_file);
             break;

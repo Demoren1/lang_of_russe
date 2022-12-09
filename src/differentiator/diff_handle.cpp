@@ -63,11 +63,11 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
     SOFT_ASS(test_fread == 0);  
 
     buff->lines = 1;
-    buff->buffer = del_new_line_and_spaces(buff);
+    // buff->buffer = del_new_line_and_spaces(buff);
 
-    // buff->buffer[buff->size] = '\0';
+    buff->buffer[buff->size] = '\0';
     buff->curr_index = 0;
-
+    
     return 0;
 }
 
@@ -87,7 +87,7 @@ static char* del_new_line_and_spaces(Buffer* buff)
     SOFT_ASS_NO_RET(buff == NULL);
     SOFT_ASS_NO_RET(buff->buffer == NULL);
 
-    char *new_buff = (char*) calloc(buff->size, sizeof(char));
+    // char *new_buff = (char*) calloc(buff->size, sizeof(char));
 
     int index_buff = 0;
     int index_new_buff = 0;
@@ -99,18 +99,18 @@ static char* del_new_line_and_spaces(Buffer* buff)
             buff->buffer[index_buff] = '\0';
         }
 
-        if (buff->buffer[index_buff] != ' ')
-        {   
-            if (buff->buffer[index_buff] != '\0' || buff->buffer[index_buff+1] != '\0')
-            {
-                new_buff[index_new_buff] = buff->buffer[index_buff];
-                index_new_buff++;
-            }
-        }
+        // if (buff->buffer[index_buff] != ' ')
+        // {   
+        //     if (buff->buffer[index_buff] != '\0' || buff->buffer[index_buff+1] != '\0')
+        //     {
+        //         new_buff[index_new_buff] = buff->buffer[index_buff];
+        //         index_new_buff++;
+        //     }
+        // }
     }
 
-    free(buff->buffer);
-    return new_buff;
+    // free(buff->buffer);
+    return buff->buffer;  //was replace new_buff
 }
 
 int diff_buff_dtor(Buffer *buffer)
@@ -165,12 +165,12 @@ int wrap_equivalents(Node *node)
         changes += kill_one_side(one_side, node);
     }
 
-    if (node->l_son && node->l_son->type == OP)
+    if (node->l_son && node->l_son->type == ARITHM_OP)
     {
         changes += wrap_equivalents(node->l_son);
     }
 
-    if (node->r_son && node->r_son->type == OP)
+    if (node->r_son && node->r_son->type == ARITHM_OP)
     {   
         changes += wrap_equivalents(node->r_son);
     }
@@ -604,7 +604,7 @@ static double count_num(Node *node, Node *l_son, Node *r_son)
 
 static int switch_sons_if_need(Node *node)
 {
-    if (node->type != OP)
+    if (node->type != ARITHM_OP)
         return 0;
 
     switch (node->value.op_value)
@@ -639,7 +639,7 @@ Node *diff_diff(Node *node, char var_for_diff[])
             else
                 return Create_NUM_node(0);
         }
-        case OP:
+        case ARITHM_OP:
         {
             
             switch (node->value.op_value)

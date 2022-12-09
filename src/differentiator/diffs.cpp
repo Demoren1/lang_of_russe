@@ -10,7 +10,7 @@ Node *Create_OP_node(Arith_Operation oper_value)
 {                
     Node *new_node = node_ctor();                             
     new_node->value.op_value = oper_value;              
-    new_node->type = OP;                                
+    new_node->type = ARITHM_OP;                                
     new_node->priority = find_op_priority(oper_value);
 
     return new_node;

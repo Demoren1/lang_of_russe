@@ -217,7 +217,7 @@ int tree_print_graph(const Node *node)
             node->value.dbl_value);
             break;
         }
-        case OP:
+        case ARITHM_OP:
         {   
             char res[MAX_LEN_VALUE] = {};
             get_op(node->value.op_value, res);
