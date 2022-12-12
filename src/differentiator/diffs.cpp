@@ -16,6 +16,16 @@ Node *Create_OP_node(Arith_Operation oper_value)
     return new_node;
 }
 
+Node *Create_SEP_node(Separators sep)
+{                
+    Node *new_node = node_ctor();                             
+    new_node->value.sep = sep;              
+    new_node->type = SEP;                                
+    new_node->priority = SEP_PRIOR;
+
+    return new_node;
+}
+
 Node *Create_NUM_node(double dbl_value)
 {
     Node *new_node = node_ctor();                             
@@ -28,8 +38,13 @@ Node *Create_NUM_node(double dbl_value)
 
 Node *Create_VAR_node(char var[])
 {
-    Node *new_node = node_ctor();                             
-    strncpy(new_node->value.var_value, var, MAX_LEN_VALUE);              
+    Node *new_node = node_ctor(); 
+    // new_node->value.var_value = (char *) calloc(MAX_LEN_VALUE, sizeof(char));
+    
+    new_node->value.var_value = strdup(var);
+
+    // strncpy(new_node->value.var_value, var, MAX_LEN_VALUE);              
+    
     new_node->type = VAR;                                
     new_node->priority = VAR_PRIOR;
 

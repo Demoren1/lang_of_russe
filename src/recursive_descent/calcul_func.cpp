@@ -20,7 +20,7 @@ Node* get_General(const char *str)
 {
     STR = str;
     
-    Node* node = get_LOG_OP();
+    Node* node = get_Expression();
 
     assert(*STR == '\0');
 
@@ -33,7 +33,7 @@ Node *get_VAR()
     char var_str[MAX_LEN_VALUE] = {};
     int index = 0;
     
-    while(*STR != '\0' && isalpha(*STR))
+    while(*STR != '\0' && isalnum(*STR))
     {
         var_str[index] = *STR;
         index++;
@@ -199,7 +199,7 @@ Node* get_Degree()
     return node;
 }
 
-
+#if 0
 Node *get_LOG_OP()
 {
     Node* node = 0;
@@ -244,3 +244,4 @@ Node *get_LOG_OP()
     
     return node;
 }
+#endif

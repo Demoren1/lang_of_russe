@@ -27,44 +27,58 @@ typedef enum
     ARITHM_OP= 1,
     VAR      = 2,
     NUM      = 3, 
-    LOG      = 4 
+    LOG      = 4,
+    SEP      = 5
 } Type_of_expression;
+
+
+#define DEF_SEP(sep_name, code, naive_name, custom_name)    \
+    sep_name = code,
+
+typedef enum 
+{
+    #include <separators.h>
+} Separators;
+
+#undef DEF_SEP
+
+#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name)       \
+    log_op = code,
 
 typedef enum
 {
-    NOT_LOG_OP  = -1,
-    ASG         =  1,
-    IF          = 2,
-    PRINT       = 3
+    #include <log_operation.h>
+    MAX_LOG_CMD
 } Log_Oper;
+
+#undef DEF_LOG_OP_CMD
+
+#define DEF_ARITH_CMD(arith_op, code, naive_name, custovm_name)  \
+           arith_op = code,                     
 
 typedef enum 
 {   
-    NOT_OP  = -1,
-    ADD     = 1,
-    SUB     = 2,
-    MUL     = 3,
-    DIV     = 4,
-    DEGREE  = 5,
-    LN      = 6,
-    SIN     = 7,
-    COS     = 8,
-    TG      = 9
+    #include <operation.h>
+    MAX_CMD_OP
 } Arith_Operation;
+
+#undef DEF_ARITH_CMD
 
 union Value
 {
     double dbl_value;
     Arith_Operation op_value;
-    char var_value[MAX_LEN_VALUE] = {};
+    char *var_value = NULL;
     Log_Oper log_op;
     int staff_val;
+    Separators sep;
 };
 
 typedef enum 
 {   
     ERROR_PRIOR     = -999,
     LOG_PRIOR       = 999,
+    SEP_PRIOR       = 999,
     NUM_PRIOR       = 1,
     VAR_PRIOR       = 1,
     ADD_PRIOR       = 1,

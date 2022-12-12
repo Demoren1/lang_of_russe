@@ -63,7 +63,7 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
     SOFT_ASS(test_fread == 0);  
 
     buff->lines = 1;
-    // buff->buffer = del_new_line_and_spaces(buff);
+    //  buff->buffer = del_new_line_and_spaces(buff);
 
     buff->buffer[buff->size] = '\0';
     buff->curr_index = 0;
@@ -120,12 +120,13 @@ int diff_buff_dtor(Buffer *buffer)
         fclose(SRC);
         SRC = NULL;
     }
+
     if (buffer->buffer != NULL)
     {
         free(buffer->buffer);
         buffer->buffer = NULL;
     }  
-
+    
     return 0;
 }
 

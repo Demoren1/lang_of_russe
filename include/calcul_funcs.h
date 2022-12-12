@@ -19,6 +19,6 @@ Node *get_VAR();
 
 Node *get_UNAR_OP();
 
-Node *get_LOG_OP();
+// Node *get_LOG_OP();
 
 #endif

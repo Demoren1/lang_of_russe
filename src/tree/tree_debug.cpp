@@ -17,6 +17,8 @@ static int get_op(Arith_Operation operation, char res[]);
 
 static int get_log_op(Log_Oper log_operation, char res[]);
 
+static int get_sep(Separators separator, char res[]);
+
 int open_tree_logs()
 {
     TREE_LOGS = fopen(TREE_LOGS_PATH, "w");
@@ -55,6 +57,18 @@ int close_tree_logs()
     
     return 0;
 }
+
+
+int stringDump(const char *string, const char * name_of_var, const char * name_of_file, const char * name_of_func, int number_of_line)
+{
+    printf("\e[0;32m\n%s\e[0m at %s at %s(%d)\n",  name_of_var, name_of_func,
+           name_of_file, number_of_line);
+
+    printf("string = %s, string_length = %ld\n", string, strlen(string));
+
+    return 0;
+}
+
 
 int tree_dump(Node *node, Mode_of_print mode,  const char* name_function, const char* name_file, const char* name_variable, int num_line)
 {
@@ -96,8 +110,7 @@ int tree_print(const Node *node, const Mode_of_print mode)
         return 0;
     }
     Arith_Operation op = node->value.op_value;
-    if (op == DIV)
-        fprintf(TREE_LOGS, "\\frac{");
+   
 
     if (node->parent && node->priority && node->parent->priority > node->priority)
     {
@@ -113,21 +126,12 @@ int tree_print(const Node *node, const Mode_of_print mode)
 
     PRINT_DIFF_IN_LOG_IF(mode == INORDER, node);
 
-    if (op == DIV)
-        fprintf(TREE_LOGS, "}{");
-
-    if(op == DEGREE)
-        fprintf(TREE_LOGS, "{");
-
     if (node->r_son)
     {
         tree_print(node->r_son, mode);
     }
     
     PRINT_DIFF_IN_LOG_IF(mode == POSTORDER, node);
-
-    if (op == DIV || op == DEGREE)
-        fprintf(TREE_LOGS, "}");
     
     if (node->parent && node->priority && node->parent->priority > node->priority)
     {
@@ -225,6 +229,11 @@ int tree_print_graph(const Node *node)
                                     res);
             break;
         }
+        case SEP:
+        {   
+            char res[MAX_LEN_VALUE] = {};
+            get_sep(node->value.sep, res);
+        }
         case LOG:
         {
             char res[MAX_LEN_VALUE] = {};
@@ -301,30 +310,40 @@ int print_in_logs(const char *str,...)
     return 0;
 }
 
+#define DEF_SEP(sep, code, naive_name, custom_name)         \
+    case sep:                                               \
+    {                                                       \
+        strncpy(res, naive_name, MAX_LEN_VALUE);            \
+        break;                                              \
+    }
+
+static int get_sep(Separators separator, char res[])
+{
+    switch (separator)
+    {
+        #include <separators.h>
+    default:
+        strncpy(res, "ERROR", MAX_LEN_VALUE);
+    }
+
+    return 0;
+}
+
+#undef DEF_SEP
+
+#define DEF_LOG_OP_CMD(op_name, code, naive_name, custom_name)       \
+        case op_name:                                           \
+        {                                                       \
+            strncpy(res, naive_name, MAX_LEN_VALUE);            \
+            break;                                              \
+        }
+
 static int get_log_op(Log_Oper log_operation, char res[])
 {
     switch (log_operation)
     {
-    case NOT_LOG_OP:
-    {
-        strncpy(res, "ERROR", MAX_LEN_VALUE);
-        break;
-    }
-    case ASG:
-    {
-        strncpy(res, "=", MAX_LEN_VALUE);
-        break;
-    }
-    case IF:
-    {
-        strncpy(res, "if", MAX_LEN_VALUE);
-        break;
-    }
-    case PRINT:
-    {
-        strncpy(res, "print", MAX_LEN_VALUE);
-        break;
-    }
+    #include <log_operation.h>
+
     default:
     {
         SOFT_ASS(1);
@@ -334,60 +353,21 @@ static int get_log_op(Log_Oper log_operation, char res[])
     return 0;
 }
 
+#undef DEF_LOG_OP_CMD
+
+#define DEF_ARITH_CMD(op_name, code, naive_name, custom_name)       \
+        case op_name:                                           \
+        {                                                       \
+            strncpy(res, naive_name, MAX_LEN_VALUE);            \
+            break;                                              \
+        }
+
 static int get_op(Arith_Operation operation, char res[])
 {
     switch(operation)
     {   
-        case LN:
-        {
-            strncpy(res, "ln", MAX_LEN_VALUE);
-            break;
-        }
-        case SIN:
-        {
-            strncpy(res, "sin", MAX_LEN_VALUE);
-            break;
-        }
-        case COS:
-        {
-            strncpy(res, "cos", MAX_LEN_VALUE);
-            break;
-        }
-        case TG:
-        {
-            strncpy(res, "tg", MAX_LEN_VALUE);
-            break;
-        }
-        case NOT_OP:
-        {   
-            strncpy(res, "V", MAX_LEN_VALUE);
-            break;
-        }
-        case ADD:
-        {
-            strncpy(res, "+", MAX_LEN_VALUE);
-            break;
-        }
-        case SUB:
-        {
-            strncpy(res, "-", MAX_LEN_VALUE);
-            break;
-        }
-        case MUL:
-        {
-            strncpy(res, "*", MAX_LEN_VALUE);
-            break;
-        }
-        case DIV:
-        {
-            strncpy(res, "", MAX_LEN_VALUE);
-            break;
-        }
-        case DEGREE:
-        {
-            strncpy(res, "^", MAX_LEN_VALUE);
-            break;
-        }
+        #include <operation.h>
+
         default:
         {
             strncpy(res, "ERROR", MAX_LEN_VALUE);
@@ -397,3 +377,5 @@ static int get_op(Arith_Operation operation, char res[])
 
     return 0;
 }
+
+#undef DEF_ARITH_CMD

@@ -22,7 +22,7 @@ Node* node_ctor()
 
     node->value.dbl_value = NAN;
     node->value.op_value = NOT_OP;
-    strncpy(node->value.var_value, " ", MAX_LEN_VALUE);
+    node->value.var_value = NULL;
 
     return node;
 }
@@ -126,6 +126,11 @@ int node_dtor(Node *node)
         node->r_son = NULL;
     }
 
+    if (node->type == VAR)
+    {
+        free(node->value.var_value);
+    }
+
     free(node);
     node = NULL;
 
@@ -180,11 +185,15 @@ static int connect_with_parent(Node *parent, Node *new_node)
 int node_copy_data(Node *new_node, Node *old_node)
 {
     new_node->value = old_node->value;
-
+    
     new_node->priority = old_node->priority;
     new_node->type = old_node->type;
     new_node->pos = old_node->pos;
     
+    if (new_node->type == VAR)
+    {
+        new_node->value.var_value = strdup(old_node->value.var_value);
+    }
 
     if (old_node->l_son)
     {

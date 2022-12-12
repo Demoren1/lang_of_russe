@@ -23,6 +23,7 @@ Node *diff()
     
     Node *cool_node = node_copy_node(tree.root);
     diff_simplify(cool_node);
+    TREE_DUMP(cool_node, INORDER);
 
     #if 0
     Var var_arr[MAX_VARS] = {{"xss", 1}};
@@ -37,11 +38,11 @@ Node *diff()
     printf("Tailor row result = %g\n", tailor_row_result);
     #endif
 
-    #if 0
-    char var_str[MAX_LEN_VALUE] = "xss";
+    #if 1
+    char var_str[MAX_LEN_VALUE] = "x";
     Node *diff_cool_node = diff_diff(cool_node, var_str);
     diff_simplify(diff_cool_node);
-
+    TREE_DUMP(diff_cool_node, INORDER)
     node_dtor(diff_cool_node);
     #endif
 

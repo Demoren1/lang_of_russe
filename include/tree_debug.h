@@ -31,6 +31,13 @@
 
 #define TREE_GRAPH_LOGS tree_graph_logs
 
+#define STRING_DUMP(line) \
+            stringDump(line, #line, __FILE__, __PRETTY_FUNCTION__, __LINE__)
+
+
+int stringDump(const char *string, const char * name_of_var, const char * name_of_file, const char * name_of_func, int number_of_line);
+
+
 typedef enum 
 {
     PREORDER  = 1,
