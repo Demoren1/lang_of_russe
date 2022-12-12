@@ -124,12 +124,13 @@ Node *get_LOG()
         Data_tokens->tokens[Data_tokens->cur_pos]->type_node != SEP) 
         return keyword_node;
 
-    Node *block_node = Create_EMPTY_node();
+    Node *block_node = NULL;
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
     if (cur_token->type_node == SEP &&
         cur_token->value.sep == OPEN_FIG)
     {
+        block_node = Create_EMPTY_node();
         Data_tokens->cur_pos++;
         
         get_Tree(block_node);
