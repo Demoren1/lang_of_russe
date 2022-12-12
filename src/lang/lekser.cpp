@@ -160,8 +160,8 @@ Separators lekser_SEP(char *str, size_t *shift)
 
 #define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name)           \
     else if ((end_str = strstr(str, custom_name)) == str)               \
-    {   *shift = end_str  - str;                                        \
-        return log_op;                                                    \
+    {   *shift = strlen(custom_name);                                   \
+        return log_op;                                                  \
     }
 
 Log_Oper lekser_LOG_OP(char *str, size_t *shift)

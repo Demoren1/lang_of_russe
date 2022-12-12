@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
     lekser_dtor(&data_tokens);
     diff_buff_dtor(&buff);
     close_tree_logs();
+    node_dtor(tree);
     // node_dtor(cool_node);
     return 0;
 }

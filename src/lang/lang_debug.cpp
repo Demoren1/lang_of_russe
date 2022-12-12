@@ -21,7 +21,7 @@ int lekser_dump(Tokens *data_tokens)
         
         Token *cur_token = data_tokens->tokens[i];
         
-        fprintf(lekser_dump, "[%d] %-12s ", i, find_type(cur_token->type_node));
+        fprintf(lekser_dump, "[%d] %-12s ", i+1, find_type(cur_token->type_node));
         switch(cur_token->type_node)
         {
             case NUM:

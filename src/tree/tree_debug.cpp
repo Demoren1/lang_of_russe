@@ -175,6 +175,9 @@ int tree_graph_dump(Node *node, Mode_of_print mode,  const char* name_function, 
     char command[128] = {};   
     sprintf(command, "dot -Tjpeg graph_log.html > graph_dumps/dump_%d.jpeg", num_of_pic++);
     
+    fflush(TREE_GRAPH_LOGS);
+    fflush(HTM_LOGS);
+    
     fclose(TREE_GRAPH_LOGS);
     system(command);
     return 0;
@@ -219,6 +222,12 @@ int tree_print_graph(const Node *node)
         {
             fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %g </font></td></tr>\n",
             node->value.dbl_value);
+            break;
+        }
+        case EMPTY:
+        {
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n",
+            "EMPTY");
             break;
         }
         case ARITHM_OP:

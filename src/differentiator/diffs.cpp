@@ -61,6 +61,15 @@ Node *Create_LOG_OP_node(Log_Oper log_op)
     return new_node;
 }
 
+Node *Create_EMPTY_node()
+{
+    Node *new_node = node_ctor();
+    new_node->type = EMPTY;
+    new_node->priority = EMPTY_PRIOR;
+
+    return new_node;
+}
+
 Node *ADD_OP(Node *l_node, Node *r_node)
 {LINK_WITH_OP(ADD);}
 

@@ -20,6 +20,12 @@ Node *get_VAR();
 
 Node *get_UNAR_OP();
 
-// Node *get_LOG_OP();
+int get_Tree(Node *node);
+
+Node *get_LOG();
+
+Node *get_ASS();
+
+Node *get_Block();
 
 #endif

@@ -47,6 +47,8 @@ Node *Create_NUM_node(double dbl_value);
 
 Node *Create_VAR_node(char var[]);
 
+Node *Create_EMPTY_node();
+
 Node *Create_LOG_OP_node(Log_Oper log_op);
 
 Node *ADD_OP(Node *l_node, Node *r_node);

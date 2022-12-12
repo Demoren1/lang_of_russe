@@ -28,7 +28,8 @@ typedef enum
     VAR      = 2,
     NUM      = 3, 
     LOG      = 4,
-    SEP      = 5
+    SEP      = 5,
+    EMPTY    = 6
 } Type_of_expression;
 
 
@@ -79,6 +80,7 @@ typedef enum
     ERROR_PRIOR     = -999,
     LOG_PRIOR       = 999,
     SEP_PRIOR       = 999,
+    EMPTY_PRIOR     = 999,
     NUM_PRIOR       = 1,
     VAR_PRIOR       = 1,
     ADD_PRIOR       = 1,
