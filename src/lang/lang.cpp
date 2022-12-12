@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 
     Buffer buff = {};
     Tokens data_tokens = {};
+    Node *tree = 0;
     
     const char *src = "expression.txt";
     const char *path_asm = "codes.txt";
@@ -32,6 +33,10 @@ int main(int argc, char *argv[])
     lekser_handle(&data_tokens, &buff);
     
     lekser_dump(&data_tokens);
+
+    tree = get_General(&data_tokens);
+
+    TREE_DUMP(tree, INORDER);
 
     // Node *cool_node = diff();
 

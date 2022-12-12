@@ -2,8 +2,9 @@
 #define CALC_GUARD
 
 #include <tree_funcs.h>
+#include <lang.h>
 
-Node *get_General(const char *str);
+Node *get_General(Tokens *data_tokens);
 
 Node *get_Expression();
 

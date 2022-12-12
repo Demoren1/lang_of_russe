@@ -14,15 +14,17 @@
 #include <calcul_funcs.h>
 #include <lang.h>
 
-const char* STR = NULL;
+Tokens *Data_tokens = NULL;
 
-Node* get_General(const char *str)
+Node* get_General(Tokens *data_tokens)
 {
-    STR = str;
+    Data_tokens = data_tokens;
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     
     Node* node = get_Expression();
 
-    assert(*STR == '\0');
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    assert(Data_tokens->cur_pos == Data_tokens->size);
 
     return node;
 }
@@ -30,41 +32,23 @@ Node* get_General(const char *str)
 Node *get_VAR()
 {
     Node *node = 0;
-    char var_str[MAX_LEN_VALUE] = {};
     int index = 0;
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     
-    while(*STR != '\0' && isalnum(*STR))
-    {
-        var_str[index] = *STR;
-        index++;
-        STR++;
-    }
-    
-    node = Create_VAR_node(var_str);
+    node = Create_VAR_node(cur_token->value.var_value);
     // printf("var is %s\n", node->value.var_value);  
     SOFT_ASS_NO_RET(node == NULL);
+
+    Data_tokens->cur_pos++;
     return node;
 }
 
 Node* get_Num()
 {
-    double val = 0;
-    int shift = 0;
-    const char *old_s = STR;
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
-    if (isdigit(*STR))
-    {   
-        char *end_str = NULL;
-        val = strtod(STR, &end_str);
-
-        if (end_str != NULL)
-            STR = end_str;
-    }
-
-    STR += shift;
-    assert(STR != old_s);
-
-    Node *node = Create_NUM_node((double) val);
+    Node *node = Create_NUM_node(cur_token->value.dbl_value);
+    Data_tokens->cur_pos++;
     return node;
 
 }
@@ -72,24 +56,30 @@ Node* get_P()
 {
     Node *node = 0;
     Node *value_node = 0;
-    
-    if (diff_get_operation(STR) != NOT_OP)
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+    if (cur_token->type_node == ARITHM_OP &&
+        cur_token->value.op_value != NOT_OP)
     {
         Node *op_node = get_UNAR_OP();
         node = op_node;
     }
-    if (*STR == '(')
+
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    if (cur_token->value.sep == OPEN_CIRC)
     {
-        STR++;
+        Data_tokens->cur_pos++;
         value_node = get_Expression();
-        assert (*STR == ')');
-        STR++;
+        
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        assert (cur_token->value.sep == CLOSE_CIRC);
+        Data_tokens->cur_pos++;
     }
-    else if (isalpha(*STR) && diff_get_log_operation(STR) == NOT_LOG_OP)
+    else if (cur_token->type_node == VAR)
     {
         value_node = get_VAR();
     }
-    else if (isdigit(*STR))
+    else if (cur_token->type_node == NUM)
     {
         value_node = get_Num();
     }
@@ -104,12 +94,10 @@ Node* get_P()
 
 Node *get_UNAR_OP()
 {   
-    Node *node = Create_OP_node(diff_get_operation(STR));
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
-    while(*STR != '\0' && isalpha(*STR))
-    {   
-        STR++;  
-    }
+    Node *node = Create_OP_node(cur_token->value.op_value);
+    Data_tokens->cur_pos++;
 
     return node;
 }
@@ -118,15 +106,19 @@ Node* get_T()
 {
     Node *node = 0;
     node = get_Degree();
-    
-    while(*STR == '*' || *STR == '/')
-    {
-        int op = *STR;
 
-        STR++;
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    
+    while(Data_tokens->cur_pos < Data_tokens->size &&
+          (cur_token->value.op_value == MUL || 
+           cur_token->value.op_value == DIV))
+    {
+        Arith_Operation op = cur_token->value.op_value;
+
+        Data_tokens->cur_pos++;
         Node* r_node = get_Degree();
         
-        if (op == '*')
+        if (op == MUL)
         {
             Node *new_node = Create_OP_node(MUL);
             node_connect(new_node, node, LEFT);
@@ -147,18 +139,21 @@ Node* get_T()
 
 Node* get_Expression()
 {
-    Node* node = 0;
-    
+    Node* node = 0; 
     node = get_T();
-    
-    while(*STR == '+' || *STR == '-')
-    {
-        int op = *STR;
 
-        STR++;
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    
+    while( Data_tokens->cur_pos < Data_tokens->size &&
+         (cur_token->value.op_value == ADD || 
+          cur_token->value.op_value == SUB))
+    {
+        Arith_Operation op = cur_token->value.op_value;
+
+        Data_tokens->cur_pos++;
         Node* r_node = get_T();
         
-        if (op == '+')
+        if (op == ADD)
         {
             Node *new_node = Create_OP_node(ADD);
             node_connect(new_node, node, LEFT);
@@ -181,13 +176,17 @@ Node* get_Expression()
 Node* get_Degree()
 {
     Node *node = 0;
+    DBG;
     node = get_P();
+    DBG;
 
-    while(*STR == '^')
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    while(Data_tokens->cur_pos < Data_tokens->size &&
+          cur_token->value.op_value == DEGREE)
     {
-        STR++;
-        Node *r_node = get_P();
+        Data_tokens->cur_pos++;
 
+        Node *r_node = get_P();
         {
             Node *new_node = Create_OP_node(DEGREE);
             node_connect(new_node, node, LEFT);

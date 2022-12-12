@@ -11,6 +11,8 @@ Node *diff()
 
     Tree tree = {};
     Buffer buff = {};
+    Tokens data_tokens = {};
+
 
     const char *src = "expression.txt";
     diff_handle_src(src, &buff);
@@ -19,7 +21,11 @@ Node *diff()
     
     printf("str = %s\n", buff.buffer);
 
-    tree.root = get_General(str);
+    lekser_data_tokens_ctor(&data_tokens);
+
+    lekser_handle(&data_tokens, &buff);
+
+    tree.root = get_General(&data_tokens);
     
     Node *cool_node = node_copy_node(tree.root);
     diff_simplify(cool_node);
@@ -49,6 +55,8 @@ Node *diff()
     node_dtor_calloc_data(tree.root, buff.buffer, buff.size);
     node_dtor(tree.root);
     diff_buff_dtor(&buff);
+    lekser_dtor(&data_tokens);
+
 
     // close_tree_logs();
 
