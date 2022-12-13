@@ -81,18 +81,15 @@ Node *get_ASS()
         node_connect(new_node, l_node, LEFT);
         node_connect(new_node, r_node, RIGHT);
     }
-    else if (cur_token->type_node == LOG)
+    else if (cur_token->type_node == LOG || 
+            (next_token->type_node == SEP && 
+            next_token->value.sep == OPEN_CIRC))
     {
-        DBG;
         new_node = get_LOG();   
-        DBG;
     }
     else
     {   
-        DBG;
         new_node = get_Expression();
-        DBG;
-        // Data_tokens->cur_pos++;
     }
 
     return new_node;
@@ -102,21 +99,39 @@ Node *get_LOG()
 {
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
-    Node *keyword_node = Create_LOG_OP_node(cur_token->value.log_op);
-    Node *expr_node  = NULL;
+    Node *keyword_node = NULL; 
 
-    Data_tokens->cur_pos++;
+    if (cur_token->type_node == VAR)
+    {
+        keyword_node = Create_LOG_OP_node(FUNCALL);
+    }
+    else 
+    {
+        keyword_node = Create_LOG_OP_node(cur_token->value.log_op);
+        Data_tokens->cur_pos++;
+    }
+
+    Node *expr_node  = NULL;
+    Node *func_node  = NULL;
 
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-    SOFT_ASS_NO_RET(cur_token->type_node != SEP);
-    if (cur_token->value.sep = OPEN_CIRC)  
+
+    func_node = get_Func(keyword_node);
+
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    // SOFT_ASS_NO_RET(cur_token->type_node != SEP);
+    if (cur_token->value.sep == OPEN_CIRC)  
     {
         Data_tokens->cur_pos++;
         expr_node = get_Expression();
-        node_connect(keyword_node, expr_node, LEFT);
+
+        if (func_node)
+            node_connect(func_node, expr_node, LEFT);
+        else
+            node_connect(keyword_node, expr_node, LEFT);
 
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-        SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_CIRC)
+        // SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_CIRC)
         Data_tokens->cur_pos++;
     }
         
@@ -124,8 +139,11 @@ Node *get_LOG()
         Data_tokens->tokens[Data_tokens->cur_pos]->type_node != SEP) 
         return keyword_node;
 
+
     Node *block_node = NULL;
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+    printf("cur token val %d \n", cur_token->value.sep);
 
     if (cur_token->type_node == SEP &&
         cur_token->value.sep == OPEN_FIG)
@@ -135,15 +153,58 @@ Node *get_LOG()
         
         get_Tree(block_node);
 
-        node_connect(keyword_node, block_node, RIGHT);
+        if (func_node)
+            node_connect(func_node, block_node, RIGHT);
+        else
+            node_connect(keyword_node, block_node, RIGHT);
 
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-        SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_FIG);
+        // SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_FIG);
     
         Data_tokens->cur_pos++;
     }
     
     return keyword_node;
+}
+
+Node *get_Func(Node *keyword_node)
+{   
+    Node *func_node  = NULL;
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+    if (Data_tokens->cur_pos < Data_tokens->size &&
+        cur_token->type_node == VAR )
+    {
+        cur_token->type_node = FUNC;
+        
+        func_node = Create_VAR_node(cur_token->value.var_value);
+        func_node->type = FUNC;
+        node_connect(keyword_node, func_node, LEFT);        
+        Data_tokens->cur_pos++;   
+                                                                    
+        Node *tmp_node1 = func_node;
+        Node *tmp_node2 = NULL;
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+        while(cur_token->type_node == SEP && (cur_token->value.sep == COLON_SEP || cur_token->value.sep == OPEN_CIRC))
+        {
+            Data_tokens->cur_pos++;
+            cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+            tmp_node2 = Create_VAR_node(cur_token->value.var_value);
+
+            node_connect(tmp_node1, tmp_node2, LEFT);
+            tmp_node1 = tmp_node2;
+
+            Data_tokens->cur_pos++;
+            cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        }
+
+        if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_CIRC)
+            Data_tokens->cur_pos++;
+    }
+
+    return func_node;
+
 }
 
 Node *get_VAR()

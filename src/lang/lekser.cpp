@@ -196,6 +196,10 @@ int lekser_dtor(Tokens *data_tokens)
         Token *cur_token = data_tokens->tokens[index];
         if (cur_token->type_node == VAR)
             free(cur_token->value.var_value);
+            
+        else if (cur_token->type_node == FUNC)
+            free(cur_token->value.var_value);
+
         free(cur_token);
     }
     return 0;

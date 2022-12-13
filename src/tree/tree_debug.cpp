@@ -202,7 +202,7 @@ int tree_print_graph(const Node *node)
     if (!node)  return 0;
 
     int cur_node = num_of_node;
-
+    
     fprintf(TREE_GRAPH_LOGS, "node%d [\n"
                         "label=<\n"
                         
@@ -214,27 +214,33 @@ int tree_print_graph(const Node *node)
     {
         case VAR:
         {
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n",
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #d9ffc0 \"><font color=\"#0000ff\"> %s </font></td></tr>\n",
              node->value.var_value);
             break;
         }
         case NUM:
         {
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %g </font></td></tr>\n",
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #cfffd2 \"><font color=\"#0000ff\"> %g </font></td></tr>\n",
             node->value.dbl_value);
             break;
         }
         case EMPTY:
         {
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n",
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #cfffec \"><font color=\"#0000ff\"> %s </font></td></tr>\n",
             "EMPTY");
+            break;
+        }
+        case FUNC:
+        {
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #ffadb8  \"><font color=\"#0000ff\"> %s </font></td></tr>\n",
+             node->value.var_value);
             break;
         }
         case ARITHM_OP:
         {   
             char res[MAX_LEN_VALUE] = {};
             get_op(node->value.op_value, res);
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n", 
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #7cbdff \"><font color=\"#0000ff\"> %s </font></td></tr>\n", 
                                     res);
             break;
         }
@@ -247,7 +253,7 @@ int tree_print_graph(const Node *node)
         {
             char res[MAX_LEN_VALUE] = {};
             get_log_op(node->value.log_op, res);
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\"lightblue\"><font color=\"#0000ff\"> %s </font></td></tr>\n", 
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #dfadff \"><font color=\"#0000ff\"> %s </font></td></tr>\n", 
                                     res);
             break;
         }

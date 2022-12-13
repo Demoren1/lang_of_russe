@@ -8,4 +8,4 @@ DEF_SEP(OPEN_CIRC, 3, "(", "(")
 
 DEF_SEP(CLOSE_CIRC, 4, ")", ")")
 
-DEF_SEP(TRUE_SEP, 5, ";", ";")
+DEF_SEP(COLON_SEP, 5, ";", ";")

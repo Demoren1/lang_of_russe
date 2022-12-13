@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
 
     lekser_handle(&data_tokens, &buff);
     
-    lekser_dump(&data_tokens);
 
     tree = get_General(&data_tokens);
 
+    lekser_dump(&data_tokens);
     TREE_DUMP(tree, INORDER);
 
     // Node *cool_node = diff();

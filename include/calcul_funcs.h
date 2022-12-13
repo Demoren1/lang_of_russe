@@ -28,4 +28,6 @@ Node *get_ASS();
 
 Node *get_Block();
 
+Node *get_Func(Node *node);
+
 #endif

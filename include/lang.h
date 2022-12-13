@@ -42,5 +42,4 @@ Tokens *lekser_data_tokens_ctor(Tokens *data_tokens);
 
 int lekser_dtor(Tokens *data_tokens);
 
-
 #endif

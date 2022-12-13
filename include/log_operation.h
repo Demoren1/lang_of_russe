@@ -10,7 +10,7 @@ DEF_LOG_OP_CMD(WHILE, 4, "while", "while")
 
 DEF_LOG_OP_CMD(DEF, 5, "def", "def")
 
-DEF_LOG_OP_CMD(DEFCALL, 6, "calldef", "calldef")
+DEF_LOG_OP_CMD(FUNCALL, 6, "funcall", "funcall")
 
 DEF_LOG_OP_CMD(RETURN, 7, "return", "return")
 
