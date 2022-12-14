@@ -49,7 +49,7 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
     SOFT_ASS(path_to_file == NULL);
     SOFT_ASS(buff == NULL);
     
-    SRC = fopen(path_to_file, "rw+");
+    SRC = fopen(path_to_file, "r");
 
     SOFT_ASS(SRC == NULL);
 
@@ -67,7 +67,8 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
 
     buff->buffer[buff->size] = '\0';
     buff->curr_index = 0;
-    
+
+    fclose(SRC);
     return 0;
 }
 
@@ -115,12 +116,6 @@ static char* del_new_line_and_spaces(Buffer* buff)
 
 int diff_buff_dtor(Buffer *buffer)
 {   
-    if (SRC != NULL)
-    {
-        fclose(SRC);
-        SRC = NULL;
-    }
-
     if (buffer->buffer != NULL)
     {
         free(buffer->buffer);
@@ -423,7 +418,7 @@ static int compute_constants(Node *node)
     return changes;
 }
 
-int diff_ctor_var_arr(Node *node, Var var_arr[], int cur_index)
+int diff_ctor_var_arr(Node *node, Var_elem var_arr[], int cur_index)
 {
     if (!node || cur_index > MAX_VARS)
     {
@@ -446,7 +441,7 @@ int diff_ctor_var_arr(Node *node, Var var_arr[], int cur_index)
     return cur_index;
 }
 
-int check_replay(Var var_arr[], int cur_index, char var_name[])
+int check_replay(Var_elem var_arr[], int cur_index, char var_name[])
 {   
     for (int index = 0; index < cur_index; index++)
     {
@@ -457,7 +452,7 @@ int check_replay(Var var_arr[], int cur_index, char var_name[])
     return 1;
 }
 
-double diff_calc_tree(Node *node, Var var_arr[], int n_vars)
+double diff_calc_tree(Node *node, Var_elem var_arr[], int n_vars)
 {
     Node* tmp_node = node_copy_node(node);
     for (int index = 0; index < n_vars && index < MAX_VARS; index++)
@@ -500,7 +495,7 @@ static int replace_var_on_num(Node *node, char var_name[], double var_value)
 
 double diff_tailor_one_var(Node *node, int depth, char var_name[], double var_value, double x0)
 {   
-    Var var = {.var_value = x0};
+    Var_elem var = {.var_value = x0};
     strncpy(var.var_name, var_name, MAX_LEN_VALUE);
     Node *tmp_node1 = node_copy_node(node);
     Node *tmp_node2 = {};

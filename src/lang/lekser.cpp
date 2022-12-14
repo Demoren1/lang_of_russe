@@ -202,5 +202,8 @@ int lekser_dtor(Tokens *data_tokens)
 
         free(cur_token);
     }
+
+    free(data_tokens->tokens);
+    
     return 0;
 }

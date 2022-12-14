@@ -37,9 +37,8 @@ int get_Tree(Node *node)
 {
     Node *left_node  = get_ASS();
     
-    printf("cur pos %d, size %zd \n", Data_tokens->cur_pos, Data_tokens->size);
+    // printf("cur pos %d, size %zd \n", Data_tokens->cur_pos, Data_tokens->size);
     
-
     if (check_end())
     {   
         
@@ -143,7 +142,7 @@ Node *get_LOG()
     Node *block_node = NULL;
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
-    printf("cur token val %d \n", cur_token->value.sep);
+    // printf("cur token val %d \n", cur_token->value.sep);
 
     if (cur_token->type_node == SEP &&
         cur_token->value.sep == OPEN_FIG)
@@ -190,6 +189,9 @@ Node *get_Func(Node *keyword_node)
         {
             Data_tokens->cur_pos++;
             cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+            if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_CIRC)
+                break;
+
             tmp_node2 = Create_VAR_node(cur_token->value.var_value);
 
             node_connect(tmp_node1, tmp_node2, LEFT);

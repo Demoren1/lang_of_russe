@@ -6,7 +6,7 @@ const int LEN_OF_DATA = 256;
 
 const int SIZE_OF_VARS_ARR = 256;
 
-#define MAX_LEN_VALUE 64
+#define MAX_LEN_VALUE 256
 
 #define FUNC_GENERAL_INFO(object)  __FILE__, __FUNCTION__, #object, __LINE__
 
@@ -113,7 +113,14 @@ typedef struct Var_t
     char var_name[MAX_LEN_VALUE];
     double var_value = NAN;
     int index = -1;
-} Var;
+} Var_elem;
+
+typedef struct Func_t
+{
+    char func_name[MAX_LEN_VALUE];
+    double var_value = NAN;
+    int index = -1;
+} Func_elem;
 
 typedef struct Tree_t
 {

@@ -220,7 +220,7 @@ int tree_print_graph(const Node *node)
         }
         case NUM:
         {
-            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #cfffd2 \"><font color=\"#0000ff\"> %g </font></td></tr>\n",
+            fprintf(TREE_GRAPH_LOGS, "    <tr><td bgcolor=\" #ffe4ad  \"><font color=\"#0000ff\"> %g </font></td></tr>\n",
             node->value.dbl_value);
             break;
         }

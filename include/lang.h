@@ -3,6 +3,7 @@
 
 #include <tree_funcs.h>
 #include <diff_funcs.h>
+
 const int vars_shift = 1024;
 
 const int STANDART_N_TOKENS = 1024;
@@ -41,5 +42,7 @@ Separators lekser_SEP(char *str, size_t *shift);
 Tokens *lekser_data_tokens_ctor(Tokens *data_tokens);
 
 int lekser_dtor(Tokens *data_tokens);
+
+int lang_trans(Node *root, const char *src);
 
 #endif
