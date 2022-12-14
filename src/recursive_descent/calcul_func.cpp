@@ -142,8 +142,6 @@ Node *get_LOG()
     Node *block_node = NULL;
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
-    // printf("cur token val %d \n", cur_token->value.sep);
-
     if (cur_token->type_node == SEP &&
         cur_token->value.sep == OPEN_FIG)
     {
@@ -151,15 +149,34 @@ Node *get_LOG()
         Data_tokens->cur_pos++;
         
         get_Tree(block_node);
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
 
         if (func_node)
+        {
             node_connect(func_node, block_node, RIGHT);
+        }
         else
-            node_connect(keyword_node, block_node, RIGHT);
+        {    
+            if (next_token->type_node == LOG &&
+                next_token->value.log_op == ELSE)
+            {   
+                Data_tokens->cur_pos += 3;
+        
+                Node *block_for_else = Create_EMPTY_node();
+                Node *general_node = Create_EMPTY_node();
+                
+                get_Tree(block_for_else);
 
-        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-        // SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_FIG);
-    
+                node_connect(keyword_node, general_node, RIGHT);
+                node_connect(general_node, block_node, LEFT);
+                node_connect(general_node, block_for_else, RIGHT);
+            }
+            else
+            {
+                node_connect(keyword_node, block_node, RIGHT);
+            }
+        }
         Data_tokens->cur_pos++;
     }
     

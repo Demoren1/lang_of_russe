@@ -66,7 +66,7 @@ static Node *handle_func (Node *node)
         handle_func(node->l_son);
     }
 
-    if (node->l_son->l_son)
+    if (node->l_son)
     {
         // todo add args handle
     }

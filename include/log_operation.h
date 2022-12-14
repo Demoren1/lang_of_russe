@@ -16,4 +16,6 @@ DEF_LOG_OP_CMD(RETURN, 7, "return", "return")
 
 DEF_LOG_OP_CMD(INPUT, 8, "input", "input")
 
+DEF_LOG_OP_CMD(ELSE, 9, "else", "else")
+
 

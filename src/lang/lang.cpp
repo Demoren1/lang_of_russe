@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     lekser_dump(&data_tokens);
     TREE_DUMP(tree, INORDER);
 
-    lang_trans(tree, path_asm);
+    // lang_trans(tree, path_asm);
 
     // asm_func(argc, argv);
     // cpu();
