@@ -113,7 +113,7 @@ typedef struct Var_t
     char var_name[MAX_LEN_VALUE];
     double var_value = NAN;
     int index = -1;
-} Var_elem;
+} Arg_elem;
 
 typedef struct Func_t
 {

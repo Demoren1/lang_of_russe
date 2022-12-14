@@ -32,7 +32,7 @@ Node *diff()
     TREE_DUMP(cool_node, INORDER);
 
     #if 0
-    Var_elem var_arr[MAX_VARS] = {{"xss", 1}};
+    Arg_elem var_arr[MAX_VARS] = {{"xss", 1}};
     int n_vars = diff_ctor_var_arr(cool_node, var_arr, 0);
     // int n_vars = 1;
     double result = 0;

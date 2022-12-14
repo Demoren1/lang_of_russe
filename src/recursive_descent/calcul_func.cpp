@@ -41,7 +41,6 @@ int get_Tree(Node *node)
     
     if (check_end())
     {   
-        
         node_connect(node, left_node, LEFT);
         
         return 0;
@@ -253,8 +252,8 @@ Node* get_P()
 
     Node *node = 0;
     Node *value_node = 0;
-        
-    if (check_end())
+
+    if (Data_tokens->cur_pos >= Data_tokens->size)
     {     
         return node;
     }
@@ -265,8 +264,10 @@ Node* get_P()
     if (cur_token->type_node == ARITHM_OP &&
         cur_token->value.op_value != NOT_OP)
     {
+        DBG;
         Node *op_node = get_UNAR_OP();
         node = op_node;
+        return node;
     }
     
     else if (cur_token->type_node == SEP &&
@@ -304,9 +305,33 @@ Node* get_P()
 Node *get_UNAR_OP()
 {   
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
 
     Node *node = Create_OP_node(cur_token->value.op_value);
     Data_tokens->cur_pos++;
+
+    Token *prev_token = cur_token;
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
+    
+    if (prev_token->type_node == ARITHM_OP && 
+        (prev_token->value.op_value == SIN ||
+         prev_token->value.op_value == COS ||
+         prev_token->value.op_value == LN  ||
+         prev_token->value.op_value == TG))
+    {   
+        DBG;
+        Node *tmp_node = NULL;
+        if (next_token->type_node == NUM)
+            tmp_node = Create_NUM_node(next_token->value.dbl_value);
+        else
+            tmp_node = Create_VAR_node(next_token->value.var_value);
+
+        node_connect(node, tmp_node, RIGHT);
+        Data_tokens->cur_pos += 2;
+
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    }
 
     return node;
 }

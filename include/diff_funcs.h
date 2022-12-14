@@ -34,12 +34,12 @@ Log_Oper diff_get_log_operation(const char *buff);
 
 Priorities find_op_priority(Arith_Operation operation);
 
-int diff_ctor_var_arr(Node *node, Var_elem *var_arr, int cur_index);
+int diff_ctor_var_arr(Node *node, Arg_elem *var_arr, int cur_index);
 
-double diff_calc_tree(Node *node, Var_elem var_arr[], int n_vars);
+double diff_calc_tree(Node *node, Arg_elem var_arr[], int n_vars);
 
 double diff_tailor_one_var(Node *node, int depth, char var_name[], double var_value, double x0);
 
-int check_replay(Var_elem var_arr[], int cur_index, char var_name[]);
+int check_replay(Arg_elem var_arr[], int cur_index, char var_name[]);
 
 #endif

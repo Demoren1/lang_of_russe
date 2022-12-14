@@ -227,26 +227,36 @@ void write_to_files(FILE* executable_file, int *arr_of_cmd, int target_num, int 
     arr_of_cmd[(*ip)++] = target_num;
 }
 
-#define WRITE_REG()     if (strcmp("RAX", tmp_str) == 0)            \
-                        {                                           \
-                            tmp_pair.type |= ARG_REG;               \
-                            tmp_pair.value = RAX;                   \
-                        }                                           \
-                        else if (strcmp("RBX", tmp_str) == 0)       \
-                        {                                           \
-                            tmp_pair.type |= ARG_REG;               \
-                            tmp_pair.value = RBX;                   \
-                        }                                           \
-                        else if (strcmp("RCX", tmp_str) == 0)       \
-                        {                                           \
-                            tmp_pair.type |= ARG_REG;               \
-                            tmp_pair.value = RCX;                   \
-                        }                                           \
-                        else if (strcmp("RDX", tmp_str) == 0)       \
-                        {                                           \
-                            tmp_pair.type |= ARG_REG;               \
-                            tmp_pair.value = RDX;                   \
-                        }
+#define WRITE_REG()     if (strcmp("RAX", tmp_str) == 0)                        \
+                        {                                                       \
+                            tmp_pair.type |= ARG_REG;                           \
+                            tmp_pair.value = RAX;                               \
+                        }                                                       \
+                        else if (strcmp("RBX", tmp_str) == 0)                   \
+                        {                                                       \
+                            tmp_pair.type |= ARG_REG;                           \
+                            tmp_pair.value = RBX;                               \
+                        }                                                       \
+                        else if (strcmp("RCX", tmp_str) == 0)                   \
+                        {                                                       \
+                            tmp_pair.type |= ARG_REG;                           \
+                            tmp_pair.value = RCX;                               \
+                        }                                                       \
+                        else if (strcmp("RDX", tmp_str) == 0)                   \
+                        {                                                       \
+                            tmp_pair.type |= ARG_REG;                           \
+                            tmp_pair.value = RDX;                               \
+                        }                                                       \
+                        else if (strcmp("VAR_IN_DEF ", tmp_str) == 0)           \
+                        {                                                       \
+                            tmp_pair.type |= ARG_REG;                           \
+                            tmp_pair.value = VAR_IN_DEF ;                       \
+                        }                                                       \
+                        else if (strcmp("VAR_IN_FUNCALL  ", tmp_str) == 0)      \
+                        {                                                       \
+                            tmp_pair.type |= ARG_REG;                           \
+                            tmp_pair.value = VAR_IN_FUNCALL;                    \
+                        }  
 
 pair get_arg(char *str)
 {   
