@@ -6,6 +6,7 @@
 #include <lang.h>
 #include <trans.h>
 
+
 static FILE *ASM_FILE = NULL;
 static Node *label_num = 0;
 static int else_index = 0;
@@ -16,7 +17,8 @@ static int start_internal_args = 14336;
 int lang_trans(Node *root, const char *src)
 {
     ASM_FILE = fopen(src, "w");
-    WRITE_ASM("push %d\npop VAR_IN_DEF\n\n", start_arg_index);
+
+    WRITE_ASM("push %d\n" "pop VAR_IN_FUNCALL\n", start_internal_args);
     WRITE_ASM("call :main \n");
     WRITE_ASM("hlt \n\n");
     translate(root);
@@ -33,7 +35,7 @@ Node *translate (Node *node)
     if (node->l_son->type == LOG &&
         node->l_son->value.log_op == DEF)
     {
-        WRITE_ASM("push %d\npop VAR_IN_DEF\n\n", start_arg_index);
+        
         handle_func(node->l_son->l_son);
         WRITE_ASM("RET\n\n");
     }
@@ -60,6 +62,7 @@ Node *handle_func (Node *node)
     if (node->type == FUNC)
     {
         fprintf(ASM_FILE, "%s: \n", node->value.var_value);
+        WRITE_ASM("push %d\npop VAR_IN_DEF\n\n", start_arg_index);
 
         if (node->l_son)
         {
@@ -122,11 +125,15 @@ int handle_general_args(Node *node, Arg_elem general_args[])
 int handle_internal_args(Node *node, Arg_elem internal_args[])
 {
     Node *tmp_node = node;
+    int index = 0;
     while (tmp_node)
-    {           
-        add_to_args(internal_args, tmp_node->value.var_value);
+    {   
+        index = add_to_args(internal_args, tmp_node->value.var_value);
+        WRITE_ASM("push [VAR_IN_FUNCALL + %d] \n", index);
+        WRITE_ASM("pop [VAR_IN_DEF + %d] \n", index++);
         tmp_node = tmp_node->l_son;
     }
+    WRITE_ASM("\n");
 
     return 0;
 }
@@ -148,7 +155,7 @@ int add_to_args(Arg_elem *args, char var_value[])
     args[new_index].index = new_index;
     strncpy(args[new_index].var_name, var_value, MAX_LEN_VALUE);
 
-    return 0;
+    return new_index;
 }
 
 Node *handle_empty(Node *node, Arg_elem general_args[])
@@ -279,19 +286,24 @@ Node *handle_log(Node *node, Arg_elem general_args[])
             handle_PRINT(node, general_args);
             break;
         }
+        case PRINT_STR:
+        {
+            handle_PRINT_STR(node, general_args);
+            break;
+        }
         case WHILE:
         {
-            // handle_WHILE(node, general_args);
+            handle_WHILE(node, general_args);
             break;
         }
         case FUNCALL:
         {
-            // handle_FUNCALL(node, general_args);
+            handle_FUNCALL(node, general_args);
             break;
         }
         case RETURN:
         {
-            
+            handle_RETURN(node, general_args);
             break;
         }
         case INPUT:
@@ -334,6 +346,21 @@ int handle_IF(Node *node, Arg_elem general_args[])
     return 0;   
 }
 
+int handle_WHILE(Node *node, Arg_elem general_args[])
+{
+    WRITE_ASM("while_%d: \n", if_index);
+    WRITE_ASM("push 0 \n");
+    handle_node(node->l_son, general_args);
+    WRITE_ASM("jee :end_while_%d \n", else_index);
+    
+    handle_empty(node->r_son, general_args);
+
+    WRITE_ASM("jmp :while_%d \n", if_index++);
+    WRITE_ASM("end_while_%d: \n", else_index++);
+
+    return 0;
+}
+
 int handle_INPUT(Node *node, Arg_elem general_args[])
 {
     Node *tmp_node = node->l_son;
@@ -353,12 +380,61 @@ int handle_PRINT(Node *node, Arg_elem general_args[])
 {
     Node *tmp_node = node->l_son;
 
-    while (tmp_node)
-    {   
+    do{ 
         handle_node(tmp_node, general_args);
         WRITE_ASM("out\n\n");
         tmp_node = tmp_node->l_son;
     }
+    while (tmp_node != NULL && (tmp_node->type != LOG && tmp_node->type != ARITHM_OP));
+
+    return 0;
+}
+
+int handle_PRINT_STR(Node *node, Arg_elem general_args[])
+{
+    char str[MAX_LEN_VALUE] = {};
+
+    strncpy(str, node->l_son->value.var_value, MAX_LEN_VALUE);
+
+    int len = strlen(str);
+    WRITE_ASM("push 0      ## %s\n", str);
+    WRITE_ASM("push 10 \n");
+
+
+    for (int i = len - 1; i >= 0; i--)
+    {
+        WRITE_ASM("push %d\n", str[i]);
+    }
+
+    for (int i = 0; i < len + 2; i++)
+    {
+        WRITE_ASM("pop [%d]\n", i);
+    }
+    WRITE_ASM("show\n\n");
+
+    return 0;
+}
+
+int handle_FUNCALL(Node *node, Arg_elem general_args[])
+{
+    Node *tmp_node = node->l_son->l_son;
+    int index = 0;
+    while (tmp_node)
+    {   
+        WRITE_ASM("push [VAR_IN_DEF + %d] \n", find_index(general_args, tmp_node->value.var_value));
+        WRITE_ASM("pop [VAR_IN_FUNCALL + %d] \n", index++);
+        tmp_node = tmp_node->l_son;
+    }
+    WRITE_ASM("\n");
+    WRITE_ASM("call :%s\n", node->l_son->value.var_value);
+    WRITE_ASM("push RCX\n\n");
+    return 0;
+}
+
+int handle_RETURN(Node *node, Arg_elem general_args[])
+{   
+    handle_node(node->l_son, general_args);
+    WRITE_ASM("pop RCX\n\n");
 
     return 0;
 }

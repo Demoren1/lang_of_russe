@@ -59,4 +59,6 @@ int add_internal_args_to_general(Arg_elem internal_args[], Arg_elem general_args
 
 int add_to_args(Arg_elem *args, char var_value[]);
 
+int lang_get_name(char src[], int n_names, char **arr_with_names);
+
 #endif

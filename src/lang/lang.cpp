@@ -24,7 +24,9 @@ int main(int argc, char *argv[])
     Tokens data_tokens = {};
     Node *tree = 0;
     
-    char src[MAX_LEN_VALUE] = "expression.txt";
+    
+    char src[MAX_LEN_VALUE] = {};
+    lang_get_name(src, argc, argv);
     char path_asm[MAX_LEN_VALUE] = "codes.asm";
     // const char *path_asm = "codes.asm";
 

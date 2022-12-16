@@ -23,14 +23,14 @@ typedef enum
 
 typedef enum 
 {
-    NOT_TYPE = -1,
-    ARITHM_OP= 1,
-    VAR      = 2,
-    NUM      = 3, 
-    LOG      = 4,
-    SEP      = 5,
-    FUNC     = 6,
-    EMPTY    = 7
+    NOT_TYPE  = -1,
+    ARITHM_OP = 1,
+    VAR       = 2,
+    NUM       = 3, 
+    LOG       = 4,
+    SEP       = 5,
+    FUNC      = 6,
+    EMPTY     = 7
 } Type_of_expression;
 
 

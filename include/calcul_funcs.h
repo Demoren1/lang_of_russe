@@ -26,7 +26,7 @@ Node *get_LOG();
 
 Node *get_ASS();
 
-Node *get_Block();
+// Node *get_Block();
 
 Node *get_Func(Node *node);
 

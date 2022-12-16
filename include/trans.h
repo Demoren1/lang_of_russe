@@ -31,8 +31,12 @@ int handle_FUNCALL(Node *node, Arg_elem general_args[]);
 
 int handle_PRINT(Node *node, Arg_elem general_args[]);
 
+int handle_PRINT_STR(Node *node, Arg_elem general_args[]);
+
 int handle_WHILE(Node *node, Arg_elem general_args[]);
 
 int handle_INPUT(Node *node, Arg_elem general_args[]);
+
+int handle_RETURN(Node *node, Arg_elem general_args[]);
 
 #endif
