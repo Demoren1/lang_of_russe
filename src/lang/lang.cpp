@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
     Node *tree = 0;
     
     char src[MAX_LEN_VALUE] = "expression.txt";
-    char path_asm[MAX_LEN_VALUE] = "codes.txt";
-    // const char *path_asm = "codes.txt";
+    char path_asm[MAX_LEN_VALUE] = "codes.asm";
+    // const char *path_asm = "codes.asm";
 
     diff_handle_src(src, &buff);
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     lekser_dump(&data_tokens);
     TREE_DUMP(tree, INORDER);
 
-    // lang_trans(tree, path_asm);
+    lang_trans(tree, path_asm);
 
     asm_func(argc, argv);
     cpu();

@@ -63,7 +63,7 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
     SOFT_ASS(test_fread == 0);  
 
     buff->lines = 1;
-    //  buff->buffer = del_new_line_and_spaces(buff);
+    buff->buffer = del_new_line_and_spaces(buff);
 
     buff->buffer[buff->size] = '\0';
     buff->curr_index = 0;
@@ -445,7 +445,7 @@ int check_replay(Arg_elem var_arr[], int cur_index, char var_name[])
 {   
     for (int index = 0; index < cur_index; index++)
     {
-        if (strcmp(var_name, (var_arr[index].var_name)) == 0)
+        if (strcasecmp(var_name, (var_arr[index].var_name)) == 0)
             return 0;
     }
 
@@ -476,7 +476,7 @@ static int replace_var_on_num(Node *node, char var_name[], double var_value)
     if (!node)
         return 0;
 
-    if (node->type == VAR && !isnan(var_value) && strcmp(node->value.var_value, var_name) == 0)
+    if (node->type == VAR && !isnan(var_value) && strcasecmp(node->value.var_value, var_name) == 0)
     {
         node->value.dbl_value = var_value;
         strncpy(node->value.var_value, " ", MAX_LEN_VALUE);
@@ -630,7 +630,7 @@ Node *diff_diff(Node *node, char var_for_diff[])
         }
         case VAR:
         {   
-            if (strcmp(node->value.var_value, var_for_diff) == 0)            
+            if (strcasecmp(node->value.var_value, var_for_diff) == 0)            
                 return Create_NUM_node(1);
             else
                 return Create_NUM_node(0);

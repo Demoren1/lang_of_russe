@@ -54,7 +54,7 @@ int lekser_dump(Tokens *data_tokens)
             }
             case VAR:
             {
-                fprintf(lekser_dump, "%s \n", cur_token->value.var_value);
+                fprintf(lekser_dump, "|%s| \n", cur_token->value.var_value);
                 break;
             }
             default:

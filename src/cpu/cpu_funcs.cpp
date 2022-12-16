@@ -28,7 +28,7 @@ int check_executable_file(FILE *exec_file_ptr, Cpu_struct *cpu)
     shift += delta_shift;
     sscanf(first_line + shift, "%zd", &cpu->num_of_commands);
 
-    CHECK_CONDITION(strcmp(extension,cpu->extension) == 0);
+    CHECK_CONDITION(strcasecmp(extension,cpu->extension) == 0);
     CHECK_CONDITION(version == cpu->version);
 
     return 0;

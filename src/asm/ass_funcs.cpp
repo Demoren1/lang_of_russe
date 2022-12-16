@@ -19,7 +19,7 @@ int compile(FILE *executable_file, ass_info *info_of_codes)
     CHECK_CONDITION(cmd != 0);
 
     #define DEF_CMD(name, num, arg, end_sym, getarg_code,...)                                                   \
-            else if (strcmp(cmd, #name) == 0)                                                                   \
+            else if (strcasecmp(cmd, #name) == 0)                                                                   \
             {                                                                                                   \
                 write_to_files(executable_file, info_of_codes->arr_of_commands, num, &ip, end_sym);             \
                                                                                                                 \
@@ -38,7 +38,7 @@ int compile(FILE *executable_file, ass_info *info_of_codes)
 
             strncpy(label_name, find_label_name(cmd), 128);
 
-            if (strcmp(label_name, "ERROR") == 0)
+            if (strcasecmp(label_name, "ERROR") == 0)
             {
                 puts("Wrong label\n");
             }           
@@ -227,32 +227,32 @@ void write_to_files(FILE* executable_file, int *arr_of_cmd, int target_num, int 
     arr_of_cmd[(*ip)++] = target_num;
 }
 
-#define WRITE_REG()     if (strcmp("RAX", tmp_str) == 0)                        \
+#define WRITE_REG()     if (strcasecmp("RAX", tmp_str) == 0)                        \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = RAX;                               \
                         }                                                       \
-                        else if (strcmp("RBX", tmp_str) == 0)                   \
+                        else if (strcasecmp("RBX", tmp_str) == 0)                   \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = RBX;                               \
                         }                                                       \
-                        else if (strcmp("RCX", tmp_str) == 0)                   \
+                        else if (strcasecmp("RCX", tmp_str) == 0)                   \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = RCX;                               \
                         }                                                       \
-                        else if (strcmp("RDX", tmp_str) == 0)                   \
+                        else if (strcasecmp("RDX", tmp_str) == 0)                   \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = RDX;                               \
                         }                                                       \
-                        else if (strcmp("VAR_IN_DEF", tmp_str) == 0)           \
+                        else if (strcasecmp("VAR_IN_DEF", tmp_str) == 0)           \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = VAR_IN_DEF ;                       \
                         }                                                       \
-                        else if (strcmp("VAR_IN_FUNCALL", tmp_str) == 0)      \
+                        else if (strcasecmp("VAR_IN_FUNCALL", tmp_str) == 0)      \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = VAR_IN_FUNCALL;                    \
@@ -287,12 +287,10 @@ pair get_arg(char *str)
 
         else if (sscanf(strchr(str, '[') + 1, "%s", tmp_str))
         {
-            printf("tmp_str is %s\n", tmp_str);
             if (strchr(tmp_str, ']'))
                 strchr(tmp_str, ']')[0] = '\0';
 
             // tmp_str[3] = '\0';
-            printf("tmp_str is %s\n", tmp_str);
             WRITE_REG();   
 
             #if 1
@@ -340,7 +338,7 @@ int find_address(char *label_name, ass_info *info_of_codes)
     
     while(address < SIZE_OF_LABELS_ARR)
     {  
-        if (strcmp(label_name, info_of_codes->labels[address].label_name) == 0)
+        if (strcasecmp(label_name, info_of_codes->labels[address].label_name) == 0)
             break;
         address++;
     }
@@ -358,5 +356,5 @@ const char *name_of_input_file(int num_of_str, const char* str)
     if (num_of_str > 1)
         return str;
     else 
-        return "codes.txt";
+        return "codes.asm";
 }
