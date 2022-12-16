@@ -43,27 +43,28 @@ DEF_CMD (PUSH, 1, 1, ' ',
     break;
 },
 {
-    if(full_cmd & ARG_IMMED) 
-        num += cell_value;
-    
-    if(full_cmd & ARG_REG)
-        num += cpu->registers[cell_value] / (var)ACCURACY;
-
-    if(full_cmd & ARG_RAM)   
-    {
-        num += cpu->RAM[cell_value] / (var)ACCURACY;
-    }
-
-    if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
-    {
-        num += cpu->RAM[cpu->registers[cell_value]/ACCURACY];
-    }
-    
     if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG) && (full_cmd & ARG_IMMED))
     {
         num = cpu->RAM[cpu->registers[cell_value]/ACCURACY + (ssize_t)cpu->num_buffer[ip + 1]];
         ip++;
         num /= ACCURACY;
+    }
+
+    else if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
+    {
+        num += cpu->RAM[cpu->registers[cell_value]/ACCURACY];
+        num /= ACCURACY;
+    }
+    
+    else if(full_cmd & ARG_IMMED) 
+        num += cell_value;
+    
+    else if(full_cmd & ARG_REG)
+        num += cpu->registers[cell_value] / (var)ACCURACY;
+
+    else if(full_cmd & ARG_RAM)   
+    {
+        num += cpu->RAM[cell_value] / (var)ACCURACY;
     }
 
     ip++;
@@ -100,7 +101,6 @@ DEF_CMD(POP, 2, 1, ' ',
     }
     else if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
     {
-        num /= ACCURACY;
         cpu->RAM[cpu->registers[cell_value]/ACCURACY] = (int)num;
     }
     else if(full_cmd & ARG_RAM)   

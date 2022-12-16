@@ -9,8 +9,6 @@ Node *handle_func (Node *node);
 
 Node *handle_empty(Node *node, Arg_elem general_args[]);
 
-Node *handle_funcall(Node *node);
-
 Node *handle_node(Node *node, Arg_elem general_args[]);
 
 Node *handle_num(Node *node);
@@ -28,6 +26,8 @@ int handle_ASG(Node *node, Arg_elem general_args[]);
 int handle_IF(Node *node, Arg_elem general_args[]);
 
 int handle_ELSE(Node *node, Arg_elem general_args[]);
+
+int handle_FUNCALL(Node *node, Arg_elem general_args[]);
 
 int handle_PRINT(Node *node, Arg_elem general_args[]);
 

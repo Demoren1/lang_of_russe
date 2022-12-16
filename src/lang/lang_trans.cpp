@@ -15,11 +15,11 @@ static int start_internal_args = 14336;
 int lang_trans(Node *root, const char *src)
 {
     ASM_FILE = fopen(src, "w");
-    WRITE_ASM("JMP :main \n\n");
-
+    WRITE_ASM("PUSH %d\nPOP VAR_IN_DEF\n\n", start_arg_index);
+    WRITE_ASM("CALL :main \n");
+    WRITE_ASM("HLT \n\n");
     translate(root);
 
-    WRITE_ASM("HLT \n\n");
     fclose(ASM_FILE);
     return 0;   
 }
@@ -219,7 +219,7 @@ int find_index(Arg_elem general_args[],char var_value[])
     {
         if (strcmp(general_args[counter].var_name, var_value) == 0)
         {
-            return   (start_arg_index + general_args[counter].index);
+            return   (general_args[counter].index);
         }
     }
 
@@ -272,7 +272,7 @@ Node *handle_log(Node *node, Arg_elem general_args[])
         }
         case PRINT:
         {
-            
+            handle_PRINT(node, general_args);
             break;
         }
         case WHILE:
@@ -282,7 +282,7 @@ Node *handle_log(Node *node, Arg_elem general_args[])
         }
         case FUNCALL:
         {
-            
+            // handle_FUNCALL(node, general_args);
             break;
         }
         case RETURN:
@@ -292,7 +292,7 @@ Node *handle_log(Node *node, Arg_elem general_args[])
         }
         case INPUT:
         {
-            
+            handle_INPUT(node, general_args);
             break;
         }
         default:
@@ -309,6 +309,34 @@ int handle_ASG(Node *node, Arg_elem general_args[])
 
     SOFT_ASS_NO_RET(node->l_son->type != VAR);
     WRITE_ASM("POP [VAR_IN_DEF + %d]\n", find_index(general_args, node->l_son->value.var_value));
+
+    return 0;
+}
+
+int handle_INPUT(Node *node, Arg_elem general_args[])
+{
+    Node *tmp_node = node->l_son;
+
+    while (tmp_node)
+    {   
+        printf("tmp value %s \n", tmp_node->value.var_value);
+        WRITE_ASM("IN\n" "POP [VAR_IN_DEF + %d]\n\n", find_index(general_args, tmp_node->value.var_value))
+        tmp_node = tmp_node->l_son;
+    }
+
+    return 0;
+}
+
+int handle_PRINT(Node *node, Arg_elem general_args[])
+{
+    Node *tmp_node = node->l_son;
+
+    while (tmp_node)
+    {   
+        printf("tmp value %s \n", tmp_node->value.var_value);
+        WRITE_ASM("PUSH [VAR_IN_DEF + %d]\n" "OUT\n\n", find_index(general_args, tmp_node->value.var_value))
+        tmp_node = tmp_node->l_son;
+    }
 
     return 0;
 }

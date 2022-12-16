@@ -123,6 +123,20 @@ Node *get_LOG()
         Data_tokens->cur_pos++;
         expr_node = get_Expression();
 
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        while(cur_token->type_node == SEP &&
+              cur_token->value.sep != CLOSE_CIRC)
+        {   
+            Data_tokens->cur_pos++;
+            cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+            Node *new_node = get_Expression();
+            node_connect(expr_node, new_node, LEFT);
+
+            cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        }
+
+
         if (func_node)
             node_connect(func_node, expr_node, LEFT);
         else

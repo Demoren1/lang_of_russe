@@ -247,12 +247,12 @@ void write_to_files(FILE* executable_file, int *arr_of_cmd, int target_num, int 
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = RDX;                               \
                         }                                                       \
-                        else if (strcmp("VAR_IN_DEF ", tmp_str) == 0)           \
+                        else if (strcmp("VAR_IN_DEF", tmp_str) == 0)           \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = VAR_IN_DEF ;                       \
                         }                                                       \
-                        else if (strcmp("VAR_IN_FUNCALL  ", tmp_str) == 0)      \
+                        else if (strcmp("VAR_IN_FUNCALL", tmp_str) == 0)      \
                         {                                                       \
                             tmp_pair.type |= ARG_REG;                           \
                             tmp_pair.value = VAR_IN_FUNCALL;                    \
@@ -287,8 +287,12 @@ pair get_arg(char *str)
 
         else if (sscanf(strchr(str, '[') + 1, "%s", tmp_str))
         {
-            tmp_str[3] = '\0';
+            printf("tmp_str is %s\n", tmp_str);
+            if (strchr(tmp_str, ']'))
+                strchr(tmp_str, ']')[0] = '\0';
 
+            // tmp_str[3] = '\0';
+            printf("tmp_str is %s\n", tmp_str);
             WRITE_REG();   
 
             #if 1
