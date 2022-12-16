@@ -124,18 +124,21 @@ Node *get_LOG()
         expr_node = get_Expression();
 
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+        Node *new_node1 = expr_node;
+        Node *new_node2 = NULL;
         while(cur_token->type_node == SEP &&
               cur_token->value.sep != CLOSE_CIRC)
         {   
             Data_tokens->cur_pos++;
             cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
-            Node *new_node = get_Expression();
-            node_connect(expr_node, new_node, LEFT);
+            Node *new_node2 = get_Expression();
+            node_connect(new_node1, new_node2, LEFT);
 
             cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+            new_node1 = new_node2;
         }
-
 
         if (func_node)
             node_connect(func_node, expr_node, LEFT);
