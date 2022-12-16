@@ -264,7 +264,7 @@ Node* get_P()
     if (cur_token->type_node == ARITHM_OP &&
         cur_token->value.op_value != NOT_OP)
     {
-        DBG;
+        
         Node *op_node = get_UNAR_OP();
         node = op_node;
         return node;
@@ -320,7 +320,7 @@ Node *get_UNAR_OP()
          prev_token->value.op_value == LN  ||
          prev_token->value.op_value == TG))
     {   
-        DBG;
+        
         Node *tmp_node = NULL;
         if (next_token->type_node == NUM)
             tmp_node = Create_NUM_node(next_token->value.dbl_value);

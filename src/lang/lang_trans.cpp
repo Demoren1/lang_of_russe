@@ -32,14 +32,15 @@ Node *translate (Node *node)
     if (node->l_son->type == LOG &&
         node->l_son->value.log_op == DEF)
     {
-        WRITE_ASM("PUSH %d\nPOP VAR_IN_DEF\n", start_arg_index);
+        WRITE_ASM("PUSH %d\nPOP VAR_IN_DEF\n\n", start_arg_index);
         handle_func(node->l_son->l_son);
+        WRITE_ASM("RET\n\n");
     }
 
     if (node->r_son)
     {
-        translate(node->r_son);
         start_arg_index += SHIFT_IN_ARGS;                      
+        translate(node->r_son);
     }
 
     return 0;

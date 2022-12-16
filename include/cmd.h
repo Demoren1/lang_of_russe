@@ -62,14 +62,6 @@ DEF_CMD (PUSH, 1, 1, ' ',
     if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG) && (full_cmd & ARG_IMMED))
     {
         num = cpu->RAM[cpu->registers[cell_value]/ACCURACY + (ssize_t)cpu->num_buffer[ip + 1]];
-        #if 0
-        printf("6num is %g\n", num);
-
-        printf("cell value = %ld\n", cell_value);
-        printf("register = %d\n", cpu->registers[cell_value]);
-        printf("to stack %d \n", cpu->RAM[cpu->registers[cell_value]/ACCURACY + (ssize_t)cpu->num_buffer[ip + 1]]);
-        printf("ram[6] = %d\n", cpu->RAM[6]);
-        #endif
         ip++;
         num /= ACCURACY;
     }
@@ -108,6 +100,7 @@ DEF_CMD(POP, 2, 1, ' ',
     }
     else if((full_cmd & ARG_RAM) && (full_cmd & ARG_REG))
     {
+        num /= ACCURACY;
         cpu->RAM[cpu->registers[cell_value]/ACCURACY] = (int)num;
     }
     else if(full_cmd & ARG_RAM)   

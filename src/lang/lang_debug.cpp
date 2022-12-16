@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <lang.h>
 #include <lekser_debug.h>
 
@@ -10,6 +11,8 @@ static char *find_arith_op(Arith_Operation op);
 static char *find_log_op(Log_Oper op);
 
 static char *find_sep(Separators sep);
+
+static char to_ret[MAX_LEN_VALUE] = {};
 
 int lekser_dump(Tokens *data_tokens)
 {
@@ -64,8 +67,8 @@ int lekser_dump(Tokens *data_tokens)
 }
 
 #define DEF_ARITH_CMD(arith_op, code, naive_name, custom_name)  \
-    case arith_op:                                         \
-        return naive_name;                  
+    case arith_op:                                              \
+        return strncpy(to_ret, naive_name,MAX_LEN_VALUE);
 
 static char *find_arith_op(Arith_Operation op)
 {
@@ -74,7 +77,7 @@ static char *find_arith_op(Arith_Operation op)
         #include <operation.h>
 
         default:
-            return "ERROR";
+            return strncpy(to_ret, "ERROR", MAX_LEN_VALUE);
     }
 }
 
@@ -82,21 +85,24 @@ static char *find_arith_op(Arith_Operation op)
 
 #define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name)    \
     case log_op:                                                 \
-        return naive_name;  
+    {                                                               \
+        return strncpy(to_ret, naive_name, MAX_LEN_VALUE);        \
+    }
 
 static char *find_log_op(Log_Oper op)
 {
+
     switch (op)
     {
         #include <log_operation.h>
 
-        default: return "ERROR";
+        default: return strncpy(to_ret, "ERROR", MAX_LEN_VALUE);
     }
 }
 
 #define DEF_SEP(sep_name, code, naive_name, custom_name)    \
     case sep_name:                                              \
-        return naive_name;
+        return strncpy(to_ret, naive_name, MAX_LEN_VALUE);
 
 static char *find_sep(Separators sep)
 {
@@ -104,7 +110,7 @@ static char *find_sep(Separators sep)
     {
         #include <separators.h>
 
-        default: return "ERROR SEP";
+        default: return strncpy(to_ret, "ERROR SEP", MAX_LEN_VALUE);
     }
 }
 
@@ -115,20 +121,20 @@ static char *find_type(Type_of_expression type)
     switch(type)
     {
         case NOT_TYPE:
-            return "NOT_TYPE";
+            return strncpy(to_ret, "NOT_TYPE", MAX_LEN_VALUE);
         case NUM:
-            return "NUM";
+            return strncpy(to_ret, "NUM", MAX_LEN_VALUE);
         case VAR:
-            return "VAR";
+            return strncpy(to_ret, "VAR", MAX_LEN_VALUE);
         case ARITHM_OP:
-            return "ARITHM_OP";
+            return strncpy(to_ret, "ARITHM_OP", MAX_LEN_VALUE);
         case SEP:
-            return "SEP";
+            return strncpy(to_ret, "SEP", MAX_LEN_VALUE);
         case LOG:
-            return "LOG_OP";
+            return strncpy(to_ret, "LOG_OP", MAX_LEN_VALUE);
         case FUNC:
-            return "FUNC";
+            return strncpy(to_ret, "FUNC", MAX_LEN_VALUE);
         default:
-            return "ERROR";
+            return strncpy(to_ret, "ERROR", MAX_LEN_VALUE);
     }
 }
