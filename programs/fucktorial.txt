@@ -1,0 +1,20 @@
+def main ( ) {
+    input ( target )
+
+    result = fuck ( target )
+
+    print ( result )
+}
+
+def fuck ( n ) {
+    if ( n > 1 ) {
+        tmp1 = n - 1
+        tmp2 = fuck ( tmp1 )
+        tmp3 = tmp1 * tmp2
+
+        return ( tmp3 )
+    }
+    else {
+        return ( 1 )
+    }
+}
