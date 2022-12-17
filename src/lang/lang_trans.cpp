@@ -18,7 +18,7 @@ int lang_trans(Node *root, const char *src)
 {
     ASM_FILE = fopen(src, "w");
 
-    WRITE_ASM("push %d\n" "pop VAR_IN_FUNCALL\n", start_internal_args);
+    WRITE_ASM("push %d\n" "pop VIF\n", start_internal_args);
     WRITE_ASM("call :main \n");
     WRITE_ASM("hlt \n\n");
     translate(root);
@@ -62,7 +62,7 @@ Node *handle_func (Node *node)
     if (node->type == FUNC)
     {
         fprintf(ASM_FILE, "%s: \n", node->value.var_value);
-        WRITE_ASM("push %d\npop VAR_IN_DEF\n\n", start_arg_index);
+        WRITE_ASM("push %d\npop VID\n\n", start_arg_index);
 
         if (node->l_son)
         {
@@ -129,8 +129,8 @@ int handle_internal_args(Node *node, Arg_elem internal_args[])
     while (tmp_node)
     {   
         index = add_to_args(internal_args, tmp_node->value.var_value);
-        WRITE_ASM("push [VAR_IN_FUNCALL + %d] \n", index);
-        WRITE_ASM("pop [VAR_IN_DEF + %d] \n", index++);
+        WRITE_ASM("push [VIF + %d] \n", index);
+        WRITE_ASM("pop [VID + %d] \n", index++);
         tmp_node = tmp_node->l_son;
     }
     WRITE_ASM("\n");
@@ -224,7 +224,7 @@ Node *handle_num(Node *node)
 
 Node *handle_var(Node *node, Arg_elem general_args[])
 {
-    WRITE_ASM("push [VAR_IN_DEF + %d]\n", find_index(general_args, node->value.var_value));
+    WRITE_ASM("push [VID + %d]\n", find_index(general_args, node->value.var_value));
 
     return 0;
 }
@@ -324,7 +324,7 @@ int handle_ASG(Node *node, Arg_elem general_args[])
     handle_node(node->r_son, general_args);
 
     SOFT_ASS_NO_RET(node->l_son->type != VAR);
-    WRITE_ASM("pop [VAR_IN_DEF + %d]\n\n", find_index(general_args, node->l_son->value.var_value));
+    WRITE_ASM("pop [VID + %d]\n\n", find_index(general_args, node->l_son->value.var_value));
 
     return 0;
 }
@@ -368,7 +368,7 @@ int handle_INPUT(Node *node, Arg_elem general_args[])
     while (tmp_node)
     {   
         WRITE_ASM("in\n")
-        WRITE_ASM("pop [VAR_IN_DEF + %d]\n\n", find_index(general_args, node->l_son->value.var_value));
+        WRITE_ASM("pop [VID + %d]\n\n", find_index(general_args, node->l_son->value.var_value));
         // handle_node(tmp_node, general_args);
         tmp_node = tmp_node->l_son;
     }
@@ -421,8 +421,8 @@ int handle_FUNCALL(Node *node, Arg_elem general_args[])
     int index = 0;
     while (tmp_node)
     {   
-        WRITE_ASM("push [VAR_IN_DEF + %d] \n", find_index(general_args, tmp_node->value.var_value));
-        WRITE_ASM("pop [VAR_IN_FUNCALL + %d] \n", index++);
+        WRITE_ASM("push [VID + %d] \n", find_index(general_args, tmp_node->value.var_value));
+        WRITE_ASM("pop [VIF + %d] \n", index++);
         tmp_node = tmp_node->l_son;
     }
     WRITE_ASM("\n");
@@ -434,7 +434,9 @@ int handle_FUNCALL(Node *node, Arg_elem general_args[])
 int handle_RETURN(Node *node, Arg_elem general_args[])
 {   
     handle_node(node->l_son, general_args);
-    WRITE_ASM("pop RCX\n\n");
+    WRITE_ASM("pop RCX\n");
+    WRITE_ASM("RET\n\n");
+
 
     return 0;
 }

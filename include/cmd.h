@@ -56,14 +56,16 @@ DEF_CMD (PUSH, 1, 1, ' ',
         num /= ACCURACY;
     }
     
-    else if(full_cmd & ARG_IMMED) 
+    else if((full_cmd & ARG_IMMED) && !(full_cmd & ARG_REG) && !(full_cmd & ARG_RAM)) 
+    {
         num += cell_value;
+    }
     
-    else if(full_cmd & ARG_REG)
+    else if((full_cmd & ARG_REG) && !(full_cmd & ARG_RAM))
         num += cpu->registers[cell_value] / (var)ACCURACY;
 
     else if(full_cmd & ARG_RAM)   
-    {
+    {   
         num += cpu->RAM[cell_value] / (var)ACCURACY;
     }
 
@@ -104,7 +106,7 @@ DEF_CMD(POP, 2, 1, ' ',
         cpu->RAM[cpu->registers[cell_value]/ACCURACY] = (int)num;
     }
     else if(full_cmd & ARG_RAM)   
-    {
+    {   
         cpu->RAM[cell_value] = (int) num;
     }       
     else if(full_cmd & ARG_REG)   
@@ -346,7 +348,16 @@ DEF_CMD(COS, 23, 0, '\n',
     push(num * ACCURACY);
 })
 
-DEF_CMD(INCR_R, 24, 1, '\n',
+DEF_CMD(ABS, 24, 0, '\n',
+{},
+{
+    pop(num);
+    num = num / ACCURACY;
+    num = (num >= 0) ? num : (-num);
+    push(num * ACCURACY);
+})
+
+DEF_CMD(INCR_R, 25, 1, '\n',
 {           
     arr_of_commands[*ip] = args.value;
     fprintf(executable_file, "%d %c", arr_of_commands[(*ip)++],'\n');

@@ -18,3 +18,6 @@ DEF_ARITH_CMD(COS, 8, "cos", "cos")
 
 DEF_ARITH_CMD(TG, 9, "tg", "tg")
 
+DEF_ARITH_CMD(ABS, 10, "abs", "abs")
+
+

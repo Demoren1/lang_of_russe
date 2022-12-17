@@ -10,7 +10,7 @@ struct Cpu_struct
     char *buffer;
     Stack stack;
     int  *num_buffer;
-    int registers[5] = {};
+    int registers[10] = {};
     int RAM[SIZE_OF_RAM] = {};
     Stack func_stack;
 };

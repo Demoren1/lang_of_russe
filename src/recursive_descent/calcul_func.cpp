@@ -45,7 +45,8 @@ int get_Tree(Node *node)
         
         return 0;
     }
-    
+
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Node *right_node = Create_EMPTY_node();
     
     get_Tree(right_node);
@@ -75,8 +76,10 @@ Node *get_ASS()
         
         Data_tokens->cur_pos += 2 ;
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
+
         Node *r_node = NULL;
-        if (cur_token->type_node == VAR)
+        if (cur_token->type_node == VAR && next_token->type_node == SEP)
         {
             r_node = get_LOG();            
         }
@@ -110,9 +113,11 @@ Node *get_LOG()
     {
         keyword_node = Create_LOG_OP_node(FUNCALL);
     }
-    else 
+    else if (cur_token->type_node == LOG)
     {
         keyword_node = Create_LOG_OP_node(cur_token->value.log_op);
+        
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
         Data_tokens->cur_pos++;
     }
 
@@ -120,10 +125,11 @@ Node *get_LOG()
     Node *func_node  = NULL;
 
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-    
+
     func_node = get_Func(keyword_node);
     
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
     // SOFT_ASS_NO_RET(cur_token->type_node != SEP);
     if (cur_token->type_node == SEP && cur_token->value.sep == OPEN_CIRC)  
     {
@@ -214,9 +220,10 @@ Node *get_Func(Node *keyword_node)
 {   
     Node *func_node  = NULL;
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
     if (Data_tokens->cur_pos < Data_tokens->size &&
-        cur_token->type_node == VAR )
+        cur_token->type_node == VAR)
     {
         
         cur_token->type_node = FUNC;
@@ -281,8 +288,8 @@ Node* get_P()
 {
     // printf("before cur pos is %d\n", Data_tokens->cur_pos);
 
-    Node *node = 0;
-    Node *value_node = 0;
+    Node *node = NULL;
+    Node *value_node = NULL;
 
     if (Data_tokens->cur_pos >= Data_tokens->size)
     {     
@@ -295,8 +302,11 @@ Node* get_P()
     if (cur_token->type_node == ARITHM_OP &&
         cur_token->value.op_value != NOT_OP)
     {
-        
         Node *op_node = get_UNAR_OP();
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_CIRC)
+            Data_tokens->cur_pos++;
+
         node = op_node;
         return node;
     }
@@ -349,17 +359,12 @@ Node *get_UNAR_OP()
         (prev_token->value.op_value == SIN ||
          prev_token->value.op_value == COS ||
          prev_token->value.op_value == LN  ||
-         prev_token->value.op_value == TG))
+         prev_token->value.op_value == TG  ||
+         prev_token->value.op_value == ABS ))
     {   
         
-        Node *tmp_node = NULL;
-        if (next_token->type_node == NUM)
-            tmp_node = Create_NUM_node(next_token->value.dbl_value);
-        else
-            tmp_node = Create_VAR_node(next_token->value.var_value);
-
+        Node *tmp_node = get_Expression();
         node_connect(node, tmp_node, RIGHT);
-        Data_tokens->cur_pos += 2;
 
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     }
@@ -487,7 +492,7 @@ Node* get_Degree()
 static int check_end()
 {
     if (Data_tokens->cur_pos >= Data_tokens->size || 
-        Data_tokens->tokens[Data_tokens->cur_pos]->type_node == SEP)
+       Data_tokens->tokens[Data_tokens->cur_pos]->type_node == SEP )
     {
         return 1;
     }

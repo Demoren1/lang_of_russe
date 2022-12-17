@@ -44,6 +44,9 @@ void dump_cpu(Cpu_struct *cpu, ssize_t ip, Stack *stk, const char* file_name, co
     {
         fprintf(cpu_logs, "r%cx = %d\n", 'a' + i - 1, cpu->registers[i]);
     }
+        fprintf(cpu_logs, "VID = %d\n", cpu->registers[5]);
+        fprintf(cpu_logs, "VIF = %d\n", cpu->registers[6]);
+
 
     // fputs("\nDUMP OF BUFFER\n", cpu_logs);                                    
     // for (ssize_t i = 0; i < cpu->size; i++)                            

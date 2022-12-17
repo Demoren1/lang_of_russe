@@ -89,8 +89,8 @@ enum Registers
     RBX = 2,
     RCX = 3,
     RDX = 4,
-    VAR_IN_DEF = 6, 
-    VAR_IN_FUNCALL = 7
+    VID = 5, 
+    VIF = 6
 };
 
 enum Masks

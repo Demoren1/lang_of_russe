@@ -609,6 +609,7 @@ static int switch_sons_if_need(Node *node)
         case COS:
         case SIN:
         case TG:
+        case ABS:
         {
             node_switch_sons(node);
         }
@@ -683,6 +684,7 @@ Priorities find_op_priority(Arith_Operation operation)
         case COS:
         case SIN:
         case TG:
+        case ABS:
             return UNAR_OP_PRIOR;
         default:    
         {
@@ -720,6 +722,8 @@ Arith_Operation diff_get_operation(const char *buff)
         return COS;
     else if (strstr(buff, "tg") == buff)
         return TG;
+    else if (strstr(buff, "abs") == buff)
+        return ABS;
 
 
     switch (op_sym)
