@@ -367,7 +367,7 @@ int handle_INPUT(Node *node, Arg_elem general_args[])
     while (tmp_node)
     {   
         WRITE_ASM("in\n")
-        WRITE_ASM("pop [VID + %d]\n\n", find_index(general_args, node->l_son->value.var_value));
+        WRITE_ASM("pop [VID + %d]\n\n", find_index(general_args, tmp_node->value.var_value));
         // handle_node(tmp_node, general_args);
         tmp_node = tmp_node->l_son;
     }
