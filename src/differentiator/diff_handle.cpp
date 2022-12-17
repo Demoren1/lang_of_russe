@@ -638,7 +638,6 @@ Node *diff_diff(Node *node, char var_for_diff[])
         }
         case ARITHM_OP:
         {
-            
             switch (node->value.op_value)
             {
                 case ADD:
@@ -677,6 +676,7 @@ Priorities find_op_priority(Arith_Operation operation)
         case MUL:
             return MUL_PRIOR;
         case DIV:
+        case ZDIV:
             return DIV_PRIOR;
         case DEGREE:
             return DEGREE_PRIOR;
@@ -685,6 +685,10 @@ Priorities find_op_priority(Arith_Operation operation)
         case SIN:
         case TG:
         case ABS:
+        case GEQ:
+        case GE:
+        case LEQ:
+        case LE:
             return UNAR_OP_PRIOR;
         default:    
         {
@@ -724,8 +728,15 @@ Arith_Operation diff_get_operation(const char *buff)
         return TG;
     else if (strstr(buff, "abs") == buff)
         return ABS;
-
-
+    else if (strstr(buff, ">=") == buff)
+        return GEQ;
+    else if (strstr(buff, ">") == buff)
+        return GE;
+    else if (strstr(buff, "<=") == buff)
+        return LEQ;
+    else if (strstr(buff, "<") == buff)
+        return LE;
+        
     switch (op_sym)
     {
         case '+':

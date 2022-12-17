@@ -18,6 +18,7 @@ int lang_trans(Node *root, const char *src)
 {
     ASM_FILE = fopen(src, "w");
 
+    WRITE_ASM("push %d\n" "pop VID\n", start_arg_index);
     WRITE_ASM("push %d\n" "pop VIF\n", start_internal_args);
     WRITE_ASM("call :main \n");
     WRITE_ASM("hlt \n\n");
@@ -41,8 +42,7 @@ Node *translate (Node *node)
     }
 
     if (node->r_son)
-    {
-        start_arg_index += SHIFT_IN_ARGS;                      
+    {                    
         translate(node->r_son);
     }
 
@@ -61,8 +61,7 @@ Node *handle_func (Node *node)
 
     if (node->type == FUNC)
     {
-        fprintf(ASM_FILE, "%s: \n", node->value.var_value);
-        WRITE_ASM("push %d\npop VID\n\n", start_arg_index);
+        WRITE_ASM("%s: \n", node->value.var_value);
 
         if (node->l_son)
         {
@@ -425,7 +424,21 @@ int handle_FUNCALL(Node *node, Arg_elem general_args[])
         WRITE_ASM("pop [VIF + %d] \n", index++);
         tmp_node = tmp_node->l_son;
     }
-    WRITE_ASM("\n");
+    WRITE_ASM("\n\n");
+    
+    WRITE_ASM("\npush VID\n");                    // right shift in RAM
+    WRITE_ASM("dup\n");
+    WRITE_ASM("dup\n");
+    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
+    WRITE_ASM("zdiv\n");
+    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
+    WRITE_ASM("mul\n");
+    WRITE_ASM("sub\n");
+    WRITE_ASM("sub\n");
+    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
+    WRITE_ASM("add\n");
+    WRITE_ASM("pop VID\n");
+
     WRITE_ASM("call :%s\n", node->l_son->value.var_value);
     WRITE_ASM("push RCX\n\n");
     return 0;
@@ -435,6 +448,23 @@ int handle_RETURN(Node *node, Arg_elem general_args[])
 {   
     handle_node(node->l_son, general_args);
     WRITE_ASM("pop RCX\n");
+
+    WRITE_ASM("\npush VID\n");                    // right shift in RAM
+    WRITE_ASM("dup\n");
+    WRITE_ASM("dup\n");
+    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
+    WRITE_ASM("zdiv\n");
+    WRITE_ASM("push 2\n");
+    WRITE_ASM("sub\n");
+    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
+    WRITE_ASM("mul\n");
+    WRITE_ASM("sub\n");
+    WRITE_ASM("sub\n");
+    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
+    WRITE_ASM("add\n");
+    WRITE_ASM("pop VID\n");
+
+
     WRITE_ASM("RET\n\n");
 
 

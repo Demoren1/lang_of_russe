@@ -357,7 +357,55 @@ DEF_CMD(ABS, 24, 0, '\n',
     push(num * ACCURACY);
 })
 
-DEF_CMD(INCR_R, 25, 1, '\n',
+DEF_CMD(GEQ, 25, 0, '\n',
+{},
+{
+    pop(num1);
+    pop(num2);
+    num1 = num1 / ACCURACY;
+    num2 = num2 / ACCURACY;
+
+    num = num2 - num1 + fabs(num1 - num2) + 1;
+    push(num * ACCURACY);
+})
+
+DEF_CMD(GE, 26, 0, '\n',
+{},
+{
+    pop(num1);
+    pop(num2);
+    num1 = num1 / ACCURACY;
+    num2 = num2 / ACCURACY;
+
+    num = num2 - num1 + fabs(num1 - num2);
+    push(num * ACCURACY);
+})
+
+DEF_CMD(LEQ, 27, 0, '\n',
+{},
+{
+    pop(num1);
+    pop(num2);
+    num1 = num1 / ACCURACY;
+    num2 = num2 / ACCURACY;
+
+    num = num2 - num1 - fabs(num1 - num2) - 1;
+    push(num * ACCURACY);
+})
+
+DEF_CMD(LE, 28, 0, '\n',
+{},
+{
+    pop(num1);
+    pop(num2);
+    num1 = num1 / ACCURACY;
+    num2 = num2 / ACCURACY;
+
+    num = num2 - num1 - fabs(num1 - num2);
+    push(num * ACCURACY);
+})
+
+DEF_CMD(INCR_R, 29, 1, '\n',
 {           
     arr_of_commands[*ip] = args.value;
     fprintf(executable_file, "%d %c", arr_of_commands[(*ip)++],'\n');
@@ -369,64 +417,17 @@ DEF_CMD(INCR_R, 25, 1, '\n',
     ip++;
 })
 
+DEF_CMD(ZDIV, 30, 0, '\n',
+{},
+{
+    pop(num1);           
+    pop(num2);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    num1 /= ACCURACY;
+    num2 /= ACCURACY;
+    num = int (num2 / num1);
+    num *= ACCURACY;
+    
+    push(num);
+}
+)

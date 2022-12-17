@@ -15,7 +15,7 @@ label=<
         <table border="0" cellborder="1">
         <tr>
             <td bgcolor="#70de9f" port = "L1"> Left = 0x604000000050</td> 
-            <td bgcolor = "#c8A2c8" port = "R1"> Right =  (nil) </td>
+            <td bgcolor = "#c8A2c8" port = "R1"> Right =  0x6040000003d0 </td>
         </tr> 
         </table> 
     </td>
@@ -78,7 +78,7 @@ label=<
         <table border="0" cellborder="1">
         <tr>
             <td bgcolor="#70de9f" port = "L4"> Left = 0x604000000110</td> 
-            <td bgcolor = "#c8A2c8" port = "R4"> Right =  0x604000000290 </td>
+            <td bgcolor = "#c8A2c8" port = "R4"> Right =  0x604000000190 </td>
         </tr> 
         </table> 
     </td>
@@ -91,7 +91,7 @@ node5 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
     <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000000d0</font></td></tr>
-    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> = </font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> input </font></td></tr>
     <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
     <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000110</font></td></tr>
     <tr>
@@ -99,7 +99,7 @@ label=<
         <table border="0" cellborder="1">
         <tr>
             <td bgcolor="#70de9f" port = "L5"> Left = 0x604000000150</td> 
-            <td bgcolor = "#c8A2c8" port = "R5"> Right =  0x604000000190 </td>
+            <td bgcolor = "#c8A2c8" port = "R5"> Right =  (nil) </td>
         </tr> 
         </table> 
     </td>
@@ -112,7 +112,7 @@ node6 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
     <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000110</font></td></tr>
-    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> y </font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> target </font></td></tr>
     <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
     <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000150</font></td></tr>
     <tr>
@@ -128,20 +128,20 @@ label=<
 </table>>
 ]
 
-node5: R5 -> node7; 
+node4: R4 -> node7; 
 node7 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
-    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000110</font></td></tr>
-    <tr><td bgcolor=" #7cbdff "><font color="#0000ff"> abs </font></td></tr>
-    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 10</font></td></tr>
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000000d0</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
     <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000190</font></td></tr>
     <tr>
     <td>
         <table border="0" cellborder="1">
         <tr>
-            <td bgcolor="#70de9f" port = "L7"> Left = (nil)</td> 
-            <td bgcolor = "#c8A2c8" port = "R7"> Right =  0x604000000250 </td>
+            <td bgcolor="#70de9f" port = "L7"> Left = 0x6040000001d0</td> 
+            <td bgcolor = "#c8A2c8" port = "R7"> Right =  0x604000000310 </td>
         </tr> 
         </table> 
     </td>
@@ -149,20 +149,20 @@ label=<
 </table>>
 ]
 
-node7: R7 -> node8; 
+node7: L7 -> node8; 
 node8 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
     <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000190</font></td></tr>
-    <tr><td bgcolor=" #7cbdff "><font color="#0000ff"> - </font></td></tr>
-    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
-    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000250</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> = </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000001d0</font></td></tr>
     <tr>
     <td>
         <table border="0" cellborder="1">
         <tr>
-            <td bgcolor="#70de9f" port = "L8"> Left = 0x6040000001d0</td> 
-            <td bgcolor = "#c8A2c8" port = "R8"> Right =  0x604000000210 </td>
+            <td bgcolor="#70de9f" port = "L8"> Left = 0x604000000210</td> 
+            <td bgcolor = "#c8A2c8" port = "R8"> Right =  0x604000000250 </td>
         </tr> 
         </table> 
     </td>
@@ -174,10 +174,10 @@ node8: L8 -> node9;
 node9 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
-    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000250</font></td></tr>
-    <tr><td bgcolor=" #ffe4ad  "><font color="#0000ff"> 5 </font></td></tr>
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000001d0</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> result </font></td></tr>
     <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
-    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000001d0</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000210</font></td></tr>
     <tr>
     <td>
         <table border="0" cellborder="1">
@@ -195,15 +195,15 @@ node8: R8 -> node10;
 node10 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
-    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000250</font></td></tr>
-    <tr><td bgcolor=" #ffe4ad  "><font color="#0000ff"> 7 </font></td></tr>
-    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
-    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000210</font></td></tr>
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000001d0</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> funcall </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000250</font></td></tr>
     <tr>
     <td>
         <table border="0" cellborder="1">
         <tr>
-            <td bgcolor="#70de9f" port = "L10"> Left = (nil)</td> 
+            <td bgcolor="#70de9f" port = "L10"> Left = 0x604000000290</td> 
             <td bgcolor = "#c8A2c8" port = "R10"> Right =  (nil) </td>
         </tr> 
         </table> 
@@ -212,13 +212,13 @@ label=<
 </table>>
 ]
 
-node4: R4 -> node11; 
+node10: L10 -> node11; 
 node11 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
-    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000000d0</font></td></tr>
-    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
-    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000250</font></td></tr>
+    <tr><td bgcolor=" #ffadb8  "><font color="#0000ff"> fuck </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
     <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000290</font></td></tr>
     <tr>
     <td>
@@ -238,14 +238,14 @@ node12 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
     <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000290</font></td></tr>
-    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> print </font></td></tr>
-    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> target </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
     <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000002d0</font></td></tr>
     <tr>
     <td>
         <table border="0" cellborder="1">
         <tr>
-            <td bgcolor="#70de9f" port = "L12"> Left = 0x604000000310</td> 
+            <td bgcolor="#70de9f" port = "L12"> Left = (nil)</td> 
             <td bgcolor = "#c8A2c8" port = "R12"> Right =  (nil) </td>
         </tr> 
         </table> 
@@ -254,20 +254,776 @@ label=<
 </table>>
 ]
 
-node12: L12 -> node13; 
+node7: R7 -> node13; 
 node13 [
 label=<
 <table border="0" cellborder="1" cellspacing="0">
-    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000002d0</font></td></tr>
-    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> y </font></td></tr>
-    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000190</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
     <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000310</font></td></tr>
     <tr>
     <td>
         <table border="0" cellborder="1">
         <tr>
-            <td bgcolor="#70de9f" port = "L13"> Left = (nil)</td> 
+            <td bgcolor="#70de9f" port = "L13"> Left = 0x604000000350</td> 
             <td bgcolor = "#c8A2c8" port = "R13"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node13: L13 -> node14; 
+node14 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000310</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> print </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000350</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L14"> Left = 0x604000000390</td> 
+            <td bgcolor = "#c8A2c8" port = "R14"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node14: L14 -> node15; 
+node15 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000350</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> result </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000390</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L15"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R15"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node1: R1 -> node16; 
+node16 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000010</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000003d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L16"> Left = 0x604000000410</td> 
+            <td bgcolor = "#c8A2c8" port = "R16"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node16: L16 -> node17; 
+node17 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000003d0</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> def </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000410</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L17"> Left = 0x604000000450</td> 
+            <td bgcolor = "#c8A2c8" port = "R17"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node17: L17 -> node18; 
+node18 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000410</font></td></tr>
+    <tr><td bgcolor=" #ffadb8  "><font color="#0000ff"> fuck </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000450</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L18"> Left = 0x604000000490</td> 
+            <td bgcolor = "#c8A2c8" port = "R18"> Right =  0x6040000004d0 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node18: L18 -> node19; 
+node19 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000450</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> n </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000490</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L19"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R19"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node18: R18 -> node20; 
+node20 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000450</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000004d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L20"> Left = 0x604000000510</td> 
+            <td bgcolor = "#c8A2c8" port = "R20"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node20: L20 -> node21; 
+node21 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000004d0</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> if </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000510</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L21"> Left = 0x6040000005d0</td> 
+            <td bgcolor = "#c8A2c8" port = "R21"> Right =  0x604000000b90 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node21: L21 -> node22; 
+node22 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000510</font></td></tr>
+    <tr><td bgcolor=" #7cbdff "><font color="#0000ff"> GE </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 10</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000005d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L22"> Left = 0x604000000550</td> 
+            <td bgcolor = "#c8A2c8" port = "R22"> Right =  0x604000000590 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node22: L22 -> node23; 
+node23 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000005d0</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> n </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000550</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L23"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R23"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node22: R22 -> node24; 
+node24 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000005d0</font></td></tr>
+    <tr><td bgcolor=" #ffe4ad  "><font color="#0000ff"> 1 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000590</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L24"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R24"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node21: R21 -> node25; 
+node25 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000510</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000b90</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L25"> Left = 0x604000000610</td> 
+            <td bgcolor = "#c8A2c8" port = "R25"> Right =  0x604000000b50 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node25: L25 -> node26; 
+node26 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000b90</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000610</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L26"> Left = 0x604000000650</td> 
+            <td bgcolor = "#c8A2c8" port = "R26"> Right =  0x604000000790 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node26: L26 -> node27; 
+node27 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000610</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> = </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000650</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L27"> Left = 0x604000000690</td> 
+            <td bgcolor = "#c8A2c8" port = "R27"> Right =  0x604000000750 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node27: L27 -> node28; 
+node28 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000650</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp1 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000690</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L28"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R28"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node27: R27 -> node29; 
+node29 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000650</font></td></tr>
+    <tr><td bgcolor=" #7cbdff "><font color="#0000ff"> - </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000750</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L29"> Left = 0x6040000006d0</td> 
+            <td bgcolor = "#c8A2c8" port = "R29"> Right =  0x604000000710 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node29: L29 -> node30; 
+node30 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000750</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> n </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000006d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L30"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R30"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node29: R29 -> node31; 
+node31 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000750</font></td></tr>
+    <tr><td bgcolor=" #ffe4ad  "><font color="#0000ff"> 1 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000710</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L31"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R31"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node26: R26 -> node32; 
+node32 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000610</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000790</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L32"> Left = 0x6040000007d0</td> 
+            <td bgcolor = "#c8A2c8" port = "R32"> Right =  0x604000000910 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node32: L32 -> node33; 
+node33 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000790</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> = </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000007d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L33"> Left = 0x604000000810</td> 
+            <td bgcolor = "#c8A2c8" port = "R33"> Right =  0x604000000850 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node33: L33 -> node34; 
+node34 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000007d0</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp2 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000810</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L34"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R34"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node33: R33 -> node35; 
+node35 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x6040000007d0</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> funcall </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000850</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L35"> Left = 0x604000000890</td> 
+            <td bgcolor = "#c8A2c8" port = "R35"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node35: L35 -> node36; 
+node36 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000850</font></td></tr>
+    <tr><td bgcolor=" #ffadb8  "><font color="#0000ff"> fuck </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000890</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L36"> Left = 0x6040000008d0</td> 
+            <td bgcolor = "#c8A2c8" port = "R36"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node36: L36 -> node37; 
+node37 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000890</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp1 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000008d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L37"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R37"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node32: R32 -> node38; 
+node38 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000790</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000910</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L38"> Left = 0x604000000950</td> 
+            <td bgcolor = "#c8A2c8" port = "R38"> Right =  0x604000000a90 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node38: L38 -> node39; 
+node39 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000910</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> = </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000950</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L39"> Left = 0x604000000990</td> 
+            <td bgcolor = "#c8A2c8" port = "R39"> Right =  0x604000000a50 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node39: L39 -> node40; 
+node40 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000950</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp3 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000990</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L40"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R40"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node39: R39 -> node41; 
+node41 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000950</font></td></tr>
+    <tr><td bgcolor=" #7cbdff "><font color="#0000ff"> * </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 2</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000a50</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L41"> Left = 0x6040000009d0</td> 
+            <td bgcolor = "#c8A2c8" port = "R41"> Right =  0x604000000a10 </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node41: L41 -> node42; 
+node42 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000a50</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp1 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x6040000009d0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L42"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R42"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node41: R41 -> node43; 
+node43 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000a50</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp2 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000a10</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L43"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R43"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node38: R38 -> node44; 
+node44 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000910</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000a90</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L44"> Left = 0x604000000ad0</td> 
+            <td bgcolor = "#c8A2c8" port = "R44"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node44: L44 -> node45; 
+node45 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000a90</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> return </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000ad0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L45"> Left = 0x604000000b10</td> 
+            <td bgcolor = "#c8A2c8" port = "R45"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node45: L45 -> node46; 
+node46 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000ad0</font></td></tr>
+    <tr><td bgcolor=" #d9ffc0 "><font color="#0000ff"> tmp3 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000b10</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L46"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R46"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node25: R25 -> node47; 
+node47 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000b90</font></td></tr>
+    <tr><td bgcolor=" #cfffec "><font color="#0000ff"> EMPTY </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000b50</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L47"> Left = 0x604000000bd0</td> 
+            <td bgcolor = "#c8A2c8" port = "R47"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node47: L47 -> node48; 
+node48 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000b50</font></td></tr>
+    <tr><td bgcolor=" #dfadff "><font color="#0000ff"> return </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 999</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000bd0</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L48"> Left = 0x604000000c10</td> 
+            <td bgcolor = "#c8A2c8" port = "R48"> Right =  (nil) </td>
+        </tr> 
+        </table> 
+    </td>
+    </tr>
+</table>>
+]
+
+node48: L48 -> node49; 
+node49 [
+label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td bgcolor="#ad8abf"><font color="#061f2b">parent = 0x604000000bd0</font></td></tr>
+    <tr><td bgcolor=" #ffe4ad  "><font color="#0000ff"> 1 </font></td></tr>
+    <tr><td bgcolor="#c0fae8 "><font color="black">priority = 1</font></td></tr>
+    <tr><td bgcolor="lightgreen"><font color="black">cur_address = 0x604000000c10</font></td></tr>
+    <tr>
+    <td>
+        <table border="0" cellborder="1">
+        <tr>
+            <td bgcolor="#70de9f" port = "L49"> Left = (nil)</td> 
+            <td bgcolor = "#c8A2c8" port = "R49"> Right =  (nil) </td>
         </tr> 
         </table> 
     </td>

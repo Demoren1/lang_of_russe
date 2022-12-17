@@ -19,4 +19,3 @@ DEF_LOG_OP_CMD(INPUT, 8, "input", "input")
 DEF_LOG_OP_CMD(ELSE, 9, "else", "else")
 
 DEF_LOG_OP_CMD(PRINT_STR, 10, "strprint", "strprint")
-

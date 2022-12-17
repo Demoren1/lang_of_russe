@@ -272,6 +272,8 @@ Node *get_VAR()
     SOFT_ASS_NO_RET(node == NULL);
 
     Data_tokens->cur_pos++;
+
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     return node;
 }
 
@@ -386,6 +388,7 @@ Node* get_T()
     while(Data_tokens->cur_pos < Data_tokens->size &&
           cur_token->type_node == ARITHM_OP        &&
           (cur_token->value.op_value == MUL || 
+           cur_token->value.op_value == ZDIV || 
            cur_token->value.op_value == DIV))
     {
         
@@ -404,6 +407,13 @@ Node* get_T()
         else if (op == DIV)
         {
             Node *new_node = Create_OP_node(DIV);
+            node_connect(new_node, node, LEFT);
+            node_connect(new_node, r_node, RIGHT);
+            node = new_node;
+        }
+        else if (op == ZDIV)
+        {
+            Node *new_node = Create_OP_node(ZDIV);
             node_connect(new_node, node, LEFT);
             node_connect(new_node, r_node, RIGHT);
             node = new_node;
@@ -429,30 +439,44 @@ Node* get_Expression()
     while( Data_tokens->cur_pos < Data_tokens->size &&
           cur_token->type_node      == ARITHM_OP    &&
          (cur_token->value.op_value == ADD || 
-          cur_token->value.op_value == SUB))
+          cur_token->value.op_value == SUB ||
+          cur_token->value.op_value == GEQ ||
+          cur_token->value.op_value == GE  ||
+          cur_token->value.op_value == LEQ ||
+          cur_token->value.op_value == LE))
     {
         Arith_Operation op = cur_token->value.op_value;
 
         Data_tokens->cur_pos++;
             
         Node* r_node = get_T();
-        
-        if (op == ADD)
-        {
-            Node *new_node = Create_OP_node(ADD);
-            node_connect(new_node, node, LEFT);
-            node_connect(new_node, r_node, RIGHT);
-            node = new_node;
-        }
-         
-        else if (op == SUB)
-        {
-            Node *new_node = Create_OP_node(SUB);
-            node_connect(new_node, node, LEFT);
-            node_connect(new_node, r_node, RIGHT);
-            node = new_node;
-        }
+        Node *new_node = NULL;
 
+        switch (op)
+        {
+            case ADD:
+                new_node = Create_OP_node(ADD);
+                break;
+            case SUB:
+                new_node = Create_OP_node(SUB);
+                break;
+            case GEQ:
+                new_node = Create_OP_node(GEQ);
+                break;
+            case GE:
+                new_node = Create_OP_node(GE);
+                break;
+            case LEQ:
+                new_node = Create_OP_node(LEQ);
+                break;
+            case LE:
+                new_node = Create_OP_node(LE);
+                break;
+        }
+        node_connect(new_node, node, LEFT);
+        node_connect(new_node, r_node, RIGHT);
+        node = new_node;
+        
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     }
 

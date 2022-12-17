@@ -25,11 +25,14 @@ int lang_add_spaces(Buffer *buff)
 int lang_get_name(char src[], int n_names, char **arr_with_names)
 {
     if (n_names > 2)
-    {
+    {   
+        printf("path get %s \n", src);
         strncpy(src, *(arr_with_names + 1), MAX_LEN_VALUE);
     }
     else 
+    {
         strncpy(src, "expression.txt", MAX_LEN_VALUE);
+    }
 
     return 0;
 }
