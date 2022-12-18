@@ -334,12 +334,18 @@ int handle_IF(Node *node, Arg_elem general_args[])
     handle_node(node->l_son, general_args);
 
     WRITE_ASM("jee :else_%d\n", else_index);
-    handle_empty(node->r_son->l_son, general_args);
+    
+    if (node->r_son->l_son->type == EMPTY)
+        handle_empty(node->r_son->l_son, general_args);
+    else
+        handle_empty(node->r_son, general_args);
 
     WRITE_ASM("\njmp :endif_%d\n", if_index);
     WRITE_ASM("else_%d:\n", else_index++);
 
-    handle_empty(node->r_son->r_son, general_args);
+    if (node->r_son->l_son->type == EMPTY)
+        handle_empty(node->r_son->r_son, general_args);
+
     WRITE_ASM("endif_%d:\n", if_index++);
 
     return 0;   
@@ -402,6 +408,11 @@ int handle_PRINT_STR(Node *node, Arg_elem general_args[])
 
     for (int i = len - 1; i >= 0; i--)
     {
+        if (str[i] == 95)
+        {
+            WRITE_ASM ("push 32\n");
+            continue;
+        }
         WRITE_ASM("push %d\n", str[i]);
     }
 

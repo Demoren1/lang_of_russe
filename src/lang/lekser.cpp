@@ -180,10 +180,9 @@ char *lekser_VAR(char *str, size_t *shift)
 {
     char *tmp_str = strtok(str, " ");
     char *to_ret_str = strdup(tmp_str);
-
     *shift = strlen(to_ret_str);
-
     return to_ret_str;
+    
 }
 
 int lekser_dtor(Tokens *data_tokens)

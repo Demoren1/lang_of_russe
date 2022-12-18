@@ -1,0 +1,65 @@
+def main ( ) {
+    strprint ( ax^2_+_bx_+_c_=_0 )
+    strprint ( _input_a,_b,_c )
+    input ( a ; b ; c )
+
+
+    if ( abs ( a ) ) {
+        solve_square ( a ; b ; c )
+    }
+    else {
+        if ( abs ( b ) ) {
+            solve_linear ( b ; c )
+        }
+        else {
+            solve_identity ( c )
+        }
+    }
+}
+
+def solve_linear ( b ; c ) {
+    strprint ( _its_linear_eq_ )
+    strprint ( _root_is_ )
+
+    root1 = ( 0 - c ) / b
+    print ( root1 )
+}
+
+def solve_identity ( c ) {
+    if ( abs ( c ) ) {
+        strprint ( _no_roots_ )
+    }
+    else {
+        strprint ( _inf_roots_ )
+    }
+}
+
+def solve_square ( a ; b ; c ) {
+    D = b ^ 2 - 4 * a * c 
+
+    if ( D > 0 ) {
+        find_two_roots ( D ; a ; b )
+    }
+    else {
+        if ( D < 0 ) {
+            strprint ( _no_roots_ )
+        }
+        else { 
+            find_one_root ( D ; a ; b )
+        }
+    }
+}
+
+def find_two_roots ( D ; a ; b ) {
+    
+    strprint ( rooted_D_is )
+
+    root1 = ( ( 0 - b ) - D ^ ( 1 / 2 ) ) / ( 2 * a ) 
+    root2 = ( ( 0 - b ) + D ^ ( 1 / 2 ) ) / ( 2 * a )
+
+    strprint ( _firs_root_is_ )
+    print ( root1 )
+
+    strprint ( _second_root_is_ )
+    print ( root2 )
+}

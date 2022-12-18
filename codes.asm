@@ -6,20 +6,594 @@ call :main
 hlt 
 
 main: 
-push 0
-push 7
-SUB
-ABS
-push 10
-ADD
-pop [VID + 0]
+push 0      ## ax^2_+_bx_+_c_=_0
+push 10 
+push 48
+push 32
+push 61
+push 32
+push 99
+push 32
+push 43
+push 32
+push 120
+push 98
+push 32
+push 43
+push 32
+push 50
+push 94
+push 120
+push 97
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+pop [12]
+pop [13]
+pop [14]
+pop [15]
+pop [16]
+pop [17]
+pop [18]
+show
+
+push 0      ## _input_a,_b,_c
+push 10 
+push 99
+push 32
+push 44
+push 98
+push 32
+push 44
+push 97
+push 32
+push 116
+push 117
+push 112
+push 110
+push 105
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+pop [12]
+pop [13]
+pop [14]
+pop [15]
+show
+
+in
+pop [VID + 2]
+
+in
+pop [VID + 3]
+
+in
+pop [VID + 4]
 
 push 0
-push 7
-SUB
+push [VID + 2]
 ABS
-push 10
+jee :else_0
+push [VID + 2] 
+pop [VIF + 0] 
+push [VID + 3] 
+pop [VIF + 1] 
+push [VID + 4] 
+pop [VIF + 2] 
+
+
+
+push VID
+dup
+dup
+push 64
+zdiv
+push 64
+mul
+sub
+sub
+push 64
+add
+pop VID
+call :solve_square
+push RCX
+
+
+jmp :endif_0
+else_0:
+push 0
+push [VID + 3]
+ABS
+jee :else_1
+push [VID + 3] 
+pop [VIF + 0] 
+push [VID + 4] 
+pop [VIF + 1] 
+
+
+
+push VID
+dup
+dup
+push 64
+zdiv
+push 64
+mul
+sub
+sub
+push 64
+add
+pop VID
+call :solve_linear
+push RCX
+
+
+jmp :endif_0
+else_1:
+push [VID + 4] 
+pop [VIF + 0] 
+
+
+
+push VID
+dup
+dup
+push 64
+zdiv
+push 64
+mul
+sub
+sub
+push 64
+add
+pop VID
+call :solve_identity
+push RCX
+
+endif_0:
+endif_1:
+RET
+
+solve_linear: 
+push [VIF + 0] 
+pop [VID + 0] 
+push [VIF + 1] 
+pop [VID + 1] 
+
+push 0      ## _its_linear_eq_
+push 10 
+push 32
+push 113
+push 101
+push 32
+push 114
+push 97
+push 101
+push 110
+push 105
+push 108
+push 32
+push 115
+push 116
+push 105
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+pop [12]
+pop [13]
+pop [14]
+pop [15]
+pop [16]
+show
+
+push 0      ## _root_is_
+push 10 
+push 32
+push 115
+push 105
+push 32
+push 116
+push 111
+push 111
+push 114
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+show
+
+push 0
+push [VID + 1]
+SUB
+push [VID + 0]
+DIV
+pop [VID + 4]
+
+push [VID + 4]
+out
+
+RET
+
+solve_identity: 
+push [VIF + 0] 
+pop [VID + 0] 
+
+push 0
+push [VID + 0]
+ABS
+jee :else_2
+push 0      ## _no_roots_
+push 10 
+push 32
+push 115
+push 116
+push 111
+push 111
+push 114
+push 32
+push 111
+push 110
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+show
+
+
+jmp :endif_2
+else_2:
+push 0      ## _inf_roots_
+push 10 
+push 32
+push 115
+push 116
+push 111
+push 111
+push 114
+push 32
+push 102
+push 110
+push 105
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+pop [12]
+show
+
+endif_2:
+RET
+
+solve_square: 
+push [VIF + 0] 
+pop [VID + 0] 
+push [VIF + 1] 
+pop [VID + 1] 
+push [VIF + 2] 
+pop [VID + 2] 
+
+push [VID + 1]
+push 2
+DEGREE
+push 4
+push [VID + 0]
+MUL
+push [VID + 2]
+MUL
+SUB
+pop [VID + 3]
+
+push 0
+push [VID + 3]
+push 0
+GE
+jee :else_3
+push [VID + 3] 
+pop [VIF + 0] 
+push [VID + 0] 
+pop [VIF + 1] 
+push [VID + 1] 
+pop [VIF + 2] 
+
+
+
+push VID
+dup
+dup
+push 64
+zdiv
+push 64
+mul
+sub
+sub
+push 64
+add
+pop VID
+call :find_two_roots
+push RCX
+
+
+jmp :endif_3
+else_3:
+push 0
+push [VID + 3]
+push 0
+LE
+jee :else_4
+push 0      ## _no_roots_
+push 10 
+push 32
+push 115
+push 116
+push 111
+push 111
+push 114
+push 32
+push 111
+push 110
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+show
+
+
+jmp :endif_3
+else_4:
+push [VID + 3] 
+pop [VIF + 0] 
+push [VID + 0] 
+pop [VIF + 1] 
+push [VID + 1] 
+pop [VIF + 2] 
+
+
+
+push VID
+dup
+dup
+push 64
+zdiv
+push 64
+mul
+sub
+sub
+push 64
+add
+pop VID
+call :find_one_root
+push RCX
+
+endif_3:
+endif_4:
+RET
+
+find_two_roots: 
+push [VIF + 0] 
+pop [VID + 0] 
+push [VIF + 1] 
+pop [VID + 1] 
+push [VIF + 2] 
+pop [VID + 2] 
+
+push 0
+push [VID + 2]
+SUB
+push [VID + 0]
+push 1
+push 2
+DIV
+DEGREE
+SUB
+push 2
+push [VID + 1]
+MUL
+DIV
+pop [VID + 3]
+
+push 0
+push [VID + 2]
+SUB
+push [VID + 0]
+push 1
+push 2
+DIV
+DEGREE
 ADD
+push 2
+push [VID + 1]
+MUL
+DIV
+pop [VID + 4]
+
+push 0      ## _first_root_is_
+push 10 
+push 32
+push 115
+push 105
+push 32
+push 116
+push 111
+push 111
+push 114
+push 32
+push 116
+push 115
+push 114
+push 105
+push 102
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+pop [12]
+pop [13]
+pop [14]
+pop [15]
+pop [16]
+show
+
+push [VID + 3]
+out
+
+push 0      ## _second_root_is_
+push 10 
+push 32
+push 115
+push 105
+push 32
+push 116
+push 111
+push 111
+push 114
+push 32
+push 100
+push 110
+push 111
+push 99
+push 101
+push 115
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+pop [11]
+pop [12]
+pop [13]
+pop [14]
+pop [15]
+pop [16]
+pop [17]
+show
+
+push [VID + 4]
+out
+
+RET
+
+find_one_root: 
+push [VIF + 0] 
+pop [VID + 0] 
+push [VIF + 1] 
+pop [VID + 1] 
+push [VIF + 2] 
+pop [VID + 2] 
+
+push 0
+push [VID + 2]
+SUB
+push 2
+push [VID + 1]
+MUL
+DIV
+pop [VID + 3]
+
+push 0      ## _root_is_
+push 10 
+push 32
+push 115
+push 105
+push 32
+push 116
+push 111
+push 111
+push 114
+push 32
+pop [0]
+pop [1]
+pop [2]
+pop [3]
+pop [4]
+pop [5]
+pop [6]
+pop [7]
+pop [8]
+pop [9]
+pop [10]
+show
+
+push [VID + 3]
 out
 
 RET
