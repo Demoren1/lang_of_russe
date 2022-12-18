@@ -170,23 +170,6 @@ DEF_CMD(IN, 7, 0, '\n',
 }
 )
 
-DEF_CMD(OUT, 31, 0, '\n',
-{},
-{
-    pop(num);
-    
-    fprintf(file_result, "%d", (int)num);
-    fprintf(stdout, "%g \n", (num / ACCURACY));
-}
-)
-
-DEF_CMD(DUMP, -1, 0, '\n',
-{},
-{
-    DUMP_CPU(*cpu, ip, stack);
-}
-)
-
 DEF_CMD(DUP, 8, 0, '\n',
 {},
 {
@@ -428,6 +411,37 @@ DEF_CMD(ZDIV, 30, 0, '\n',
     num = int (num2 / num1);
     num *= ACCURACY;
     
+    push(num);
+}
+)
+
+DEF_CMD(OUT, 31, 0, '\n',
+{},
+{
+    pop(num);
+    
+    fprintf(file_result, "%d", (int)num);
+    fprintf(stdout, "%g \n", (num / ACCURACY));
+}
+)
+
+DEF_CMD(DUMP, -1, 0, '\n',
+{},
+{
+    DUMP_CPU(*cpu, ip, stack);
+}
+)
+
+DEF_CMD(DEGREE, 32, 0, '\n',
+{},
+{   
+    pop(num1);           
+    pop(num2);
+    num1 /= ACCURACY;
+    num2 /= ACCURACY;
+
+    num = pow(num2, num1) * ACCURACY;
+
     push(num);
 }
 )
