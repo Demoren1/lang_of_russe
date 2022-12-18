@@ -6,12 +6,20 @@ call :main
 hlt 
 
 main: 
-push 3
-push 2
-DEGREE
+push 0
+push 7
+SUB
+ABS
+push 10
+ADD
 pop [VID + 0]
 
-push [VID + 0]
+push 0
+push 7
+SUB
+ABS
+push 10
+ADD
 out
 
 RET
