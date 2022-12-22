@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
-#include "../include/stack_objects.h"
+#include <stack_objects.h>
 
 FILE* open_with_no_buff(const char* name_file, const char* regime)
 {

@@ -2,8 +2,8 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
-#include "../include/debug.h"
-#include "../include/stack_objects.h"
+#include <debug.h>
+#include <stack_objects.h>
 
 int stack_ctor(Stack *stk, ssize_t capacity, const char* name_function, const char* name_file, const char* name_variable, int num_line)            
 {   

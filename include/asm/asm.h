@@ -78,7 +78,7 @@ const int MASK_CMD = 0x3F;
 
 enum CPU_codes
 {   
-    #include "../include/cmd.h"
+    #include <cmd.h>
     MAX_CMD
 };
 #undef DEF_CMD

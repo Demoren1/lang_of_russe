@@ -148,7 +148,7 @@ void execute_commands(Cpu_struct *cpu, Stack *stack, FILE* file_result)
         }
         switch (cmd)
         {
-            #include "../include/cmd.h"
+            #include <cmd.h>
         }
         DUMP_CPU(*cpu, ip, &cpu->stack);
     }

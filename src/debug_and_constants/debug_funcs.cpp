@@ -2,8 +2,8 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
-#include "../include/debug.h"
-#include "../include/stack_objects.h"
+#include <debug.h>
+#include <stack_objects.h>
 
 static FILE *log_file = 0;
 

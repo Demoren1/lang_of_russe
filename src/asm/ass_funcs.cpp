@@ -51,7 +51,7 @@ int compile(FILE *executable_file, ass_info *info_of_codes)
             label_ptr++;
         }
 
-        #include "../include/cmd.h"
+        #include <cmd.h>
 
         else if (cmd[0] == -1); 
 
@@ -82,7 +82,7 @@ var_ass get_args(ass_info *info_of_codes, char *text, int *arr_of_commands, int 
 
     switch (arr_of_commands[*ip-1])
     {    
-        #include "../include/cmd.h"
+        #include <cmd.h>
     }
     return 0;
 }

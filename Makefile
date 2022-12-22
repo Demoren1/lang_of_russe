@@ -25,7 +25,7 @@ CFLAGS= -save-temps -Wall -Wextra -fsanitize=address -g #-D _DEBUG -ggdb3 -std=c
 -pie -Wlarger-than=8192 -Wstack-usage=8192
 
 #include
-INCLUDE_PATH = -I./include/
+INCLUDE_PATH = -I./include/asm/ -I./include/code_gen/ -I./include/cpu/ -I./include/diff_headers/ -I./include/lang_headers/ -I./include/other/ -I./include/tree/
 
 #sources
 DIFF_SRC  	:= $(wildcard $(SRC_DIFF_DIR)*.cpp)

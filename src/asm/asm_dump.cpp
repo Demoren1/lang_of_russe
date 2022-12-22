@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include <math.h>
 #include <unistd.h>
-#include "../include/asm.h"
-#include "../include/stack_objects.h"
-#include "../include/debug.h"
-#include "../include/cpu.h"
+#include <asm.h>
+#include <stack_objects.h>
+#include <debug.h>
+#include <cpu.h>
 
 static FILE* ASS_LOGS = 0; // ToDo: USE_CAPS_WITH_GLOBAL_VARIABLES
 
