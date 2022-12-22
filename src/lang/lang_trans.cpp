@@ -229,7 +229,7 @@ Node *handle_var(Node *node, Arg_elem general_args[])
 }
 
 int find_index(Arg_elem general_args[],char var_value[])
-{
+{   
     for (int counter = 0; general_args[counter].index != -1; counter++ )
     {
         if (strcasecmp(general_args[counter].var_name, var_value) == 0)
@@ -237,7 +237,6 @@ int find_index(Arg_elem general_args[],char var_value[])
             return   (general_args[counter].index);
         }
     }
-
     return 0;
 }
 

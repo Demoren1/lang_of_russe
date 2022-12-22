@@ -68,9 +68,9 @@ typedef enum
 
 union Value
 {
-    double dbl_value;
+    double dbl_value = NAN;
     Arith_Operation op_value;
-    char *var_value = NULL;
+    char *var_value;
     Log_Oper log_op;
     int staff_val;
     Separators sep;
@@ -105,7 +105,7 @@ typedef struct Node_t
     Pos_of_node pos;
 
     Priorities priority;
-
+    int func_num;
 } Node;
 
 typedef struct Var_t

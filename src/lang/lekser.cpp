@@ -6,7 +6,7 @@
 #include <tree_debug.h>
 #include <lang.h>
 
-Tokens *lekser_data_tokens_ctor(Tokens *data_tokens)
+Tokens *lekser_data_tokens_ctor(Tokens *data_tokens)  //todo redo add more opportunity
 {
     SOFT_ASS_NO_RET(data_tokens == NULL);
 

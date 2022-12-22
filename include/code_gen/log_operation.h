@@ -1,4 +1,4 @@
-DEF_LOG_OP_CMD(NOT_LOG_OP, -1, "ERROR", "ERROR", {})
+DEF_LOG_OP_CMD(NOT_LOG_OP, -1, "ERROR", "ERROR", {}) //todo delete naive names
 
 DEF_LOG_OP_CMD(ASG, 1, "=", "=", 
 {
@@ -74,9 +74,16 @@ DEF_LOG_OP_CMD(FUNCALL, 6, "funcall", "funcall",
 {
     Node *tmp_node = node->l_son->l_son;
     int index = 0;
+    
     while (tmp_node)
-    {   
-        WRITE_ASM("push [VID + %d] \n", find_index(general_args, tmp_node->value.var_value));
+    {   if (tmp_node->func_num == 1)
+        {
+           WRITE_ASM("push %g\n", tmp_node->value.dbl_value);
+        }
+        else if (tmp_node->func_num == 0)
+        {
+           WRITE_ASM("push [VID + %d] \n", find_index(general_args, tmp_node->value.var_value));
+        }
         WRITE_ASM("pop [VIF + %d] \n", index++);
         tmp_node = tmp_node->l_son;
     }

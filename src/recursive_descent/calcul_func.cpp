@@ -14,7 +14,7 @@
 #include <calcul_funcs.h>
 #include <lang.h>
 
-static int check_end();
+static int check_end();                 //todo add operations with func
 
 Tokens *Data_tokens = NULL;
 
@@ -126,7 +126,7 @@ Node *get_LOG()
 
 
     // SOFT_ASS_NO_RET(cur_token->type_node != SEP);
-    if (cur_token->type_node == SEP && cur_token->value.sep == OPEN_CIRC)  
+    if (cur_token->type_node == SEP && cur_token->value.sep == OPEN_CIRC)  //todo go to other func
     {
         Data_tokens->cur_pos++;
 
@@ -221,12 +221,15 @@ Node *get_Func(Node *keyword_node)
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
     if (Data_tokens->cur_pos < Data_tokens->size &&
-        cur_token->type_node == VAR)
+        (cur_token->type_node == VAR || cur_token->type_node == NUM))
     {
-        
         cur_token->type_node = FUNC;
         
-        func_node = Create_VAR_node(cur_token->value.var_value);
+        if (cur_token->type_node == VAR)
+            func_node = Create_VAR_node(cur_token->value.var_value);
+        else
+            func_node = Create_NUM_node(cur_token->value.dbl_value);
+
         func_node->type = FUNC;
         node_connect(keyword_node, func_node, LEFT);        
         Data_tokens->cur_pos++;   
@@ -242,7 +245,10 @@ Node *get_Func(Node *keyword_node)
             if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_CIRC)
                 break;
 
-            tmp_node2 = Create_VAR_node(cur_token->value.var_value);
+            if (cur_token->type_node == VAR)
+                tmp_node2 = Create_VAR_node(cur_token->value.var_value);
+            else
+                tmp_node2 = Create_NUM_node(cur_token->value.dbl_value);
 
             node_connect(tmp_node1, tmp_node2, LEFT);
             tmp_node1 = tmp_node2;

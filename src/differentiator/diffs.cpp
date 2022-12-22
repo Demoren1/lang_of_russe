@@ -32,6 +32,7 @@ Node *Create_NUM_node(double dbl_value)
     new_node->value.dbl_value = dbl_value;              
     new_node->type = NUM;                                
     new_node->priority = NUM_PRIOR;
+    new_node->func_num = 1;
 
     return new_node;
 }
@@ -39,14 +40,10 @@ Node *Create_NUM_node(double dbl_value)
 Node *Create_VAR_node(char var[])
 {
     Node *new_node = node_ctor(); 
-    // new_node->value.var_value = (char *) calloc(MAX_LEN_VALUE, sizeof(char));
-    
-    new_node->value.var_value = strdup(var);
-
-    // strncpy(new_node->value.var_value, var, MAX_LEN_VALUE);              
-    
+    new_node->value.var_value = strdup(var);    
     new_node->type = VAR;                                
     new_node->priority = VAR_PRIOR;
+    new_node->func_num = 0;
 
     return new_node;
 }

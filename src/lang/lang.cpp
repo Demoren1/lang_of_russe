@@ -16,9 +16,9 @@
 #include <lang.h>
 #include <lekser_debug.h>
 
-int main(int argc, char *argv[])
-{
-    open_tree_logs();
+int main(int argc, char *argv[])         //todo lekser and parser rules
+{                                        //todo add error checkers
+    open_tree_logs();                    
 
     Buffer buff = {};
     Tokens data_tokens = {};
