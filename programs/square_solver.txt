@@ -3,6 +3,7 @@ def main ( ) {
     strprint ( _input_a,_b,_c )
     input ( a ; b ; c )
 
+
     if ( abs ( a ) ) {
         solve_square ( a ; b ; c )
     }
@@ -14,9 +15,9 @@ def main ( ) {
             solve_identity ( c )
         }
     }
-    return ( 0 )
-   }
 
+    return ( 0 )
+}
 
 def solve_square ( a ; b ; c ) {
     
@@ -37,6 +38,25 @@ def solve_square ( a ; b ; c ) {
     return ( 0 )
    }
 
+
+def solve_full_square ( a ; b ; c ; D ) {
+    x1 = ( 0 - b  - ( D ) ^ 1 / 2 ) / ( 2 * a )
+    x2 = ( 0 - b  + ( D ) ^ 1 / 2 ) / ( 2 * a )
+
+    strprint ( _roots_are_ )
+    print ( x1 ; x2 )
+
+    return ( 0 )
+}
+
+def find_one_root ( a ; b ) {
+    x = ( 0 - b ) / ( 2 * a )
+    strprint ( _root_is_ )
+    print ( x )
+
+    return ( 0 )
+}
+
 def solve_lin ( b ; c ) {
     root = ( 0 - c ) / b
 
@@ -51,22 +71,4 @@ def solve_identity ( c ) {
     else {
         strprint ( _inf_roots_ )
     }
-}
-
-def find_one_root ( a ; b ) {
-    x = ( 0 - b ) / ( 2 * a )
-    strprint ( _root_is_ )
-    print ( x )
-
-    return ( 0 )
-}
-
-def solve_full_square ( a ; b ; c ; D ) {
-    x1 = ( 0 - b  - ( D ) ^ 1 / 2 ) / ( 2 * a )
-    x2 = ( 0 - b  + ( D ) ^ 1 / 2 ) / ( 2 * a )
-
-    strprint ( _roots_are_ )
-    print ( x1 ; x2 )
-
-    return ( 0 )
 }

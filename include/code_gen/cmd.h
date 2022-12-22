@@ -348,7 +348,7 @@ DEF_CMD(GEQ, 25, 0, '\n',
     num1 = num1 / ACCURACY;
     num2 = num2 / ACCURACY;
 
-    num = num2 - num1 + fabs(num1 - num2) + 1;
+    num = num2 >= num1;
     push(num * ACCURACY);
 })
 
@@ -372,7 +372,7 @@ DEF_CMD(LEQ, 27, 0, '\n',
     num1 = num1 / ACCURACY;
     num2 = num2 / ACCURACY;
 
-    num = num2 - num1 - fabs(num1 - num2) - 1;
+    num = num2 <= num1;
     push(num * ACCURACY);
 })
 
