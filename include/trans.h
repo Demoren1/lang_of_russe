@@ -21,22 +21,5 @@ Node *handle_log(Node *node, Arg_elem general_args[]);
 
 int find_index(Arg_elem general_args[],char var_value[]);
 
-int handle_ASG(Node *node, Arg_elem general_args[]);
-
-int handle_IF(Node *node, Arg_elem general_args[]);
-
-int handle_ELSE(Node *node, Arg_elem general_args[]);
-
-int handle_FUNCALL(Node *node, Arg_elem general_args[]);
-
-int handle_PRINT(Node *node, Arg_elem general_args[]);
-
-int handle_PRINT_STR(Node *node, Arg_elem general_args[]);
-
-int handle_WHILE(Node *node, Arg_elem general_args[]);
-
-int handle_INPUT(Node *node, Arg_elem general_args[]);
-
-int handle_RETURN(Node *node, Arg_elem general_args[]);
 
 #endif

@@ -158,7 +158,7 @@ Separators lekser_SEP(char *str, size_t *shift)
 
 #undef DEF_ARITH_CMD
 
-#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name)           \
+#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name, ...)           \
     else if ((end_str = strstr(str, custom_name)) == str)               \
     {   *shift = strlen(custom_name);                                   \
         return log_op;                                                  \

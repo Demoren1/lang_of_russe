@@ -83,7 +83,7 @@ static char *find_arith_op(Arith_Operation op)
 
 #undef DEF_ARITH_CMD
 
-#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name)    \
+#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name, ...)    \
     case log_op:                                                 \
     {                                                               \
         return strncpy(to_ret, naive_name, MAX_LEN_VALUE);        \
@@ -99,6 +99,7 @@ static char *find_log_op(Log_Oper op)
         default: return strncpy(to_ret, "ERROR", MAX_LEN_VALUE);
     }
 }
+#undef DEF_LOG_OP_CMD
 
 #define DEF_SEP(sep_name, code, naive_name, custom_name)    \
     case sep_name:                                              \

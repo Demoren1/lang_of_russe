@@ -346,7 +346,7 @@ static int get_sep(Separators separator, char res[])
 
 #undef DEF_SEP
 
-#define DEF_LOG_OP_CMD(op_name, code, naive_name, custom_name)       \
+#define DEF_LOG_OP_CMD(op_name, code, naive_name, custom_name, ...)       \
         case op_name:                                           \
         {                                                       \
             strncpy(res, naive_name, MAX_LEN_VALUE);            \

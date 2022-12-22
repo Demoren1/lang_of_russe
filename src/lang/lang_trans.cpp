@@ -241,7 +241,7 @@ int find_index(Arg_elem general_args[],char var_value[])
     return 0;
 }
 
-#define DEF_ARITH_CMD(arith_op, code, naive_name, custovm_name) \
+#define DEF_ARITH_CMD(arith_op, code, naive_name, custom_name)  \
     case arith_op:                                              \
     {                                                           \
         WRITE_ASM("%s\n", #arith_op);                           \
@@ -265,219 +265,25 @@ Node *handle_arithm(Node *node, Arg_elem general_args[])
 
     return 0;
 }
+#undef DEF_ARITH_CMD
+
+#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name, ...)  \
+    case log_op:                                                    \
+    {                                                               \
+        __VA_ARGS__                                                 \
+        break;                                                      \
+    }
 
 Node *handle_log(Node *node, Arg_elem general_args[])
 {
     switch(node->value.log_op)
     {
-        case ASG:
-        {
-            handle_ASG(node, general_args);
-            break;
-        }
-        case IF:
-        {
-            handle_IF(node, general_args);
-            break;
-        }
-        case PRINT:
-        {
-            handle_PRINT(node, general_args);
-            break;
-        }
-        case PRINT_STR:
-        {
-            handle_PRINT_STR(node, general_args);
-            break;
-        }
-        case WHILE:
-        {
-            handle_WHILE(node, general_args);
-            break;
-        }
-        case FUNCALL:
-        {
-            handle_FUNCALL(node, general_args);
-            break;
-        }
-        case RETURN:
-        {
-            handle_RETURN(node, general_args);
-            break;
-        }
-        case INPUT:
-        {
-            handle_INPUT(node, general_args);
-            break;
-        }
+        #include <log_operation.h>
+
         default:
-            printf("ERROR");
+            WRITE_ASM("DBG");
     }
 
     return 0;
 }
-
-int handle_ASG(Node *node, Arg_elem general_args[])
-{
-
-    handle_node(node->r_son, general_args);
-
-    SOFT_ASS_NO_RET(node->l_son->type != VAR);
-    WRITE_ASM("pop [VID + %d]\n\n", find_index(general_args, node->l_son->value.var_value));
-
-    return 0;
-}
-
-int handle_IF(Node *node, Arg_elem general_args[])
-{
-    WRITE_ASM("push 0\n");
-    handle_node(node->l_son, general_args);
-
-    WRITE_ASM("jee :else_%d\n", else_index);
-    
-    if (node->r_son->l_son->type == EMPTY)
-        handle_empty(node->r_son->l_son, general_args);
-    else
-        handle_empty(node->r_son, general_args);
-
-    WRITE_ASM("\njmp :endif_%d\n", if_index);
-    WRITE_ASM("else_%d:\n", else_index++);
-
-    if (node->r_son->l_son->type == EMPTY)
-        handle_empty(node->r_son->r_son, general_args);
-
-    WRITE_ASM("endif_%d:\n", if_index++);
-
-    return 0;   
-}
-
-int handle_WHILE(Node *node, Arg_elem general_args[])
-{
-    WRITE_ASM("while_%d: \n", if_index);
-    WRITE_ASM("push 0 \n");
-    handle_node(node->l_son, general_args);
-    WRITE_ASM("jee :end_while_%d \n", else_index);
-    
-    handle_empty(node->r_son, general_args);
-
-    WRITE_ASM("jmp :while_%d \n", if_index++);
-    WRITE_ASM("end_while_%d: \n", else_index++);
-
-    return 0;
-}
-
-int handle_INPUT(Node *node, Arg_elem general_args[])
-{
-    Node *tmp_node = node->l_son;
-
-    while (tmp_node)
-    {   
-        WRITE_ASM("in\n")
-        WRITE_ASM("pop [VID + %d]\n\n", find_index(general_args, tmp_node->value.var_value));
-        // handle_node(tmp_node, general_args);
-        tmp_node = tmp_node->l_son;
-    }
-
-    return 0;
-}
-
-int handle_PRINT(Node *node, Arg_elem general_args[])
-{
-    Node *tmp_node = node->l_son;
-
-    do{ 
-        handle_node(tmp_node, general_args);
-        WRITE_ASM("out\n\n");
-        tmp_node = tmp_node->l_son;
-    }
-    while (tmp_node != NULL && (tmp_node->type != LOG && tmp_node->type != ARITHM_OP));
-
-    return 0;
-}
-
-int handle_PRINT_STR(Node *node, Arg_elem general_args[])
-{
-    char str[MAX_LEN_VALUE] = {};
-
-    strncpy(str, node->l_son->value.var_value, MAX_LEN_VALUE);
-
-    int len = strlen(str);
-    WRITE_ASM("push 0      ## %s\n", str);
-    WRITE_ASM("push 10 \n");
-
-
-    for (int i = len - 1; i >= 0; i--)
-    {
-        if (str[i] == 95)
-        {
-            WRITE_ASM ("push 32\n");
-            continue;
-        }
-        WRITE_ASM("push %d\n", str[i]);
-    }
-
-    for (int i = 0; i < len + 2; i++)
-    {
-        WRITE_ASM("pop [%d]\n", i);
-    }
-    WRITE_ASM("show\n\n");
-
-    return 0;
-}
-
-int handle_FUNCALL(Node *node, Arg_elem general_args[])
-{
-    Node *tmp_node = node->l_son->l_son;
-    int index = 0;
-    while (tmp_node)
-    {   
-        WRITE_ASM("push [VID + %d] \n", find_index(general_args, tmp_node->value.var_value));
-        WRITE_ASM("pop [VIF + %d] \n", index++);
-        tmp_node = tmp_node->l_son;
-    }
-    WRITE_ASM("\n\n");
-    
-    WRITE_ASM("\npush VID\n");                    // right shift in RAM
-    WRITE_ASM("dup\n");
-    WRITE_ASM("dup\n");
-    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
-    WRITE_ASM("zdiv\n");
-    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
-    WRITE_ASM("mul\n");
-    WRITE_ASM("sub\n");
-    WRITE_ASM("sub\n");
-    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
-    WRITE_ASM("add\n");
-    WRITE_ASM("pop VID\n");
-
-    WRITE_ASM("call :%s\n", node->l_son->value.var_value);
-    WRITE_ASM("push RCX\n\n");
-    return 0;
-}
-
-int handle_RETURN(Node *node, Arg_elem general_args[])
-{   
-    handle_node(node->l_son, general_args);
-    WRITE_ASM("pop RCX\n");
-
-    WRITE_ASM("\npush VID\n");                    // right shift in RAM
-    WRITE_ASM("dup\n");
-    WRITE_ASM("dup\n");
-    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
-    WRITE_ASM("zdiv\n");
-    WRITE_ASM("push 2\n");
-    WRITE_ASM("sub\n");
-    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
-    WRITE_ASM("mul\n");
-    WRITE_ASM("sub\n");
-    WRITE_ASM("sub\n");
-    WRITE_ASM("push %d\n", SHIFT_IN_ARGS);
-    WRITE_ASM("add\n");
-    WRITE_ASM("pop VID\n");
-
-
-    WRITE_ASM("RET\n\n");
-
-
-    return 0;
-}
+#undef DEF_LOG_OP_CMD

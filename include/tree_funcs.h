@@ -44,7 +44,7 @@ typedef enum
 
 #undef DEF_SEP
 
-#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name)       \
+#define DEF_LOG_OP_CMD(log_op, code, naive_name, custom_name, ...)       \
     log_op = code,
 
 typedef enum
