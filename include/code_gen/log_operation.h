@@ -78,7 +78,7 @@ DEF_LOG_OP_CMD(FUNCALL, 6, "funcall", "funcall",
     while (tmp_node)
     {   if (tmp_node->func_num == 1)
         {
-           WRITE_ASM("push %g\n", tmp_node->value.dbl_value);
+           handle_node(tmp_node, general_args);
         }
         else if (tmp_node->func_num == 0)
         {

@@ -130,10 +130,10 @@ int node_dtor(Node *node)
     {
         free(node->value.var_value);
     }
-    // else if (node->type == FUNC)
-    // {
-    //     free(node->value.var_value);
-    // }
+    else if (node->type == FUNC)
+    {
+        free(node->value.var_value);
+    }
 
     free(node);
     node = NULL;

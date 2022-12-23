@@ -44,8 +44,8 @@ int main(int argc, char *argv[])         //todo lekser and parser rules
 
     lang_trans(tree, path_asm);
 
-    asm_func(argc, argv);
-    cpu();
+    // asm_func(argc, argv);
+    // cpu();
 
     lekser_dtor(&data_tokens);
     diff_buff_dtor(&buff);

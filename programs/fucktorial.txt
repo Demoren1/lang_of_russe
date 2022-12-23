@@ -4,17 +4,18 @@ def main ( ) {
     result = fuck ( target )
 
     print ( result )
+
+    return ( 1 )
 }
 
 def fuck ( n ) {
     if ( n > 1 ) {
-        tmp1 = n - 1
-        tmp2 = fuck ( tmp1 )
-        tmp3 = tmp1 * tmp2
-
-        return ( tmp3 )
+        
+        tmp = fuck ( n - 1 )
+        return ( n * tmp )
     }
     else {
         return ( 1 )
     }
+
 }

@@ -12,6 +12,7 @@ Node *Create_OP_node(Arith_Operation oper_value)
     new_node->value.op_value = oper_value;              
     new_node->type = ARITHM_OP;                                
     new_node->priority = find_op_priority(oper_value);
+    new_node->func_num = 1;
 
     return new_node;
 }
@@ -22,6 +23,7 @@ Node *Create_SEP_node(Separators sep)
     new_node->value.sep = sep;              
     new_node->type = SEP;                                
     new_node->priority = SEP_PRIOR;
+    new_node->func_num = 1;
 
     return new_node;
 }
@@ -54,6 +56,7 @@ Node *Create_LOG_OP_node(Log_Oper log_op)
     new_node->value.log_op = log_op;
     new_node->type = LOG;
     new_node->priority = LOG_PRIOR;
+    new_node->func_num = 1;
 
     return new_node;
 }
@@ -63,6 +66,7 @@ Node *Create_EMPTY_node()
     Node *new_node = node_ctor();
     new_node->type = EMPTY;
     new_node->priority = EMPTY_PRIOR;
+    new_node->func_num = 1;
 
     return new_node;
 }

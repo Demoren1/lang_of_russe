@@ -13,6 +13,11 @@
                             {                                                                                                       \
                                 printf("something go wrong at %s file, %s func, %s obj, %d line\n", FUNC_GENERAL_INFO());           \
                             }                                                  
+
+#define CHECK_ADRESS(obj)    do{                                                                                            \
+                                printf ("%s has adress %p, on %d line, %s func\n", #obj, obj, __LINE__, __FUNCTION__);      \
+                             }while(0);                                                                                
+
 #else
 #define SOFT_ASS(condition) 
 #define SOFT_ASS_NO_RET(condition) 
