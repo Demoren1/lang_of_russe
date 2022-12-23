@@ -18,13 +18,13 @@ int lekser_dump(Tokens *data_tokens)
 {
 
     FILE *lekser_dump = fopen("lekser_dump.txt", "w");
-    fprintf(lekser_dump, "\tTYPE \t\t VALUE\n");
+    fprintf(lekser_dump, "\tTYPE \t\t\t VALUE\n");
     for (int i = 0; i < data_tokens->size; i++)
     {
         
         Token *cur_token = data_tokens->tokens[i];
         
-        fprintf(lekser_dump, "[%3d] %-12s ", i+1, find_type(cur_token->type_node));
+        fprintf(lekser_dump, "[%3d] : %d %-16s ", i, cur_token->type_node, find_type(cur_token->type_node));
         switch(cur_token->type_node)
         {
             case NUM:

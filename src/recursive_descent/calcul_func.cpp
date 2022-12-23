@@ -28,41 +28,64 @@ Node* get_General(Tokens *data_tokens)
 
     get_Tree(node);
     
-    cur_token = Data_tokens->tokens[Data_tokens->cur_pos - 1];
     return node;
 }
 
 int get_Tree(Node *node)
 {
     Node *left_node  = get_ASS();
-    
-    if (check_end())
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+
+    if (Data_tokens->cur_pos >= Data_tokens->size || 
+        (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_FIG))
     {   
-        node_connect(node, left_node, LEFT);
+        if (left_node)
+        {
+            node_connect(node, left_node, LEFT);
+        }
         
         return 0;
     }
+    
+    if (cur_token->type_node == SEP)    
+        Data_tokens->cur_pos++;
 
-    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    // TREE_DUMP(left_node, INORDER);
     Node *right_node = Create_EMPTY_node();
-    
-    get_Tree(right_node);
-    
-    node_connect(node, left_node, LEFT);
-    node_connect(node, right_node, RIGHT);
 
+    get_Tree(right_node);
+
+    node_connect(node, right_node, RIGHT);
+    node_connect(node, left_node, LEFT);
+    
     return 0;
 }
 
 Node *get_ASS()
 {
     Node *new_node = NULL;
-    
-    if (check_end()) 
-        return 0;
-
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    
+    while (Data_tokens->cur_pos < Data_tokens->size && cur_token->type_node == SEP)
+    {
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        
+        if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_FIG)
+        {
+            break;
+        }
+
+        Data_tokens->cur_pos++;
+    }
+    if (Data_tokens->cur_pos >= Data_tokens->size || 
+       (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_FIG))
+    {      
+        
+        return 0;
+    }
+
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
+    Token *prev_token = Data_tokens->tokens[Data_tokens->cur_pos - 1];
 
     if (Data_tokens->size - Data_tokens->cur_pos > 0 && 
         next_token->type_node == LOG && 
@@ -87,14 +110,17 @@ Node *get_ASS()
         node_connect(new_node, l_node, LEFT);
         node_connect(new_node, r_node, RIGHT);
     }
-    else if (cur_token->type_node == LOG || 
-            (next_token->type_node == SEP && 
-            next_token->value.sep == OPEN_CIRC))
+    else if (cur_token->type_node == LOG        || 
+            (next_token->type_node == SEP       && 
+            next_token->value.sep == OPEN_CIRC  &&
+            (prev_token->type_node != LOG       ||
+             prev_token->value.log_op != DEF)))
     {
         new_node = get_LOG();   
     }
     else
     {   
+        
         new_node = get_Expression();
     }
 
@@ -129,12 +155,10 @@ Node *get_LOG()
     {   
         if (cur_token->type_node != LOG || cur_token->value.log_op != ELSE)
         {   
-            
             func_node = get_Func(keyword_node);
         }
     }
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-
 
     // SOFT_ASS_NO_RET(cur_token->type_node != SEP);
     if (cur_token->type_node == SEP && cur_token->value.sep == OPEN_CIRC)  
@@ -142,21 +166,21 @@ Node *get_LOG()
         get_LOG_handle_CIRC(expr_node, func_node, keyword_node);
     }
     
-    if (Data_tokens->cur_pos == Data_tokens->size || 
+    if (Data_tokens->cur_pos >= Data_tokens->size || 
         Data_tokens->tokens[Data_tokens->cur_pos]->type_node != SEP)
     {
         return keyword_node;
     }
-
     Node *block_node = NULL;
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
     if (cur_token->type_node == SEP &&
         cur_token->value.sep == OPEN_FIG)
     {
+        
         get_LOG_handle_FIG(expr_node, func_node, keyword_node, block_node);
     }
-        
+
     return keyword_node;
 }
 
@@ -164,7 +188,9 @@ int get_LOG_handle_CIRC(Node *expr_node, Node *func_node, Node *keyword_node)
 {
     Data_tokens->cur_pos++;
     expr_node = get_ASS();
-    
+
+    SOFT_ASS_NO_RET(!expr_node);
+
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
     Node *new_node1 = expr_node;
@@ -178,8 +204,6 @@ int get_LOG_handle_CIRC(Node *expr_node, Node *func_node, Node *keyword_node)
         if (Data_tokens->cur_pos >= Data_tokens->size) 
             break;
         
-        CHECK_TOKENS();
-
         Node *new_node2 = get_ASS();
         SOFT_ASS_NO_RET(!new_node1);
         SOFT_ASS_NO_RET(!new_node2);
@@ -200,13 +224,14 @@ int get_LOG_handle_CIRC(Node *expr_node, Node *func_node, Node *keyword_node)
     {
         SOFT_ASS_NO_RET(!keyword_node);
         SOFT_ASS_NO_RET(!expr_node);
+        
         node_connect(keyword_node, expr_node, LEFT);
     }
-
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-    SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_CIRC)
+
+    SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_CIRC && cur_token->value.sep != CLOSE_FIG);
     Data_tokens->cur_pos++;
-    
+
     return 0;
 }
 
@@ -217,10 +242,10 @@ int get_LOG_handle_FIG(Node *expr_node, Node *func_node, Node *keyword_node, Nod
     Data_tokens->cur_pos++;
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     
+    
     get_Tree(block_node);
-    // TREE_DUMP(block_node, INORDER);
+    
 
-    // abort();
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
     
@@ -260,10 +285,16 @@ int get_LOG_handle_FIG(Node *expr_node, Node *func_node, Node *keyword_node, Nod
         }
     }
 
+    if ((Data_tokens->cur_pos) >= Data_tokens->size || 
+        Data_tokens->tokens[Data_tokens->cur_pos]->type_node != SEP)
+    {
+        return 0;
+    }
+
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *prev_token = Data_tokens->tokens[Data_tokens->cur_pos - 1];
 
-    SOFT_ASS_NO_RET(cur_token->type_node != SEP || cur_token->value.sep != CLOSE_FIG);
+    SOFT_ASS_NO_RET(cur_token->value.sep != CLOSE_FIG && cur_token->value.sep != CLOSE_CIRC);
 
     Data_tokens->cur_pos++;
     
@@ -274,29 +305,28 @@ int get_LOG_handle_FIG(Node *expr_node, Node *func_node, Node *keyword_node, Nod
 Node *get_Func(Node *keyword_node)
 {   
     Node *func_node  = NULL;
+    Token *prev_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
-        
-    if (cur_token->type_node == VAR)
+    
+    func_node = get_VAR();
+    
+    if (prev_token->type_node != LOG || prev_token->value.log_op != DEF)
     {
-        func_node = Create_VAR_node(cur_token->value.var_value);
-    }
-    else
-    {
-        CHECK_ADRESS(cur_token);
-        printf ("cur token type %s\n", cur_token->value.var_value);
-        func_node = get_ASS();
-        // func_node = Create_NUM_node(cur_token->value.dbl_value);
-    }
+        Data_tokens->cur_pos++;
+        Node *expr_in_func = get_ASS();
 
+        node_connect(func_node, expr_in_func, LEFT);
+    }
+    
     cur_token->type_node = FUNC;
-    func_node->type = FUNC;
+    func_node->type = FUNC; 
 
     SOFT_ASS_NO_RET(!keyword_node)
     SOFT_ASS_NO_RET(!func_node)
     
     node_connect(keyword_node, func_node, LEFT);        
-    Data_tokens->cur_pos++;   
+    Data_tokens->cur_pos++;
                                                                 
     Node *tmp_node1 = func_node;
     Node *tmp_node2 = NULL;
@@ -308,7 +338,7 @@ Node *get_Func(Node *keyword_node)
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
         if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_CIRC)
             break;
-        
+
         tmp_node2 = get_ASS();
         
         SOFT_ASS_NO_RET(!tmp_node1);
@@ -324,7 +354,6 @@ Node *get_Func(Node *keyword_node)
     if (cur_token->type_node == SEP && cur_token->value.sep == CLOSE_CIRC)
         Data_tokens->cur_pos++;
 
-    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     return func_node;
 }
 
@@ -431,7 +460,7 @@ Node *get_UNAR_OP()
          prev_token->value.op_value == ABS ))
     {   
         // Node *tmp_node = get_Expression();
-        Node *tmp_node = get_P();
+        Node *tmp_node = get_ASS();
         node_connect(node, tmp_node, RIGHT);
 
         prev_token = Data_tokens->tokens[Data_tokens->cur_pos-1];
