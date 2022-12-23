@@ -1,4 +1,4 @@
-def main ( ) {
+def main ( void ) {
     input ( target )
 
     result = fuck ( target )
@@ -10,9 +10,7 @@ def main ( ) {
 
 def fuck ( n ) {
     if ( n > 1 ) {
-        
-        tmp = fuck ( n - 1 )
-        return ( n * tmp )
+        return ( n * fuck ( n - 1 ) )
     }
     else {
         return ( 1 )

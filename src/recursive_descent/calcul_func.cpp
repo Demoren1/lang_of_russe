@@ -70,7 +70,10 @@ Node *get_ASS()
     Node *new_node = NULL;
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     
-    while (Data_tokens->cur_pos < Data_tokens->size && cur_token->type_node == SEP)
+    while (Data_tokens->cur_pos < Data_tokens->size && 
+          (cur_token->type_node == SEP              && 
+          (cur_token->value.sep == CLOSE_CIRC      ||
+           cur_token->value.sep == CLOSE_FIG)))
     {
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
         
@@ -86,7 +89,8 @@ Node *get_ASS()
     {      
         return 0;
     }
-
+    
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
     Token *prev_token = Data_tokens->tokens[Data_tokens->cur_pos - 1];
 
@@ -103,15 +107,6 @@ Node *get_ASS()
 
         Node *r_node = NULL;
         r_node = get_ASS();
-
-        // if (cur_token->type_node == VAR && next_token->type_node == SEP)
-        // {
-        //     r_node = get_LOG();            
-        // }
-        // else
-        // { 
-        //     r_node = get_Expression();
-        // }
 
         node_connect(new_node, l_node, LEFT);
         node_connect(new_node, r_node, RIGHT);
@@ -131,13 +126,13 @@ Node *get_ASS()
 }
 
 Node *get_LOG()
-{
+{   
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
 
     Node *keyword_node = NULL; 
-    Node *func_node  = NULL;
-
+    Node *func_node    = NULL;
+    
     if (cur_token->type_node == LOG && cur_token->value.log_op == DEF)
     {
         func_node = handle_DEF();
@@ -188,16 +183,15 @@ Node *get_LOG()
     {
         return keyword_node;
     }
+
     Node *block_node = NULL;
     cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
 
     if (cur_token->type_node == SEP &&
         cur_token->value.sep == OPEN_FIG)
     {
-        
         get_LOG_handle_FIG(expr_node, func_node, keyword_node, block_node);
     }
-
     return keyword_node;
 }
 
@@ -218,12 +212,17 @@ Node* handle_DEF()
 int get_LOG_handle_CIRC(Node *expr_node, Node *func_node, Node *keyword_node)
 {
     Data_tokens->cur_pos++;
-    expr_node = get_ASS();
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    if (cur_token->type_node == ARITHM_OP)
+    {
+        expr_node = get_Expression();
+    }
+    else 
+        expr_node = get_ASS();
 
     SOFT_ASS_NO_RET(!expr_node);
 
-    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-
+    cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Node *new_node1 = expr_node;
     Node *new_node2 = NULL;
     while(cur_token->type_node == SEP &&
@@ -339,7 +338,10 @@ Node *get_Func(Node *keyword_node)
     Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
     Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
     
-    func_node = get_ASS();
+    if (cur_token->type_node == ARITHM_OP)
+        func_node = get_Expression();
+    else 
+        func_node = get_ASS();
     
     cur_token->type_node = FUNC;
     func_node->type = FUNC; 
@@ -420,14 +422,6 @@ Node* get_P()
         Node *op_node = get_UNAR_OP();
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
         Token *prev_token = Data_tokens->tokens[Data_tokens->cur_pos-1];
-        
-        // if (cur_token->type_node == SEP && 
-        //     cur_token->value.sep == CLOSE_CIRC &&
-        //     prev_token->type_node != SEP)
-        // {
-        //     
-        //     Data_tokens->cur_pos++;
-        // }
 
         node = op_node;
         return node;
@@ -487,9 +481,7 @@ Node *get_UNAR_OP()
         SOFT_ASS_NO_RET(!node);
         SOFT_ASS_NO_RET(!tmp_node);
         node_connect(node, tmp_node, RIGHT);
-
-        prev_token = Data_tokens->tokens[Data_tokens->cur_pos-1];
-        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        Data_tokens->cur_pos++;
     }
 
     return node;
@@ -516,7 +508,18 @@ Node* get_T()
         Arith_Operation op = cur_token->value.op_value;
 
         Data_tokens->cur_pos++;
-        Node* r_node = get_ASS();
+
+        Node* r_node = NULL;
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
+
+        if (cur_token->type_node == VAR && 
+            next_token->type_node == SEP &&
+            next_token->value.sep == OPEN_CIRC)
+            r_node = get_ASS();
+        else 
+            r_node = get_Degree();
+
         
         if (op == MUL)
         {
@@ -570,8 +573,18 @@ Node* get_Expression()
 
         Data_tokens->cur_pos++;
 
+        Node* r_node = NULL;
 
-        Node* r_node = get_ASS();
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
+
+        if (cur_token->type_node == VAR && 
+            next_token->type_node == SEP &&
+            next_token->value.sep == OPEN_CIRC)
+            r_node = get_ASS();
+        else 
+            r_node = get_T();
+
         Node *new_node = NULL;
 
         switch (op)
