@@ -34,4 +34,6 @@ int get_LOG_handle_CIRC(Node *expr_node, Node *func_node, Node *keyword_node);
 
 int get_LOG_handle_FIG(Node *expr_node, Node *func_node, Node *keyword_node, Node *block_node);
 
+Node* handle_DEF();
+
 #endif

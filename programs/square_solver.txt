@@ -1,4 +1,4 @@
-def main ( ) {
+def main ( void ) {
     strprint ( ax^2_+_bx_+_c_=_0 )
     strprint ( _input_a,_b,_c )
     input ( a ; b ; c )

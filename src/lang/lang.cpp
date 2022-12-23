@@ -36,16 +36,16 @@ int main(int argc, char *argv[])         //todo lekser and parser rules
 
     lekser_handle(&data_tokens, &buff);
     
-
+    lekser_dump(&data_tokens);
     tree = get_General(&data_tokens);
 
     lekser_dump(&data_tokens);
     TREE_DUMP(tree, INORDER);
 
-    lang_trans(tree, path_asm);
+    // lang_trans(tree, path_asm);
 
-    asm_func(argc, argv);
-    cpu();
+    // asm_func(argc, argv);
+    // cpu();
 
     lekser_dtor(&data_tokens);
     diff_buff_dtor(&buff);
