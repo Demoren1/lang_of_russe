@@ -115,7 +115,10 @@ Node *get_ASS()
             (next_token->type_node == SEP       && 
             next_token->value.sep == OPEN_CIRC))
     {
-        new_node = get_LOG();   
+        Node *tmp_node1 = get_LOG();
+
+        new_node = handle_Aith_in_LOG(new_node, tmp_node1);
+
     }
     else
     {   
@@ -432,9 +435,8 @@ Node* get_P()
     {   
         Data_tokens->cur_pos++;
         value_node = get_ASS();
-    
         cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
-        assert (cur_token->value.sep == CLOSE_CIRC);
+        // assert (cur_token->value.sep == CLOSE_CIRC);
         Data_tokens->cur_pos++;
     }
     else if (cur_token->type_node == VAR)
@@ -635,7 +637,21 @@ Node* get_Degree()
     {
         Data_tokens->cur_pos++;
 
-        Node *r_node = get_P();
+        Node *r_node = NULL;
+        cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+        Token *next_token = Data_tokens->tokens[Data_tokens->cur_pos + 1];
+
+        if (cur_token->type_node == VAR && 
+            next_token->type_node == SEP &&
+            next_token->value.sep == OPEN_CIRC)
+        {
+            r_node = get_ASS();
+        }
+        else 
+        {
+            r_node = get_P();
+        }
+
         {
             Node *new_node = Create_OP_node(DEGREE);
             node_connect(new_node, node, LEFT);
@@ -659,4 +675,29 @@ static int check_end()
     {
         return 0;
     }
+}
+
+Node *handle_Aith_in_LOG(Node *new_node, Node *tmp_node1)
+{
+    if (Data_tokens->cur_pos >= Data_tokens->size)
+    {
+        new_node = tmp_node1;
+        return new_node;
+    }
+
+    Token *cur_token = Data_tokens->tokens[Data_tokens->cur_pos];
+    if (cur_token->type_node == ARITHM_OP)
+    {
+        new_node = Create_OP_node (cur_token->value.op_value);
+        Data_tokens->cur_pos++;
+        Node *tmp_node2 = get_ASS();
+        node_connect(new_node, tmp_node1, LEFT);
+        node_connect(new_node, tmp_node2, RIGHT);
+    }
+    else 
+    {
+        new_node = tmp_node1;
+    }
+
+    return new_node;
 }

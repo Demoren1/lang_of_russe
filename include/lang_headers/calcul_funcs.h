@@ -36,4 +36,6 @@ int get_LOG_handle_FIG(Node *expr_node, Node *func_node, Node *keyword_node, Nod
 
 Node* handle_DEF();
 
+Node *handle_Aith_in_LOG(Node *new_node, Node *tmp_node1);
+
 #endif
