@@ -65,7 +65,7 @@ int diff_handle_src(const char* path_to_file, Buffer *buff)
     buff->lines = 1;
     buff->buffer = del_new_line_and_spaces(buff);
 
-    buff->buffer[buff->size] = '\0';
+    // buff->buffer[buff->size] = '\0';
     buff->curr_index = 0;
 
     fclose(SRC);
@@ -83,36 +83,61 @@ int diff_size_for_buffer(FILE *SRC, const char *path_to_file)
     return buf.st_size + 1;
 }
 
+#define DEF_SEP(sep_name, code, naive_name, custom_name)    \
+    else if (strstr(cur_sym, custom_name) == cur_sym)       \
+    {                                                       \
+        new_buff[index_new_buff] = *cur_sym;                \
+        new_buff[index_new_buff + 1] = ' ';                 \
+        index_new_buff += 2;                                \
+    }
+
 static char* del_new_line_and_spaces(Buffer* buff)
 {
     SOFT_ASS_NO_RET(buff == NULL);
     SOFT_ASS_NO_RET(buff->buffer == NULL);
 
-    // char *new_buff = (char*) calloc(buff->size, sizeof(char));
+    char *new_buff = (char*) calloc(2 * buff->size, sizeof(char));
 
     int index_buff = 0;
     int index_new_buff = 0;
     for (; index_buff < buff->size; index_buff++)
     {
-        if (buff->buffer[index_buff] == '\n')
+        char *cur_sym  = buff->buffer + index_buff;
+        char *next_sym = buff->buffer + index_buff + 1;
+        
+        if (*cur_sym == '\n')
         {
             buff->lines++;
-            buff->buffer[index_buff] = '\0';
+            *cur_sym = '\0';
         }
 
-        // if (buff->buffer[index_buff] != ' ')
-        // {   
-        //     if (buff->buffer[index_buff] != '\0' || buff->buffer[index_buff+1] != '\0')
-        //     {
-        //         new_buff[index_new_buff] = buff->buffer[index_buff];
-        //         index_new_buff++;
-        //     }
-        // }
+        if ((isalnum(*cur_sym) && !isalnum(*next_sym)) ||
+            (!isalnum(*cur_sym) && isalnum(*next_sym)))
+        {
+            new_buff[index_new_buff] = *cur_sym;
+            new_buff[index_new_buff + 1] = ' ';
+            index_new_buff += 2;
+        }
+        #include <separators.h>
+        else 
+        {
+            new_buff[index_new_buff] = *cur_sym;
+            index_new_buff++;
+        }
     }
+    #if 0
+    for (int counter = 0 ;  counter < 2 * buff->size ; counter++)
+    {
+        printf("%d == %c\n", new_buff[counter], new_buff[counter]);
+    }
+    #endif
 
-    // free(buff->buffer);
-    return buff->buffer;  //was replace new_buff
+    // abort();
+    buff->size *= 2;
+    free(buff->buffer);
+    return new_buff;  
 }
+#undef DEF_SEP
 
 int diff_buff_dtor(Buffer *buffer)
 {   

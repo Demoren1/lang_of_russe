@@ -354,6 +354,8 @@ int find_address(char *label_name, ass_info *info_of_codes)
         return address;
 }
 
+
+#if 0
 const char *name_of_input_file(int num_of_str, const char* str)
 {
     if (num_of_str > 1)
@@ -361,3 +363,5 @@ const char *name_of_input_file(int num_of_str, const char* str)
     else 
         return "codes.asm";
 }
+
+#endif
